@@ -1,5 +1,4 @@
-from core.engine import parser
-from core.engine import commands
+from core.engine import parser, commands
 
 def say_hello(person: str, *args):
     print(person, args)
