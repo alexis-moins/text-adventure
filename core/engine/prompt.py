@@ -1,6 +1,3 @@
-from typing import Callable
-
-before_prompt_hooks: list[Callable] = []
 
 def build_prompt() -> str:
     """

@@ -1,19 +1,23 @@
+from typing import Callable
+
 from core.engine.prompt import build_prompt
 from core.engine.commands import get_command, Command
 
 
-def get_input(prompt: str | None = None) -> str:
+def get_input(*, builder: Callable[[], str] | None = None) -> str:
     """
     Ask the user to write text on the console, then returns the input.
 
     Argument:
-    prompt - the text to display before asking for input. If None, defaults
-    to the return value of core.engine.prompt.build_prompt
+    builder - an optional function that will be executed to build the
+    prompt before asking for input. If None, defaults to the return value
+    of core.engine.prompt.build_prompt
 
     Returns:
     A string
     """
-    return input(prompt or build_prompt())
+    prompt = build_prompt() if not builder else builder()
+    return input(prompt)
 
 
 def format_input(user_input: str) -> list[str]:

@@ -9,4 +9,8 @@ fil = Entity(name='Fil', description='A young human soldier')
 
 room.entities.append(fil)
 
+import dungeon
+
+dungeon.current_room = room
+
 engine.start_engine()
