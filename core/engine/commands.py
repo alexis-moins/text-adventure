@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Any, Callable
 
 # Type of a Command function
 Command = Callable[..., None]

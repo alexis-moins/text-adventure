@@ -1,23 +1,16 @@
-from core.engine import parser, commands
-
-def say_hello(person: str, *args):
-    print(person, args)
-
-commands.register_command('echo', say_hello)
-
-
-def handle_input() -> None:
-    """
-    """
-    user_input = parser.get_input()
-    command, arguments = parser.parse_input(user_input)
-
-    if command:
-        command(*arguments)
+import core.dungeon as dungeon
 
 
 def start_engine() -> None:
     """
     """
+    # Display once the current room
     while True:
-        handle_input()
+        if dungeon.player.take_turn():
+            pass
+
+        # for character in dungeon.current_room.get_characters():
+        #     character.take_turn()
+
+        # increase turn count
+        # Update all entities

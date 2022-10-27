@@ -1,7 +1,7 @@
 from typing import Callable
 
-from core.engine.prompt import build_prompt
-from core.engine.commands import get_command, Command
+import core.engine.prompt as prompt
+import core.engine.commands as commands
 
 
 def get_input(*, builder: Callable[[], str] | None = None) -> str:
@@ -16,8 +16,8 @@ def get_input(*, builder: Callable[[], str] | None = None) -> str:
     Returns:
     A string
     """
-    prompt = build_prompt() if not builder else builder()
-    return input(prompt)
+    _prompt = prompt.build_prompt() if not builder else builder()
+    return input(_prompt)
 
 
 def format_input(user_input: str) -> list[str]:
@@ -34,20 +34,20 @@ def format_input(user_input: str) -> list[str]:
     return user_input.strip().lower().split(' ')
 
 
-def parse_input(user_input: str) -> tuple[Command | None, list[str] | None]:
+def parse_input(actor_input: str) -> tuple[commands.Command | None, list[str] | None]:
     """
     Parse the given input into a command function and its arguments.
 
     Argument:
-    user_input - the string that need to be parsed into a command
+    actor_input - the string that need to be parsed into a command
 
     Returns:
     A tuple of Callable and its arguments (as a list)
     """
-    if not user_input:
+    if not actor_input:
         return None, None
 
-    words = format_input(user_input)
-    command = get_command(words.pop(0))
+    words = format_input(actor_input)
+    command = commands.get_command(words.pop(0))
 
     return command, words

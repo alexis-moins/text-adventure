@@ -1,13 +1,16 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
+import core.engine.parser as parser
 
-@dataclass(kw_only=True)
+
+@dataclass
 class Entity:
     """
     Represents a generic entity, wether it be an item or a character.
     """
     name: str
-    description: str
+    description: str = ''
 
     actions: list[str] = field(default_factory=list)
 
@@ -16,7 +19,7 @@ class Entity:
         """
         Return the name of the entity.
 
-        Returns :
+        Returns:
         A string
         """
         return indefinite_determiner(self)
@@ -36,3 +39,31 @@ def indefinite_determiner(entity: Entity) -> str:
     vowels = 'aeiouy'
     determiner = 'an' if entity.name[0] in vowels else 'a'
     return f'{determiner} {entity}'
+
+
+@dataclass
+class Character(ABC, Entity):
+    """
+    """
+
+    @abstractmethod
+    def take_turn(self) -> bool:
+        pass
+
+
+@dataclass
+class Player(Character):
+
+    def take_turn(self) -> bool:
+        """
+        Let the player write something and behave based on the input.
+
+        Returns:
+        true if the player has executed a command, false otherwise
+        """
+        user_input = parser.get_input()
+        command, arguments = parser.parse_input(user_input)
+
+        if not command:
+            print('I don\'t understand that')
+            return False

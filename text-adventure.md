@@ -14,7 +14,7 @@ their behaviour.
 List of the core modules:
 
 - movement, responsible for :
-    1. managing the `before_enter`, `after_enter`, `before_exit` and `after_exit` hooks
+    1. managing the `before_enter`, `after_enter`, `before_exit` and `after_exit` global hooks
     2. providing the `continue` command to go to the next room / floor
     3. providing the `hide` command ?
 
@@ -39,3 +39,16 @@ List of the core modules:
         1. displaying the status of the player,
         2. managing the `before_prompt` and `after_prompt` hooks (not important)
         3. asking stuff to the user using custom prompts
+
+- actions, responsible for :
+    1. providing the basic actions for the game, such as :
+        - `take` / `get`
+        - `drop`
+
+# Steps of loading a game
+
+When the game is loaded, all modules must be imported to register the commands into the parser.
+
+Then, before starting the engine, the generation module must be used to generate the first room.
+Then, upon calling the `continue` command, the player has to chose between two rooms. Before entering
+the selected room, two new rooms
