@@ -6,4 +6,4 @@ def build_prompt() -> str:
     Returns:
     A string
     """
-    return '> '
+    return '\n> '
