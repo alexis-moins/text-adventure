@@ -20,34 +20,34 @@ def get_input(*, builder: Callable[[], str] | None = None) -> str:
     return input(_prompt)
 
 
-def format_input(user_input: str) -> list[str]:
+def format_input(_input: str) -> list[str]:
     """
     Format and return the given input. Currently, the function turns all letters
     to lower case then split the string on spaces.
 
     Argument:
-    user_input - the string that need to be formatted
+    _input - the string that need to be formatted
 
     Returns:
     A list of strings
     """
-    return user_input.strip().lower().split(' ')
+    return _input.strip().lower().split(' ')
 
 
-def parse_input(actor_input: str) -> tuple[commands.Command | None, list[str] | None]:
+def parse_input(_input: str) -> tuple[commands.Command | None, list[str] | None]:
     """
     Parse the given input into a command function and its arguments.
 
     Argument:
-    actor_input - the string that need to be parsed into a command
+    _input - the string that need to be parsed into a command
 
     Returns:
     A tuple of Callable and its arguments (as a list)
     """
-    if not actor_input:
+    if not _input:
         return None, None
 
-    words = format_input(actor_input)
+    words = format_input(_input)
     command = commands.get_command(words.pop(0))
 
     return command, words

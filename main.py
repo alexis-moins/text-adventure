@@ -1,3 +1,3 @@
-import core.engine.engine as engine
+import core.engine.functions as functions
 
-engine.start_engine()
+functions.start_engine()

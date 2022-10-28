@@ -52,3 +52,149 @@ When the game is loaded, all modules must be imported to register the commands i
 Then, before starting the engine, the generation module must be used to generate the first room.
 Then, upon calling the `continue` command, the player has to chose between two rooms. Before entering
 the selected room, two new rooms
+
+```mermaid
+classDiagram
+    direction BT
+
+
+    class Action {
+        <<enumeration>>
+        OPEN
+        TAKE
+    }
+
+    class Entity {
+        <<abstract>>
+        +string name
+        +string description
+
+        +List~Action~ actions
+
+        +indefinite_name() string
+    }
+
+    Entity ..> Action
+
+    Entity *-- Fight : +fight
+
+    class Character {
+        <<abstract>>
+
+        +take_turn()* boolean
+    }
+
+    Character --|> Entity
+
+    class Fight {
+        <<abstract>>
+        #boolean can_attack
+
+        +receiveDamage(int amount, DamageType damage_type)*
+    }
+
+    Fight ..> DamageType
+
+    class CharacterFight {
+        -int health
+        -int max_health
+        -int magic
+        -int max_magic
+
+        -int strength
+        -int defense
+        -int intelligence
+        -int wisdom
+
+        -Character target
+
+        +setHp(int amount)
+        +setMagic(int amount)
+
+        +setStrength(int amount)
+        +setDefense(int amount)
+        +setIntelligence(int amount)
+        +setWisdom(int amount)
+    }
+
+    CharacterFight --|> Fight
+
+    class BreakableItemFight {
+        -int durability
+        -int max_durability
+
+        +setDurability(int amount)
+    }
+
+    BreakableItemFight --|> Fight
+
+    class WeaponFight {
+        -int damage = 0
+
+        -Range range
+        -DamageType damage_type
+
+        +setDamage(int amount)
+    }
+
+    WeaponFight ..> Range
+    WeaponFight ..> DamageType
+    WeaponFight --|> BreakableItemFight
+
+    class DamageType {
+        <<enumeration>>
+        PHYSICAL
+        MAGICAL
+    }
+
+    class Range {
+        <<enumeration>>
+        MELEE
+        RANGED
+    }
+
+    class UnbreakableItemFight
+
+    UnbreakableItemFight --|> Fight
+```
+
+```python
+if not weapon.fight.can_attack:
+    raise ItemCannotAttackException('...')
+
+damage = self.strength + weapon.fight.damage
+target.fight.receiveDamage(damage, weapon.fight.damage_type)
+
+
+-- -- -- -- -- -- -- -- --
+module: open
+
+dungeon.current_room.entities.find(...)
+
+if Action.OPEN not in entity.actions:
+    raise ...
+```
+
+```mermaid
+classDiagram
+    class BaseAction {
+        <<abstract>>
+        -List~Callable~ before_action_hook
+        -List~Callable~ after_action_hook
+
+        -before()
+        -after()
+
+        +execute()
+        +validate()* boolean
+
+        +add_before_hook(Callable hook)
+        +add_after_hook(Callable hook)
+    }
+
+    class AttackAction {
+
+    }
+
+    AttackAction --|> BaseAction
+```

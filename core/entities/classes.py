@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from typing import Callable
 
 import core.engine.parser as parser
 
@@ -51,7 +52,7 @@ class Character(ABC, Entity):
         pass
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Player(Character):
 
     def take_turn(self) -> bool:
@@ -67,3 +68,19 @@ class Player(Character):
         if not command:
             print('I don\'t understand that')
             return False
+
+        command(arguments)
+
+
+@dataclass(kw_only=True)
+class NPC(Character):
+    ai_function: Callable[[], bool]  # To be determined, default to idle ?
+
+    def take_turn(self) -> bool:
+        """
+        Make the NPC take its turn.
+
+        Returns:
+        true if the actor has executed an action, false otherwise
+        """
+        return self.ai_function()
