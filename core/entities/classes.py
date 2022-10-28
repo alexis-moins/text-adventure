@@ -74,7 +74,7 @@ class Player(Character):
 
 @dataclass(kw_only=True)
 class NPC(Character):
-    ai_function: Callable[[], bool]  # To be determined, default to idle ?
+    # ai_function: Callable[[], bool]  # To be determined, default to idle ?
 
     def take_turn(self) -> bool:
         """

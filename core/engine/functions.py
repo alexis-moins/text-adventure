@@ -5,6 +5,9 @@ def start_engine() -> None:
     """
     """
     # Display once the current room
+    print(dungeon.current_room.name)
+    print(dungeon.current_room.description)
+
     while True:
         action_costs_a_turn = dungeon.player.take_turn()
 
