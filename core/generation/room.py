@@ -1,37 +1,60 @@
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Generic, TypeVar
+import textwrap
+
+def P(objects) -> None:
+    """"""
+    print(textwrap.fill(objects, width=75))
+
+class StringBuilder:
+
+    def __init__(self) -> None:
+        """"""
+        self._strings = []
+
+    def add(self, string: str, *, new_line: bool =True) -> StringBuilder:
+        """"""
+        end = '\n' if new_line else ''
+        self._strings.append(string + end)
+
+    def __str__(self) -> str:
+        """
+        """
+        return ''.join(self._strings)
 
 
-@dataclass
+class RoomRenderer:
+
+    def __init__(self, room: Room) -> None:
+        self.room = room
+
+    def render(self) -> None:
+        """
+        """
+        builder = StringBuilder()
+
+        builder.add(self.room.name).add(self.room.description)
+
+        if not self.room.entities:
+            return print(builder)
+
+        word = 'are' if len(self.room.entities) > 1 else 'is'
+        print(f'\nAround you {word}:')
+
+        for item in self.room.entities:
+            print(f'{item.indefinite_name}')
+
+        print(builder)
+
+
 class Room:
     """
     Represents a room, a space containing entities (characters and / or items).
     """
-    name: str
-    description: str
 
-    entities: list = field(default_factory=list)
-    is_boss_room: bool = field(default=False, init=False)
+    def __init__(self, name: str, description: str, entities: list = None) -> None:
+        self.name = name
+        self.description = description
+        self.entities = entities or []
 
-
-
-
-T = TypeVar('T')
-
-class Generator(Generic[T]):
-    """
-    """
-    pass
-
-    def generate(self, amount: int) -> list[Room]:
-        """
-        Generate and return as many instance of T as possible.
-
-        Returns:
-        A list of instances of T
-        """
-        return [Room(name='', description='') for _ in range(amount)]
-
-
-generator: Generator[Room] = Generator()
+        self.is_boss_room: bool = False
+        self.rendering = RoomRenderer(self)
