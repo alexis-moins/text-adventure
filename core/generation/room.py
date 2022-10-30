@@ -7,9 +7,10 @@ from core.utils.strings import StringBuilder
 
 T = TypeVar('T')
 
+
 class Container(Generic[T]):
 
-    def __init__(self, elements = None) -> None:
+    def __init__(self, elements=None) -> None:
         self._elements = elements or []
 
     def add(self, element: T) -> None:
