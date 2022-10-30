@@ -28,7 +28,7 @@ class Entity(ABC):
         self.name = name
         self.description = description
 
-        self.indefinite_name = indefinite_determiner(self.name)
+        self.determiner = indefinite_determiner(self.name)
 
         self.builder = StringBuilder()
         # actions: list[str] = field(default_factory=list)

@@ -78,6 +78,6 @@ class Room:
         self.builder.add(f'\nAround you {verb}:')
 
         for entity in self.entities:
-            self.builder.add(f'{entity.indefinite_name} {entity}')
+            self.builder.add(f'{entity.determiner} {entity}')
 
         return self.builder.build()
