@@ -1,49 +1,53 @@
 from __future__ import annotations
-import textwrap
+from typing import Generic, Iterator, TypeVar
 
-def P(objects) -> None:
-    """"""
-    print(textwrap.fill(objects, width=75))
+from core.entities.classes import Entity
+from core.utils.strings import StringBuilder
 
-class StringBuilder:
 
-    def __init__(self) -> None:
+T = TypeVar('T')
+
+class Container(Generic[T]):
+
+    def __init__(self, elements = None) -> None:
+        self._elements = elements or []
+
+    def add(self, element: T) -> None:
+        """
+        """
+        self._elements.append(element)
+
+    def find(self, name: str) -> T | None:
+        """
+        Return the instance of T matching the given name.
+
+        Argument:
+        name - the name of the entity you want to find
+
+        Returns:
+        An instance of T or None
+        """
+        entities = [entity for entity in self._entities if name in entity.name]
+        return entities[0]
+
+    def take(self, name: str) -> T | None:
         """"""
-        self._strings = []
+        pass
 
-    def add(self, string: str, *, new_line: bool =True) -> StringBuilder:
-        """"""
-        end = '\n' if new_line else ''
-        self._strings.append(string + end)
-
-    def __str__(self) -> str:
+    def __iter__(self) -> Iterator[T]:
         """
         """
-        return ''.join(self._strings)
+        return iter(self._elements)
 
-
-class RoomRenderer:
-
-    def __init__(self, room: Room) -> None:
-        self.room = room
-
-    def render(self) -> None:
+    def __len__(self) -> int:
         """
         """
-        builder = StringBuilder()
+        return len(self._elements)
 
-        builder.add(self.room.name).add(self.room.description)
-
-        if not self.room.entities:
-            return print(builder)
-
-        word = 'are' if len(self.room.entities) > 1 else 'is'
-        print(f'\nAround you {word}:')
-
-        for item in self.room.entities:
-            print(f'{item.indefinite_name}')
-
-        print(builder)
+    def __bool__(self) -> bool:
+        """
+        """
+        return bool(self._elements)
 
 
 class Room:
@@ -52,9 +56,28 @@ class Room:
     """
 
     def __init__(self, name: str, description: str, entities: list = None) -> None:
+        """
+        """
         self.name = name
         self.description = description
-        self.entities = entities or []
+
+        self.entities: Container[Entity] = Container(entities)
 
         self.is_boss_room: bool = False
-        self.rendering = RoomRenderer(self)
+        self.builder = StringBuilder()
+
+    def __str__(self) -> str:
+        """
+        """
+        self.builder.add(self.name).add(self.description)
+
+        if not self.entities:
+            return self.builder.build()
+
+        verb = 'is' if len(self.entities) == 1 else 'are'
+        self.builder.add(f'\nAround you {verb}:')
+
+        for entity in self.entities:
+            self.builder.add(f'{entity.indefinite_name} {entity}')
+
+        return self.builder.build()
