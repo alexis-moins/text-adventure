@@ -198,3 +198,35 @@ classDiagram
 
     AttackAction --|> BaseAction
 ```
+
+```mermaid
+classDiagram
+
+    class Renderer {
+        <<abstract>>
+        +render()*
+    }
+
+    class EntityRenderer {
+        +Entity entity
+        +string indefinite_name
+    }
+
+    class RoomRenderer {
+        +Room room
+    }
+
+    RoomRenderer --|> Renderer
+
+    EntityRenderer --|> Renderer
+
+    class Entity {
+        <<abstract>>
+        +string name
+        +string description
+
+        +__str__() string
+    }
+
+    Entity *-- EntityRenderer : +rendering
+```

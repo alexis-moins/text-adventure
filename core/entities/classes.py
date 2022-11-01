@@ -1,30 +1,39 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
-from typing import Callable
 
 import core.engine.parser as parser
+from core.utils.strings import StringBuilder
 
 
-@dataclass
-class Entity:
+def indefinite_determiner(entity_name: str) -> str:
+    """
+    Return the correct indefinite determiner for the given entity name.
+
+    Arguments:
+    entity_name - the name of an entity
+
+    Returns:
+    A string corresponding to a determiner
+    """
+    return 'an' if entity_name[0] in 'aeiouy' else 'a'
+
+
+class Entity(ABC):
     """
     Represents a generic entity, wether it be an item or a character.
     """
-    name: str
-    description: str = ''
 
-    actions: list[str] = field(default_factory=list)
-
-    @property
-    def indefinite_name(self) -> str:
+    def __init__(self, name: str, description: str) -> None:
         """
-        Return the name of the entity.
-
-        Returns:
-        A string
         """
-        return indefinite_determiner(self)
+        self.name = name
+        self.description = description
 
+        self.determiner = indefinite_determiner(self.name)
+
+        self.builder = StringBuilder()
+        # actions: list[str] = field(default_factory=list)
+
+    @abstractmethod
     def __str__(self) -> str:
         """
         Return the string representation of the current entity.
@@ -32,28 +41,43 @@ class Entity:
         Returns:
         A string
         """
-        return self.name
-
-
-def indefinite_determiner(entity: Entity) -> str:
-    """Return the correct indefinite determiner followed by the given entity name"""
-    vowels = 'aeiouy'
-    determiner = 'an' if entity.name[0] in vowels else 'a'
-    return f'{determiner} {entity}'
-
-
-@dataclass
-class Character(ABC, Entity):
-    """
-    """
-
-    @abstractmethod
-    def take_turn(self) -> bool:
         pass
 
 
-@dataclass(kw_only=True)
+class Character(Entity, ABC):
+
+    def __init__(self, name: str, description: str) -> None:
+        """
+        Constructor creating a new Character, whether it be a NPC or a Player.
+
+        Arguments:
+        name - the name of the character
+        description - the description of the character
+        """
+        super().__init__(name, description)
+
+    @abstractmethod
+    def take_turn(self) -> bool:
+        """
+        Make the character take its turn.
+
+        Returns:
+        true if the actor has executed an action, false otherwise
+        """
+        pass
+
+
 class Player(Character):
+
+    def __init__(self) -> None:
+        """
+        Constructor creating a new player.
+
+        Arguments:
+        name - the name of the player
+        description - the description of the player
+        """
+        super().__init__(name='Hero', description='Whaou! A hero!')
 
     def take_turn(self) -> bool:
         """
@@ -71,10 +95,27 @@ class Player(Character):
 
         command(arguments)
 
+    def __str__(self) -> str:
+        """
+        Return the string representation of the current entity.
 
-@dataclass(kw_only=True)
+        Returns:
+        A string
+        """
+        return self.name
+
+
 class NPC(Character):
-    # ai_function: Callable[[], bool]  # To be determined, default to idle ?
+
+    def __init__(self, name: str, description: str) -> None:
+        """
+        Constructor creating a new NPC, whether it is hostile or not.
+
+        Arguments:
+        name - the name of the NPC
+        description - the description of the NPC
+        """
+        super().__init__(name, description)
 
     def take_turn(self) -> bool:
         """
@@ -83,4 +124,13 @@ class NPC(Character):
         Returns:
         true if the actor has executed an action, false otherwise
         """
-        return self.ai_function()
+        pass
+
+    def __str__(self) -> None:
+        """
+        Return the string representation of the current entity.
+
+        Returns:
+        A string
+        """
+        return self.builder.add(self.name + f' RED[!]WHITE').build()
