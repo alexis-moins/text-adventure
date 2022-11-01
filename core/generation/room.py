@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Generic, Iterator, TypeVar
 
-from core.entities.classes import Entity, Describable
+from core.entities import Entity, Describable
 
 
 T = TypeVar('T')

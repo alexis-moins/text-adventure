@@ -1,11 +1,11 @@
-import core.generation.room as room
-import core.entities.classes as classes
+from core.entities import Player
+from core.generation.room import Room
 
 # The player wandering through the corridors of the dungeon
-player = classes.Player()
+player = Player()
 
 # The room where the scene is taking place
-current_room: room.Room = None
+current_room: Room = None
 
 # Turn counter
 turn = 1
