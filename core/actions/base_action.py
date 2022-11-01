@@ -1,14 +1,12 @@
 from abc import ABC, abstractmethod
 
 from core.entities import Character
-from core.entities.player import Player
-
-from core.actions.classes import ActionException
+from core.actions.exception import ActionException
 
 
 class BaseAction(ABC):
 
-    def __init__(self, actor: Character, takes_a_turn: bool = True) -> None:
+    def __init__(self, actor: Character, *, takes_a_turn: bool = True, quiet: bool = False) -> None:
         """
         Constructor creating an abstract action with its actor.
 
@@ -17,6 +15,7 @@ class BaseAction(ABC):
         """
         self.actor = actor
         self.takes_a_turn = takes_a_turn
+        self.quiet = quiet
 
         self._success = True
 
@@ -53,7 +52,7 @@ class BaseAction(ABC):
             self._execute(parameters)
 
         except ActionException as exception:
-            if isinstance(self.actor, Player):
+            if not self.quiet:
                 print(exception)
         else:
             self._success = False
