@@ -33,7 +33,7 @@ class Describable(ABC):
         """
         Constructor creating a new describable element of the world.
         """
-        self.builder = StringBuilder()
+        self._builder = StringBuilder()
 
     @abstractmethod
     def __str__(self) -> str:
@@ -157,4 +157,4 @@ class NPC(Character):
         Returns:
         A string
         """
-        return self.builder.add(self.name + f' RED[!]WHITE').build()
+        return self._builder.add(self.name + f' RED[!]WHITE').build()

@@ -71,15 +71,15 @@ class Room(Describable):
     def __str__(self) -> str:
         """
         """
-        self.builder.add(self.name).add(self.description)
+        self._builder.add(self.name).add(self.description)
 
         if not self.entities:
-            return self.builder.build()
+            return self._builder.build()
 
         verb = 'is' if len(self.entities) == 1 else 'are'
-        self.builder.add(f'\nAround you {verb}:')
+        self._builder.add(f'\nAround you {verb}:')
 
         for entity in self.entities:
-            self.builder.add(f'{entity.determiner} {entity}')
+            self._builder.add(f'{entity.determiner} {entity}')
 
-        return self.builder.build()
+        return self._builder.build()
