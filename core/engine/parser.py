@@ -1,7 +1,7 @@
 from typing import Callable
 
 import core.engine.prompt as prompt
-import core.engine.commands as commands
+from core.actions import BaseAction, get_action
 
 
 def get_input(*, builder: Callable[[], str] | None = None) -> str:
@@ -34,7 +34,7 @@ def format_input(_input: str) -> list[str]:
     return _input.strip().lower().split(' ')
 
 
-def parse_input(_input: str) -> tuple[commands.Command | None, list[str] | None]:
+def parse_input(_input: str) -> tuple[BaseAction | None, list[str] | None]:
     """
     Parse the given input into a command function and its arguments.
 
@@ -48,6 +48,6 @@ def parse_input(_input: str) -> tuple[commands.Command | None, list[str] | None]
         return None, None
 
     words = format_input(_input)
-    command = commands.get_command(words.pop(0))
+    action = get_action(words.pop(0))
 
-    return command, words
+    return action, words
