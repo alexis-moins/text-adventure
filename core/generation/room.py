@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Generic, Iterator, TypeVar
 
-from core.entities.classes import Entity
+from core.entities.classes import Entity, Describable
 from core.utils.strings import StringBuilder
 
 
@@ -51,7 +51,7 @@ class Container(Generic[T]):
         return bool(self._elements)
 
 
-class Room:
+class Room(Describable):
     """
     Represents a room, a space containing entities (characters and / or items).
     """
@@ -59,13 +59,14 @@ class Room:
     def __init__(self, name: str, description: str, entities: list = None) -> None:
         """
         """
+        super().__init__()
+
         self.name = name
         self.description = description
 
         self.entities: Container[Entity] = Container(entities)
 
         self.is_boss_room: bool = False
-        self.builder = StringBuilder()
 
     def __str__(self) -> str:
         """

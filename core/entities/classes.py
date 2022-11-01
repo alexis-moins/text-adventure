@@ -1,3 +1,9 @@
+"""
+Module providing classes for all base entities. Currenlty offers the
+possibility to create NPC and Player instances.
+
+Also provide Describable, Entity and Character abstract classes.
+"""
 from abc import ABC, abstractmethod
 
 import core.engine.parser as parser
@@ -17,26 +23,22 @@ def indefinite_determiner(entity_name: str) -> str:
     return 'an' if entity_name[0] in 'aeiouy' else 'a'
 
 
-class Entity(ABC):
+class Describable(ABC):
     """
-    Represents a generic entity, wether it be an item or a character.
+    Represents any element of the world that is describable, whether it
+    be a Room or an Entity.
     """
 
-    def __init__(self, name: str, description: str) -> None:
+    def __init__(self) -> None:
         """
+        Constructor creating a new describable element of the world.
         """
-        self.name = name
-        self.description = description
-
-        self.determiner = indefinite_determiner(self.name)
-
         self.builder = StringBuilder()
-        # actions: list[str] = field(default_factory=list)
 
     @abstractmethod
     def __str__(self) -> str:
         """
-        Return the string representation of the current entity.
+        Return the string representing this element.
 
         Returns:
         A string
@@ -44,11 +46,33 @@ class Entity(ABC):
         pass
 
 
+class Entity(Describable, ABC):
+    """
+    Represents a generic entity, wether it be an item or a character.
+    """
+
+    def __init__(self, name: str, description: str) -> None:
+        """
+        Constructor creating a new abstract Entity.
+
+        Arguments:
+        name - the name of the character
+        description - the description of the character
+        """
+        super().__init__()
+
+        self.name = name
+        self.description = description
+
+        self.determiner = indefinite_determiner(self.name)
+        # actions: list[str] = field(default_factory=list)
+
+
 class Character(Entity, ABC):
 
     def __init__(self, name: str, description: str) -> None:
         """
-        Constructor creating a new Character, whether it be a NPC or a Player.
+        Constructor creating a new abstract character.
 
         Arguments:
         name - the name of the character
@@ -97,7 +121,7 @@ class Player(Character):
 
     def __str__(self) -> str:
         """
-        Return the string representation of the current entity.
+        Return the string representing this element.
 
         Returns:
         A string
@@ -128,7 +152,7 @@ class NPC(Character):
 
     def __str__(self) -> None:
         """
-        Return the string representation of the current entity.
+        Return the string representing this element.
 
         Returns:
         A string
