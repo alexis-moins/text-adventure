@@ -50,7 +50,7 @@ class StringBuilder:
         """
         self._buffer = []
         self.wrapper = TextWrapper(width=width, break_long_words=False,
-            replace_whitespace=False)
+                                   replace_whitespace=False)
 
     def add(self, string: str) -> StringBuilder:
         """
