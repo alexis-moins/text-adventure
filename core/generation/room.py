@@ -1,8 +1,7 @@
 from __future__ import annotations
 from typing import Generic, Iterator, TypeVar
 
-from core.entities.classes import Entity
-from core.utils.strings import StringBuilder
+from core.entities import Entity, Describable
 
 
 T = TypeVar('T')
@@ -51,7 +50,7 @@ class Container(Generic[T]):
         return bool(self._elements)
 
 
-class Room:
+class Room(Describable):
     """
     Represents a room, a space containing entities (characters and / or items).
     """
@@ -59,26 +58,35 @@ class Room:
     def __init__(self, name: str, description: str, entities: list = None) -> None:
         """
         """
+        super().__init__()
+
         self.name = name
         self.description = description
 
         self.entities: Container[Entity] = Container(entities)
 
         self.is_boss_room: bool = False
-        self.builder = StringBuilder()
 
-    def __str__(self) -> str:
+    def short_description(self) -> str:
+        pass
+
+    def long_description(self) -> str:
         """
+        Return the long description of the room.
+
+        Returns:
+        A string
         """
-        self.builder.add(self.name).add(self.description)
+        self._builder.add(self.name).add(self.description)
 
         if not self.entities:
-            return self.builder.build()
+            return self._builder.build()
 
         verb = 'is' if len(self.entities) == 1 else 'are'
-        self.builder.add(f'\nAround you {verb}:')
+        self._builder.add(f'\nAround you {verb}:')
 
         for entity in self.entities:
-            self.builder.add(f'{entity.determiner} {entity}')
+            self._builder.add(
+                f'{entity.determiner} {entity.short_description()}')
 
-        return self.builder.build()
+        return self._builder.build()

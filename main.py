@@ -1,8 +1,8 @@
-import core.engine.functions as functions
 import core.dungeon as dungeon
+from core.engine.functions import start_engine
 
 from core.generation.room import Room
-from core.entities.classes import NPC
+from core.entities import NPC
 
 starting_room = Room(
     'Castle Entrance', 'The castle entrance is usually watched over by the royal guard.')
@@ -12,4 +12,4 @@ starting_room.entities.add(royal_guard)
 
 dungeon.current_room = starting_room
 
-functions.start_engine()
+start_engine()
