@@ -2,7 +2,6 @@ from __future__ import annotations
 from typing import Generic, Iterator, TypeVar
 
 from core.entities.classes import Entity, Describable
-from core.utils.strings import StringBuilder
 
 
 T = TypeVar('T')
@@ -68,8 +67,15 @@ class Room(Describable):
 
         self.is_boss_room: bool = False
 
-    def __str__(self) -> str:
+    def short_description(self) -> str:
+        pass
+
+    def long_description(self) -> str:
         """
+        Return the long description of the room.
+
+        Returns:
+        A string
         """
         self._builder.add(self.name).add(self.description)
 
@@ -80,6 +86,7 @@ class Room(Describable):
         self._builder.add(f'\nAround you {verb}:')
 
         for entity in self.entities:
-            self._builder.add(f'{entity.determiner} {entity}')
+            self._builder.add(
+                f'{entity.determiner} {entity.short_description()}')
 
         return self._builder.build()

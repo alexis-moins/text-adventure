@@ -77,3 +77,10 @@ class StringBuilder:
         self._buffer = []
 
         return string
+
+    def print(self) -> None:
+        """
+        Build and print the content of the builder.
+        """
+        text = self.build()
+        print(text)

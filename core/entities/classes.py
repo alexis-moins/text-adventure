@@ -36,9 +36,19 @@ class Describable(ABC):
         self._builder = StringBuilder()
 
     @abstractmethod
-    def __str__(self) -> str:
+    def short_description(self) -> str:
         """
-        Return the string representing this element.
+        Return the short description of this element.
+
+        Returns:
+        A string
+        """
+        pass
+
+    @abstractmethod
+    def long_description(self) -> str:
+        """
+        Return the long description of this element.
 
         Returns:
         A string
@@ -62,10 +72,9 @@ class Entity(Describable, ABC):
         super().__init__()
 
         self.name = name
-        self.description = description
+        self._description = description
 
         self.determiner = indefinite_determiner(self.name)
-        # actions: list[str] = field(default_factory=list)
 
 
 class Character(Entity, ABC):
@@ -119,14 +128,23 @@ class Player(Character):
 
         command(arguments)
 
-    def __str__(self) -> str:
+    def short_description(self) -> str:
         """
-        Return the string representing this element.
+        Return the short description of this element.
 
         Returns:
         A string
         """
         return self.name
+
+    def long_description(self) -> str:
+        """
+        Return the long description of this element.
+
+        Returns:
+        A string
+        """
+        pass
 
 
 class NPC(Character):
@@ -150,11 +168,20 @@ class NPC(Character):
         """
         pass
 
-    def __str__(self) -> None:
+    def short_description(self) -> str:
         """
-        Return the string representing this element.
+        Return the short description of the Npc.
 
         Returns:
         A string
         """
         return self._builder.add(self.name + f' RED[!]WHITE').build()
+
+    def long_description(self) -> str:
+        """
+        Return the long description of the NPC.
+
+        Returns:
+        A string
+        """
+        pass
