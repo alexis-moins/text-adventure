@@ -30,7 +30,7 @@ class NPC(Character):
         Returns:
         A string
         """
-        return self._builder.add(self.name + f' RED[!]WHITE').build()
+        return self._builder.add(self.name + f' RED[{self.fighter.health}/{self.fighter.max_health}]WHITE').build()
 
     def long_description(self) -> str:
         """
