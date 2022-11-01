@@ -1,9 +1,10 @@
+from core.fight.fighter import Fighter
 from core.entities.character import Character
 
 
 class NPC(Character):
 
-    def __init__(self, name: str, description: str) -> None:
+    def __init__(self, name: str, description: str, fighter: Fighter | None = None) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
@@ -11,7 +12,7 @@ class NPC(Character):
         name - the name of the NPC
         description - the description of the NPC
         """
-        super().__init__(name, description)
+        super().__init__(name, description, fighter or Fighter())
 
     def take_turn(self) -> bool:
         """

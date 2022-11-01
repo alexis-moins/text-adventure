@@ -1,4 +1,6 @@
 import core.engine.parser as parser
+
+from core.fight.fighter import Fighter
 from core.entities.character import Character
 
 
@@ -12,7 +14,7 @@ class Player(Character):
         name - the name of the player
         description - the description of the player
         """
-        super().__init__(name='Hero', description='Whaou! A hero!')
+        super().__init__('Hero', 'Whaou! A hero!', Fighter())
 
     def take_turn(self) -> bool:
         """
