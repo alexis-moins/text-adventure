@@ -55,7 +55,7 @@ class Room(Describable):
     Represents a room, a space containing entities (characters and / or items).
     """
 
-    def __init__(self, name: str, description: str, entities: list = None) -> None:
+    def __init__(self, name: str, description: str, entities: list | None = None) -> None:
         """
         """
         super().__init__()
