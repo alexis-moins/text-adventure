@@ -12,6 +12,8 @@ class BaseAction(ABC):
 
         Argument:
         actor - the character realizing the action
+        takes_a_turn - whether the action consumes a turn or not upon success
+        quiet - whether the action should display it messages
         """
         self.actor = actor
         self.takes_a_turn = takes_a_turn
