@@ -24,13 +24,13 @@ class Player(Character):
         true if the player has executed a command, false otherwise
         """
         user_input = parser.get_input()
-        command, arguments = parser.parse_input(user_input)
+        action, arguments = parser.parse_input(user_input)
 
-        if not command:
+        if not action:
             print('I don\'t understand that')
             return False
 
-        command(arguments)
+        return action(actor=self).execute(arguments)
 
     def short_description(self) -> str:
         """

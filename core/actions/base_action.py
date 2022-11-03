@@ -6,17 +6,17 @@ from core.actions.exception import ActionException
 
 class BaseAction(ABC):
 
-    def __init__(self, actor: Character, *, takes_a_turn: bool = True, quiet: bool = False) -> None:
+    def __init__(self, actor: Character, *, pass_turn: bool = True, quiet: bool = False) -> None:
         """
         Constructor creating an abstract action with its actor.
 
         Argument:
         actor - the character realizing the action
-        takes_a_turn - whether the action consumes a turn or not upon success
+        pass_turn - whether the action consumes a turn or not upon success
         quiet - whether the action should display it messages
         """
         self.actor = actor
-        self.takes_a_turn = takes_a_turn
+        self.pass_turn = pass_turn
         self.quiet = quiet
 
         self._success = True
@@ -59,4 +59,4 @@ class BaseAction(ABC):
         else:
             self._success = False
         finally:
-            return self.takes_a_turn and self._success
+            return self.pass_turn and self._success
