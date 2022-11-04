@@ -3,7 +3,7 @@ from core.actions.base_action import BaseAction
 
 
 # Dictionary of all the available actions
-actions: dict[str, BaseAction] = dict()
+actions: dict[str, Type[BaseAction]] = dict()
 
 
 def get_action(name: str) -> Type[BaseAction] | None:
@@ -20,7 +20,7 @@ def get_action(name: str) -> Type[BaseAction] | None:
     return actions.get(name, None)
 
 
-def register_action(name: str, _class: BaseAction, *, override: bool = False) -> bool:
+def register_action(name: str, _class: Type[BaseAction], *, override: bool = False) -> bool:
     """
     Register a new action.
 
