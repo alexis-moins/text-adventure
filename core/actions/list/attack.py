@@ -21,7 +21,7 @@ class AttackAction(BaseAction):
         """
         """
         match parameters:
-            case [target, 'with', weapon]:
+            case [*target, 'with', weapon]:
                 # target = dungeon.current_room.entities.find(target)
                 #
                 # if not target:
@@ -30,11 +30,14 @@ class AttackAction(BaseAction):
                 # if not isinstance(target, NPC):
                 #   raise ActionException(f'Trying to ... {target.determiner} {target.name} ? What a silly idea...')
                 #
-                pass
+                print(f'success -> {target=} {weapon=}')
 
             case _:
                 raise ActionException(
                     'Am I supposed to guess the target of the attack ?!')
+
+    def _execute(self, parameters: list[str]) -> None:
+        pass
 
 
 register_action('attack', AttackAction)

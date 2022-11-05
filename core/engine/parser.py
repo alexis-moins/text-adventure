@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Type
 
 import core.engine.prompt as prompt
 from core.actions import BaseAction, get_action
@@ -34,7 +34,7 @@ def format_input(_input: str) -> list[str]:
     return _input.strip().lower().split(' ')
 
 
-def parse_input(_input: str) -> tuple[BaseAction | None, list[str] | None]:
+def parse_input(_input: str) -> tuple[Type[BaseAction] | None, list[str]]:
     """
     Parse the given input into a command function and its arguments.
 
@@ -45,7 +45,7 @@ def parse_input(_input: str) -> tuple[BaseAction | None, list[str] | None]:
     A tuple of Callable and its arguments (as a list)
     """
     if not _input:
-        return None, None
+        return None, []
 
     words = format_input(_input)
     action = get_action(words.pop(0))
