@@ -1,13 +1,13 @@
-from core.actions import BaseAction
+from core.actions.base_action import BaseAction
 from core.dungeon import Dungeon
 
 
-class AttackAction(BaseAction):
-    """
-    Action of attacking an entity in the room.
+class QuitAction(BaseAction):
     """
 
-    def can_be_performed(self, context: Dungeon) -> bool:
+    """
+
+    def can_be_performed(self, _: Dungeon) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -17,7 +17,7 @@ class AttackAction(BaseAction):
         Returns:
         a boolean
         """
-        return len(context.room.entities) > 0
+        return True
 
     def __str__(self) -> str:
         """
@@ -26,4 +26,4 @@ class AttackAction(BaseAction):
         Returns:
         A string
         """
-        return 'attack'
+        return 'quit'

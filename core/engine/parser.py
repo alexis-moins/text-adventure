@@ -1,7 +1,5 @@
-from typing import Callable, Type
-
+from typing import Callable
 import core.engine.prompt as prompt
-from core.actions import BaseAction, get_action
 
 
 def get_input(*, builder: Callable[[], str] | None = None) -> str:
@@ -17,37 +15,19 @@ def get_input(*, builder: Callable[[], str] | None = None) -> str:
     A string
     """
     _prompt = prompt.build_prompt() if not builder else builder()
-    return input(_prompt)
+    return format_input(input(_prompt))
 
 
-def format_input(_input: str) -> list[str]:
+def format_input(_input: str) -> str:
     """
-    Format and return the given input. Currently, the function turns all letters
-    to lower case then split the string on spaces.
+    Format and return the given input. Currently, the function strips the
+    input then turns all letters to lower case.
+
 
     Argument:
     _input - the string that need to be formatted
 
     Returns:
-    A list of strings
+    A string
     """
-    return _input.strip().lower().split(' ')
-
-
-def parse_input(_input: str) -> tuple[Type[BaseAction] | None, list[str]]:
-    """
-    Parse the given input into a command function and its arguments.
-
-    Argument:
-    _input - the string that need to be parsed into a command
-
-    Returns:
-    A tuple of Callable and its arguments (as a list)
-    """
-    if not _input:
-        return None, []
-
-    words = format_input(_input)
-    action = get_action(words.pop(0))
-
-    return action, words
+    return _input.strip().lower()

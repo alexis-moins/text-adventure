@@ -1,3 +1,4 @@
+from core.actions import ActionList
 from core.dungeon import Dungeon
 from core.generation.room import Room
 from core.views.view import View
@@ -12,12 +13,17 @@ class RoomView(View):
         """
 
         """
-        super().__init__(dungeon, room, [])
+        super().__init__(dungeon, room)
 
-    def show(self) -> None:
+    def show(self, actions: ActionList) -> None:
         """
         Show the scenery on screen.
+
+        Argument:
+        actions - the list of available action types
         """
+        self.clear()
+
         print(self.model.long_description())
 
-        self._show_actions()
+        self.show_actions(actions)
