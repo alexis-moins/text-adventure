@@ -8,10 +8,6 @@ class Player(Character):
     def __init__(self) -> None:
         """
         Constructor creating a new player.
-
-        Arguments:
-        name - the name of the player
-        description - the description of the player
         """
         super().__init__('Hero', 'Whaou! A hero!', Fighter())
 
