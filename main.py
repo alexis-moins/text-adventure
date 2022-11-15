@@ -9,10 +9,7 @@ room = Room('Castle entrance',
             'The castle entrance is often guarded by royal guards')
 
 player = Player()
+dungeon = Dungeon(player, room)
 
-controller = RoomController(
-    Dungeon(player, room),
-    RoomView(room)
-)
-
+controller = RoomController(dungeon, RoomView(dungeon, room))
 controller.start()
