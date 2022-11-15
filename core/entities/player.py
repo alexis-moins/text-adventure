@@ -1,7 +1,6 @@
 import core.engine.parser as parser
-
-from core.fight.fighter import Fighter
 from core.entities.character import Character
+from core.fight.fighter import Fighter
 
 
 class Player(Character):
