@@ -46,4 +46,4 @@ class AttackAction(BaseAction):
         Returns:
         A string
         """
-        return 'attack'
+        return 'Attack someone'
