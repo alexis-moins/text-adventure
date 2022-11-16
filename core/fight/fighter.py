@@ -41,6 +41,27 @@ class Fighter:
         """
         self._health = max(0, min(value, self.max_health))
 
+    @property
+    def magic(self) -> int:
+        """
+        Return the magic of the fighter.
+
+        Returns:
+        An integer
+        """
+        return self._magic
+
+    @magic.setter
+    def magic(self, value: int) -> None:
+        """
+        Set the magic of the fighter. The method ensures the
+        value of magic stays between 0 and max_magic.
+
+        Argument:
+        value - the new magic of the fighter
+        """
+        self._magic = max(0, min(value, self.max_magic))
+
     def receive_damage(self, amount: int) -> None:
         """
         Decrease the health of the fighter according to the
