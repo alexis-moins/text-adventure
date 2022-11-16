@@ -46,4 +46,4 @@ class QuitAction(BaseAction):
         Returns:
         A string
         """
-        return 'quit'
+        return 'Quit'

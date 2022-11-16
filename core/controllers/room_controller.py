@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import core.actions as actions
+from core.actions import AttackAction, QuitAction
 from core.controllers import Controller
 
 
@@ -25,7 +25,7 @@ class RoomController(Controller):
         view - the view associated with the controller
         """
         super().__init__(dungeon, view)
-        self.actions = [actions.QuitAction(), actions.AttackAction()]
+        self.actions = [QuitAction(), AttackAction()]
 
     def start(self) -> None:
         """
