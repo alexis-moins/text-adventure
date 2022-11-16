@@ -17,10 +17,20 @@ class Controller(ABC):
         Arguments:
         dungeon - the current dungeon
         view - the view used to render the scene
-        actions - the list of action classes that may be performed in the context of the controller
         """
         self.dungeon = dungeon
         self.view = view
 
         self.is_running = True
         self.actions: list[BaseAction] = []
+
+    def filter_actions(self) -> list[BaseAction]:
+        """
+        Filter the actions available in the current context from
+        list of all the possible actions in the controlelr.
+
+        Returns:
+        A list of BaseAction
+        """
+        return [action for action in self.actions
+                if action.can_be_performed(self.dungeon)]

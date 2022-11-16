@@ -11,10 +11,6 @@ class RoomController(Controller):
     """
     Controller used to interact with a room.
     """
-    _actions: list[BaseAction] = [
-        QuitAction(),
-        AttackAction()
-    ]
 
     def __init__(self, dungeon: Dungeon, view: RoomView) -> None:
         """
@@ -25,13 +21,18 @@ class RoomController(Controller):
         view - the view associated with the controller
         """
         super().__init__(dungeon, view)
-        self.actions.extend(self._actions)
+        self.actions.extend((
+            QuitAction(),
+            AttackAction()
+        ))
 
     def start(self) -> None:
         """
         Start the controller
         """
         while self.is_running:
-            self.view.show(self.actions)
+            possible_actions = self.filter_actions()
+
+            self.view.show(possible_actions)
 
             _input = get_input()

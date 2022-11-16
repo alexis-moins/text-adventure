@@ -39,9 +39,6 @@ class View(ABC):
         """
 
         """
-        actions = [
-            action for action in actions if action.can_be_performed(self.dungeon)]
-
         if actions:
             self._builder.add('\n')
 
