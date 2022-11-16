@@ -1,11 +1,12 @@
 from abc import ABC
 
-from core.actions.base_action import BaseAction
+import core.actions.base_action as base_action
+from core.controllers.parser import Parser
 from core.dungeon import Dungeon
 from core.views.view import View
 
 
-class Controller(ABC):
+class Controller(ABC, Parser):
     """
     Abstract class representing a scene controller.
     """
@@ -22,9 +23,9 @@ class Controller(ABC):
         self.view = view
 
         self.is_running = True
-        self.actions: list[BaseAction] = []
+        self.actions: list[base_action.BaseAction] = []
 
-    def filter_actions(self) -> list[BaseAction]:
+    def filter_actions(self) -> list[base_action.BaseAction]:
         """
         Filter the actions available in the current context from
         list of all the possible actions in the controlelr.

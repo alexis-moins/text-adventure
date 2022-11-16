@@ -1,9 +1,8 @@
 import os
 from abc import ABC
 from abc import abstractmethod
-from core.actions import ActionList
 
-from core.actions.base_action import BaseAction
+from core.actions import BaseAction
 from core.dungeon import Dungeon
 from core.utils.strings import StringBuilder
 
@@ -15,12 +14,15 @@ class View(ABC):
 
     def __init__(self, dungeon: Dungeon, model) -> None:
         """
+        Constructor creating a new abstract view or interface.
 
+        Arguments:
+        dungeon - the currently opened dungeon
+        model - the model to render
         """
         self.model = model
         self.dungeon = dungeon
-
-        self._builder = StringBuilder()
+        self.builder = StringBuilder()
 
     @abstractmethod
     def show(self, actions: list[BaseAction]) -> None:
@@ -40,9 +42,9 @@ class View(ABC):
 
         """
         if actions:
-            self._builder.add('\n')
+            self.builder.add('\n')
 
         for index, action in enumerate(actions):
-            self._builder.add(f'[CYAN{index}WHITE] {action}')
+            self.builder.add(f'[CYAN{index}WHITE] {action}')
 
-        print(self._builder.build())
+        print(self.builder.build())

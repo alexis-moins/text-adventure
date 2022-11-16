@@ -1,4 +1,3 @@
-import core.engine.parser as parser
 from core.entities.character import Character
 from core.fight.fighter import Fighter
 
@@ -18,14 +17,7 @@ class Player(Character):
         Returns:
         true if the player has executed a command, false otherwise
         """
-        user_input = parser.get_input()
-        action, arguments = parser.parse_input(user_input)
-
-        if not action:
-            print('I don\'t understand that')
-            return False
-
-        return action(actor=self).execute(arguments)
+        return True
 
     def short_description(self) -> str:
         """
@@ -43,4 +35,4 @@ class Player(Character):
         Returns:
         A string
         """
-        pass
+        return ''
