@@ -68,6 +68,16 @@ class Fighter:
         amount of damage received.
 
         Argument:
-        amount - how many damag is received
+        amount - how many damage is received
         """
         self.health -= amount
+
+    def consume_magic(self, amount: int) -> None:
+        """
+        Decrease the magic of the fighter according to the
+        amount of magic consumed.
+
+        Argument:
+        amount - how many magic is consumed
+        """
+        self.magic -= amount
