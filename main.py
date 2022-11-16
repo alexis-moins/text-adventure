@@ -1,8 +1,8 @@
 from core.controllers.room_controller import RoomController
-from core.controllers.room_controller import RoomView
 from core.dungeon import Dungeon
 from core.entities.player import Player
 from core.generation.room import Room
+from core.views.room_view import RoomView
 
 
 room = Room('Castle entrance',

@@ -1,43 +1,31 @@
 from __future__ import annotations
 
-from abc import ABC
-from abc import abstractmethod
 from typing import TYPE_CHECKING
+
+from core.actions import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.controllers import Controller
 
 
-class BaseAction(ABC):
+class QuitAction(BaseAction):
+    """
+    Class representing the action of leaving the current controller.
+    """
 
-    def __init__(self, *, pass_turn: bool = True, quiet: bool = False) -> None:
-        """
-        Constructor creating an abstract action with its actor.
-
-        Argument:
-        pass_turn - whether the action consumes a turn or not upon success
-        quiet - whether the action should display it messages
-        """
-        self.pass_turn = pass_turn
-        self.quiet = quiet
-
-        self._aborted = False
-
-    @abstractmethod
-    def can_be_performed(self, context: Dungeon) -> bool:
+    def can_be_performed(self, _: Dungeon) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the currently opened dungeon
+        context - the current dungeon
 
         Returns:
         a boolean
         """
-        pass
+        return True
 
-    @abstractmethod
     def execute(self, controller: Controller) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
@@ -49,9 +37,8 @@ class BaseAction(ABC):
         Returns:
         A boolean
         """
-        pass
+        return True
 
-    @abstractmethod
     def __str__(self) -> str:
         """
         Return the string used to render the action.
@@ -59,4 +46,4 @@ class BaseAction(ABC):
         Returns:
         A string
         """
-        pass
+        return 'quit'

@@ -1,7 +1,9 @@
+import os
 from abc import ABC
 from abc import abstractmethod
-from core.dungeon import Dungeon
 
+from core.actions import BaseAction
+from core.dungeon import Dungeon
 from core.utils.strings import StringBuilder
 
 
@@ -10,30 +12,39 @@ class View(ABC):
     Abstract view used to render models and interfaces.
     """
 
-    def __init__(self, dungeon: Dungeon, model, actions) -> None:
+    def __init__(self, dungeon: Dungeon, model) -> None:
         """
+        Constructor creating a new abstract view or interface.
 
+        Arguments:
+        dungeon - the currently opened dungeon
+        model - the model to render
         """
         self.model = model
-        self.actions = actions
-
-        self._builder = StringBuilder()
+        self.dungeon = dungeon
+        self.builder = StringBuilder()
 
     @abstractmethod
-    def show(self) -> None:
+    def show(self, actions: list[BaseAction]) -> None:
         """
         Show the scenery on screen.
         """
         pass
 
-    def _show_actions(self) -> None:
+    def clear(self) -> None:
+        """
+        Clear the screen.
+        """
+        os.system('clear')
+
+    def show_actions(self, actions: list[BaseAction]) -> None:
         """
 
         """
-        actions = [action for action in self.actions
-                   if action.can_be_done(self.dungeon)]
+        if actions:
+            self.builder.add('\n')
 
         for index, action in enumerate(actions):
-            self._builder.add(f'[CYAN{index}WHITE] {action}')
+            self.builder.add(f'[CYAN{index}WHITE] {action}')
 
-        print(self._builder.build())
+        print(self.builder.build())

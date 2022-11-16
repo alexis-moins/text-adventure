@@ -14,6 +14,9 @@ colorama = "^0.4.6"
 pre-commit = "^2.20.0"
 autopep8 = "^2.0.0"
 
+[tool.pyright]
+exclude = ['**/__init__.py']
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
