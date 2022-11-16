@@ -58,7 +58,7 @@ class View(ABC):
         """
         player = self.dungeon.player.fighter
         health = self._get_bar(player.health, player.max_health, 'RED', '=')
-        magic = self._get_bar(player.magic, player.max_magic, 'CYAN', '=')
+        magic = self._get_bar(player.magic, player.max_magic, 'GREEN', '=')
 
         print(f'health {health}    magic {magic}\n')
 
