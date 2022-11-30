@@ -1,11 +1,26 @@
+from __future__ import annotations
+from enum import Enum
 import os
+
 from abc import ABC
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
-from core.actions import BaseAction
-from core.dungeon import Dungeon
 from core.utils.strings import parse_colors
 from core.utils.strings import StringBuilder
+
+
+if TYPE_CHECKING:
+    from core.dungeon import Dungeon
+    from core.controllers import ActionDict
+
+
+class ViewLayout(Enum):
+    """
+
+    """
+    TOP = 0
+    BOTTOM = 1
 
 
 class View(ABC):
@@ -13,7 +28,7 @@ class View(ABC):
     Abstract view used to render models and interfaces.
     """
 
-    def __init__(self, dungeon: Dungeon, model) -> None:
+    def __init__(self, dungeon: Dungeon, model, *, layout: ViewLayout = ViewLayout.TOP) -> None:
         """
         Constructor creating a new abstract view or interface.
 
@@ -23,10 +38,12 @@ class View(ABC):
         """
         self.model = model
         self.dungeon = dungeon
+
+        self.layout = layout
         self.builder = StringBuilder()
 
     @abstractmethod
-    def show(self, actions: list[BaseAction]) -> None:
+    def show(self, actions: ActionDict) -> None:
         """
         Show the scenery on screen.
         """
@@ -62,20 +79,24 @@ class View(ABC):
 
         print(f'health {health}    magic {magic}\n')
 
-    def clear(self) -> None:
+    def clear_screen(self) -> None:
         """
         Clear the screen.
         """
         os.system('clear')
 
-    def show_actions(self, actions: list[BaseAction]) -> None:
+    def show_actions(self, actions: ActionDict) -> None:
         """
 
         """
-        if actions:
+        self.builder.add('\n')
+
+        if self.layout is ViewLayout.TOP:
+            for key, action in actions['key'].items():
+                self.builder.add(f'[GREEN{key}WHITE] {action}')
             self.builder.add('\n')
 
-        for index, action in enumerate(actions):
+        for index, action in enumerate(actions['default']):
             self.builder.add(f'[CYAN{index}WHITE] {action}')
 
         print(self.builder.build())

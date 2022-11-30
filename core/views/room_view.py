@@ -32,9 +32,10 @@ class RoomView(View):
         Argument:
         actions - the list of available action types
         """
-        self.clear()
+        self.clear_screen()
         self.show_status_bar()
 
         print(self.model.long_description())
 
-        self.show_actions(actions)
+        if actions:
+            self.show_actions(actions)

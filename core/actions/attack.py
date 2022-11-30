@@ -39,6 +39,7 @@ class AttackAction(BaseAction):
         """
         # selector = SelectionController(controller.dungeon, None)
         # selection = selector.select(['a', 'b'])
+        input('attack action')
         return True
 
     def __str__(self) -> str:

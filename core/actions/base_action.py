@@ -11,14 +11,16 @@ if TYPE_CHECKING:
 
 class BaseAction(ABC):
 
-    def __init__(self, *, pass_turn: bool = True, quiet: bool = False) -> None:
+    def __init__(self, *, key: str | None = None, pass_turn: bool = True, quiet: bool = False) -> None:
         """
         Constructor creating an abstract action with its actor.
 
         Argument:
+        key - the key that need to be pressed in order to trigegr the action
         pass_turn - whether the action consumes a turn or not upon success
         quiet - whether the action should display it messages
         """
+        self.key = key
         self.pass_turn = pass_turn
         self.quiet = quiet
 

@@ -1,21 +1,17 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
-import core.actions.base_action as base_action
+from core.controllers.action_manager import ActionManager
 from core.controllers.parser import Parser
 from core.dungeon import Dungeon
 from core.views.view import View
 
 
-class Controller:
-    pass
-
-
-class SceneController(ABC, Parser):
+class SceneController(ABC, ActionManager, Parser):
     """
     Abstract class representing a scene controller.
     """
 
-    def __init__(self, dungeon: Dungeon, view: View, actions) -> None:
+    def __init__(self, dungeon: Dungeon, view: View) -> None:
         """
         Constructor creating a new abstract scene controller
 
@@ -23,19 +19,15 @@ class SceneController(ABC, Parser):
         dungeon - the current dungeon
         view - the view used to render the scene
         """
+        super().__init__(dungeon)
+        self.is_running = True
+
         self.dungeon = dungeon
         self.view = view
 
-        self.is_running = True
-        self.actions = actions
-
-    def filter_actions(self) -> list[base_action.BaseAction]:
+    @abstractmethod
+    def start(self) -> None:
         """
-        Filter the actions available in the current context from
-        list of all the possible actions in the controlelr.
-
-        Returns:
-        A list of BaseAction
+        Start the controller.
         """
-        return [action for action in self.actions
-                if action.can_be_performed(self.dungeon)]
+        pass

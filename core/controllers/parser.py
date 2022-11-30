@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
+    from core.controllers import ActionDict
     from core.actions.base_action import BaseAction
 
 
@@ -12,7 +13,7 @@ class Parser:
     Class offering ways to parse the user input.
     """
 
-    def get_action(self, actions: list[BaseAction]) -> BaseAction | None:
+    def get_action(self, actions: ActionDict) -> BaseAction | None:
         """
         Format and parse the user input and return the corresponding action
         or None if the input was invalid.
@@ -23,12 +24,20 @@ class Parser:
         Returns:
         A BaseAction instance or None
         """
-        user_input = self.get_valid_input()
+        user_input = self.get_input()
 
-        if user_input is None or user_input > len(actions) - 1 or user_input < 0:
+        if user_input in actions['key']:
+            return actions['key'][user_input]
+
+        if not user_input.isnumeric():
             return None
 
-        return actions[user_input]
+        user_input = int(user_input)
+
+        if user_input > len(actions['default']) - 1 or user_input < 0:
+            return None
+
+        return actions['default'][user_input]
 
     def get_valid_input(self) -> int | None:
         """

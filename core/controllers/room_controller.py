@@ -15,7 +15,6 @@ class RoomController(SceneController):
     """
     Controller used to interact with a room.
     """
-    _actions = (QuitAction, AttackAction)
 
     def __init__(self, dungeon: Dungeon, view: RoomView) -> None:
         """
@@ -25,7 +24,12 @@ class RoomController(SceneController):
         dungeon - the currently opened dungeon
         view - the view associated with the controller
         """
-        super().__init__(dungeon, view, RoomController._actions)
+        super().__init__(dungeon, view)
+
+        self.add_actions(
+            QuitAction(key='q'),
+            AttackAction()
+        )
 
     def start(self) -> None:
         """
