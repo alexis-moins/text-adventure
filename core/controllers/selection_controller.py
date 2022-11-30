@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-
-from core.actions import AttackAction, QuitAction
 from core.controllers import SceneController
 
 
@@ -11,11 +9,10 @@ if TYPE_CHECKING:
     from core.views.room_view import RoomView
 
 
-class RoomController(SceneController):
+class SelectionController(SceneController):
     """
     Controller used to interact with a room.
     """
-    _actions = (QuitAction, AttackAction)
 
     def __init__(self, dungeon: Dungeon, view: RoomView) -> None:
         """
@@ -25,9 +22,9 @@ class RoomController(SceneController):
         dungeon - the currently opened dungeon
         view - the view associated with the controller
         """
-        super().__init__(dungeon, view, RoomController._actions)
+        super().__init__(dungeon, view)
 
-    def start(self) -> None:
+    def select(self, elements: list) -> None:
         """
         Start the controller.
         """

@@ -6,7 +6,7 @@ from core.actions import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers import Controller
+    from core.controllers import SceneController
 
 
 class QuitAction(BaseAction):
@@ -26,7 +26,7 @@ class QuitAction(BaseAction):
         """
         return True
 
-    def execute(self, controller: Controller) -> bool:
+    def execute(self, controller: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -37,7 +37,8 @@ class QuitAction(BaseAction):
         Returns:
         A boolean
         """
-        return True
+        controller.is_running = False
+        return False
 
     def __str__(self) -> str:
         """
@@ -46,4 +47,4 @@ class QuitAction(BaseAction):
         Returns:
         A string
         """
-        return 'Quit'
+        return 'quit'

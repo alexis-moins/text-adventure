@@ -6,12 +6,16 @@ from core.dungeon import Dungeon
 from core.views.view import View
 
 
-class Controller(ABC, Parser):
+class Controller:
+    pass
+
+
+class SceneController(ABC, Parser):
     """
     Abstract class representing a scene controller.
     """
 
-    def __init__(self, dungeon: Dungeon, view: View) -> None:
+    def __init__(self, dungeon: Dungeon, view: View, actions) -> None:
         """
         Constructor creating a new abstract scene controller
 
@@ -23,7 +27,7 @@ class Controller(ABC, Parser):
         self.view = view
 
         self.is_running = True
-        self.actions: list[base_action.BaseAction] = []
+        self.actions = actions
 
     def filter_actions(self) -> list[base_action.BaseAction]:
         """
