@@ -6,7 +6,7 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers.controller import Controller
+    from core.controllers import SceneController
 
 
 class AttackAction(BaseAction):
@@ -26,7 +26,7 @@ class AttackAction(BaseAction):
         """
         return len(context.room.entities) > 0
 
-    def execute(self, controller: Controller) -> bool:
+    def execute(self, controller: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -37,6 +37,8 @@ class AttackAction(BaseAction):
         Returns:
         A boolean
         """
+        # selector = SelectionController(controller.dungeon, None)
+        # selection = selector.select(['a', 'b'])
         return True
 
     def __str__(self) -> str:

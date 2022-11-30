@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers import Controller
+    from core.controllers import SceneController
 
 
 class BaseAction(ABC):
@@ -38,7 +38,7 @@ class BaseAction(ABC):
         pass
 
     @abstractmethod
-    def execute(self, controller: Controller) -> bool:
+    def execute(self, controller: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.

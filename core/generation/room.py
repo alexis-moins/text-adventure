@@ -1,7 +1,11 @@
 from __future__ import annotations
-from typing import Generic, Iterator, TypeVar
 
-from core.entities import Entity, Describable
+from typing import Generic
+from typing import Iterator
+from typing import TypeVar
+
+from core.entities import Describable
+from core.entities import Entity
 
 
 T = TypeVar('T')
@@ -55,7 +59,7 @@ class Room(Describable):
     Represents a room, a space containing entities (characters and / or items).
     """
 
-    def __init__(self, name: str, description: str, entities: list | None = None) -> None:
+    def __init__(self, name: str, description: str, entities: list[Entity] | None = None) -> None:
         """
         """
         super().__init__()
@@ -87,6 +91,6 @@ class Room(Describable):
 
         for entity in self.entities:
             self._builder.add(
-                f'{entity.determiner} {entity.short_description()}')
+                f'BLUEx1WHITE {entity.short_description()}')
 
         return self._builder.build()
