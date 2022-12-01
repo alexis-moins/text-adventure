@@ -12,15 +12,15 @@ from core.utils.strings import StringBuilder
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers import ActionDict
+    from core.actions.base_action import BaseAction
 
 
-class ViewLayout(Enum):
+class Render(Enum):
     """
 
     """
-    TOP = 0
-    BOTTOM = 1
+    PINNED_FIRST = 0
+    PINNED_LAST = 1
 
 
 class View(ABC):
@@ -28,7 +28,7 @@ class View(ABC):
     Abstract view used to render models and interfaces.
     """
 
-    def __init__(self, dungeon: Dungeon, model, *, layout: ViewLayout = ViewLayout.TOP) -> None:
+    def __init__(self, dungeon: Dungeon, model) -> None:
         """
         Constructor creating a new abstract view or interface.
 
@@ -39,15 +39,7 @@ class View(ABC):
         self.model = model
         self.dungeon = dungeon
 
-        self.layout = layout
         self.builder = StringBuilder()
-
-    @abstractmethod
-    def show(self, actions: ActionDict) -> None:
-        """
-        Show the scenery on screen.
-        """
-        pass
 
     def _get_bar(self, value: int, maximum: int, color: str, character: str, *, length: int = 15, empty_char: str = ' ') -> str:
         """
@@ -85,18 +77,37 @@ class View(ABC):
         """
         os.system('clear')
 
-    def show_actions(self, actions: ActionDict) -> None:
+    @abstractmethod
+    def show(self) -> None:
         """
+        Show the scenery on screen.
+        """
+        pass
 
+    def show_actions(self, actions: list[BaseAction], pinned: dict[str, BaseAction], *, pinned_first: bool = True) -> None:
+        """
+        Show the available actions on screen.
+
+        Argument:
+        actions - the list of (anonymous) actions
+        pinned - the dictionary of pinned (named) actions
+
+        Keyword Argument:
+        pinned_first - whether the pinned should be rendered first
         """
         self.builder.add('\n')
 
-        if self.layout is ViewLayout.TOP:
-            for key, action in actions['key'].items():
+        if pinned_first:
+            for key, action in pinned.items():
                 self.builder.add(f'[GREEN{key}WHITE] {action}')
             self.builder.add('\n')
 
-        for index, action in enumerate(actions['default']):
+        for index, action in enumerate(actions):
             self.builder.add(f'[CYAN{index}WHITE] {action}')
+
+        if not pinned_first:
+            self.builder.add('\n')
+            for key, action in pinned.items():
+                self.builder.add(f'[GREEN{key}WHITE] {action}')
 
         print(self.builder.build())

@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from core.controllers import ActionDict
     from core.actions.base_action import BaseAction
+    from core.controllers.utils.action_handler import ControllerActions
 
 
 class Parser:
@@ -13,31 +13,32 @@ class Parser:
     Class offering ways to parse the user input.
     """
 
-    def get_action(self, actions: ActionDict) -> BaseAction | None:
+    def get_action(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> BaseAction | None:
         """
         Format and parse the user input and return the corresponding action
         or None if the input was invalid.
 
         Argument:
         actions - list of actions the user can choose from
+        pinned - list of the pinned actions the user can choose from
 
         Returns:
-        A BaseAction instance or None
+        A BaseAction or None
         """
         user_input = self.get_input()
 
-        if user_input in actions['key']:
-            return actions['key'][user_input]
+        if user_input in pinned:
+            return pinned[user_input]
 
         if not user_input.isnumeric():
             return None
 
         user_input = int(user_input)
 
-        if user_input > len(actions['default']) - 1 or user_input < 0:
+        if user_input > len(actions) - 1 or user_input < 0:
             return None
 
-        return actions['default'][user_input]
+        return actions[user_input]
 
     def get_valid_input(self) -> int | None:
         """

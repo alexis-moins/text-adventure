@@ -1,22 +1,19 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-from core.controllers import SceneController
+from typing import TYPE_CHECKING, Any
+from core.controllers.selection.selector import Selector
 
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.views.room_view import RoomView
 
 
-class SelectionController(SceneController):
-    """
-    Controller used to interact with a room.
-    """
+class SelectionController(Selector):
 
-    def __init__(self, dungeon: Dungeon, view: RoomView) -> None:
+    def __init__(self, dungeon: Dungeon, view) -> None:
         """
-        Constructor creating a new room controller.
+        Constructor creating a new menu to select one element
+        from a given list.
 
         Arguments:
         dungeon - the currently opened dungeon
@@ -24,7 +21,7 @@ class SelectionController(SceneController):
         """
         super().__init__(dungeon, view)
 
-    def select(self, elements: list) -> None:
+    def select(self, elements: list[Any]) -> None:
         """
         Start the controller.
         """

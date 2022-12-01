@@ -1,12 +1,17 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
-from core.controllers.action_manager import ActionManager
-from core.controllers.parser import Parser
-from core.dungeon import Dungeon
-from core.views.view import View
+from core.controllers.controller import Controller
 
 
-class SceneController(ABC, ActionManager, Parser):
+if TYPE_CHECKING:
+    from core.dungeon import Dungeon
+    from core.views.view import View
+
+
+class SceneController(ABC, Controller):
     """
     Abstract class representing a scene controller.
     """
@@ -19,11 +24,7 @@ class SceneController(ABC, ActionManager, Parser):
         dungeon - the current dungeon
         view - the view used to render the scene
         """
-        super().__init__(dungeon)
-        self.is_running = True
-
-        self.dungeon = dungeon
-        self.view = view
+        super().__init__(dungeon, view)
 
     @abstractmethod
     def start(self) -> None:

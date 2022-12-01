@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
+from core.controllers.selection.selection_controller import SelectionController
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -37,8 +38,9 @@ class AttackAction(BaseAction):
         Returns:
         A boolean
         """
-        # selector = SelectionController(controller.dungeon, None)
-        # selection = selector.select(['a', 'b'])
+        selector = SelectionController(controller.dungeon, SelectionView())
+        selection = selector.select(['a', 'b'])
+
         input('attack action')
         return True
 

@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.actions import AttackAction, QuitAction
-from core.controllers import SceneController
+from core.controllers.scene_controller import SceneController
+from core.views.view import Render
 
 
 if TYPE_CHECKING:
@@ -27,8 +28,11 @@ class RoomController(SceneController):
         super().__init__(dungeon, view)
 
         self.add_actions(
-            QuitAction(key='q'),
             AttackAction()
+        )
+
+        self.add_pinned_actions(
+            QuitAction(key='q')
         )
 
     def start(self) -> None:
@@ -36,10 +40,12 @@ class RoomController(SceneController):
         Start the controller.
         """
         while self.is_running:
-            possible_actions = self.filter_actions()
+            actions, pinned = self.filter_actions()
 
-            self.view.show(possible_actions)
-            action = self.get_action(possible_actions)
+            self.view.show()
+            self.view.show_actions(actions, pinned)
+
+            action = self.get_action(actions, pinned)
 
             if not action:
                 continue

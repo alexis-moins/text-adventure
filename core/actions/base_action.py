@@ -4,9 +4,10 @@ from abc import ABC
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers import SceneController
+    from core.controllers.controller import Controller
 
 
 class BaseAction(ABC):
@@ -40,7 +41,7 @@ class BaseAction(ABC):
         pass
 
     @abstractmethod
-    def execute(self, controller: SceneController) -> bool:
+    def execute(self, controller: Controller) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.

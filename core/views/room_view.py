@@ -7,7 +7,6 @@ from core.views.view import View
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.generation.room import Room
-    from core.actions.base_action import BaseAction
 
 
 class RoomView(View):
@@ -25,17 +24,11 @@ class RoomView(View):
         """
         super().__init__(dungeon, room)
 
-    def show(self, actions: list[BaseAction]) -> None:
+    def show(self) -> None:
         """
         Show the scenery on screen.
-
-        Argument:
-        actions - the list of available action types
         """
         self.clear_screen()
         self.show_status_bar()
 
         print(self.model.long_description())
-
-        if actions:
-            self.show_actions(actions)
