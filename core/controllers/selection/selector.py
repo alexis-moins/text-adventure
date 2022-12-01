@@ -17,4 +17,11 @@ class Selector(ABC, Controller):
 
     @abstractmethod
     def select(self, items):
+        """
+        Start the controller and ask the user to select exactly one
+        item from a list of items.
+
+        Argument:
+        items - a list of items to choose from
+        """
         pass

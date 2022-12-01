@@ -1,23 +1,19 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
-from core.actions import AttackAction, QuitAction
+from core.actions.menu.quit_action import QuitAction
+from core.actions.scene.attack_action import AttackAction
 from core.controllers.scene_controller import SceneController
-from core.views.view import Render
 
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.views.room_view import RoomView
+    from core.views.sceneries.room_scenery import RoomScenery
 
 
 class RoomController(SceneController):
-    """
-    Controller used to interact with a room.
-    """
 
-    def __init__(self, dungeon: Dungeon, view: RoomView) -> None:
+    def __init__(self, dungeon: Dungeon, view: RoomScenery) -> None:
         """
         Constructor creating a new room controller.
 

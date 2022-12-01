@@ -6,6 +6,7 @@ from typing import TypeVar
 
 from core.entities import Describable
 from core.entities import Entity
+from core.entities.npc import NPC
 
 
 T = TypeVar('T')
@@ -59,7 +60,7 @@ class Room(Describable):
     Represents a room, a space containing entities (characters and / or items).
     """
 
-    def __init__(self, name: str, description: str, entities: list[Entity] | None = None) -> None:
+    def __init__(self, name: str, description: str, npc: list[NPC] | None = None) -> None:
         """
         """
         super().__init__()
@@ -67,9 +68,16 @@ class Room(Describable):
         self.name = name
         self.description = description
 
-        self.entities: Container[Entity] = Container(entities)
+        self.npc = npc or []
 
         self.is_boss_room: bool = False
+
+    @property
+    def entities(self) -> list[NPC]:
+        """
+
+        """
+        return self.npc  # + self.items
 
     def short_description(self) -> str:
         pass

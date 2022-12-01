@@ -1,26 +1,22 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-
-from core.views.view import View
+from core.views.scenery import Scenery
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.generation.room import Room
 
 
-class RoomView(View):
-    """
-    View used to render a room.
-    """
+class RoomScenery(Scenery):
 
     def __init__(self, dungeon: Dungeon, room: Room) -> None:
         """
-        Constructor creating a new view of a room.
+        Constructor creating a new scenery for a room.
 
         Arguments:
-        dungeon - the context
-        room - the model rendered in the view
+        dungeon - the currently opened dungeon
+        room - the room used for the scenery
         """
         super().__init__(dungeon, room)
 

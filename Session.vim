@@ -13,36 +13,24 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +7 core/actions/base_action.py
-badd +59 core/controllers/action_manager.py
-badd +42 ~/code/text-adventure/core/actions/attack.py
-badd +24 ~/code/text-adventure/core/controllers/selection_controller.py
-badd +2 core/controllers/scene_controller.py
-badd +12 core/controllers/abstract_controller.py
+badd +14 core/actions/base_action.py
+badd +28 core/controllers/selection/selection_controller.py
+badd +4 core/views/view.py
+badd +13 core/actions/attack.py
+badd +26 core/controllers/room_controller.py
+badd +15 core/controllers/controller.py
+badd +7 main.py
+badd +19 core/controllers/selection/selector.py
+badd +26 core/views/selection/selection_view.py
+badd +18 core/views/scenery.py
+badd +21 ~/code/text-adventure/core/views/sceneries/room_scenery.py
+badd +24 core/actions/selection/select_action.py
 argglobal
 %argdel
 set stal=2
 tabnew +setlocal\ bufhidden=wipe
 tabrewind
-edit ~/code/text-adventure/core/actions/attack.py
-argglobal
-balt ~/code/text-adventure/core/controllers/selection_controller.py
-setlocal fdm=marker
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=1
-setlocal fen
-let s:l = 38 - ((19 * winheight(0) + 17) / 35)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 38
-normal! 016|
-tabnext
-edit core/controllers/scene_controller.py
+edit core/actions/attack.py
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -62,7 +50,7 @@ set winwidth=1
 exe 'vert 1resize ' . ((&columns * 86 + 86) / 173)
 exe 'vert 2resize ' . ((&columns * 86 + 86) / 173)
 argglobal
-balt core/controllers/abstract_controller.py
+balt core/controllers/selection/selection_controller.py
 setlocal fdm=marker
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -71,19 +59,19 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=1
 setlocal fen
-let s:l = 8 - ((7 * winheight(0) + 17) / 35)
+let s:l = 44 - ((20 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 8
-normal! 040|
+keepjumps 44
+normal! 032|
 wincmd w
 argglobal
-if bufexists(fnamemodify("core/controllers/abstract_controller.py", ":p")) | buffer core/controllers/abstract_controller.py | else | edit core/controllers/abstract_controller.py | endif
+if bufexists(fnamemodify("core/views/selection/selection_view.py", ":p")) | buffer core/views/selection/selection_view.py | else | edit core/views/selection/selection_view.py | endif
 if &buftype ==# 'terminal'
-  silent file core/controllers/abstract_controller.py
+  silent file core/views/selection/selection_view.py
 endif
-balt core/controllers/scene_controller.py
+balt core/views/view.py
 setlocal fdm=marker
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -92,14 +80,73 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=1
 setlocal fen
-let s:l = 12 - ((11 * winheight(0) + 17) / 35)
+let s:l = 34 - ((19 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
-normal! 024|
+keepjumps 34
+normal! 029|
 wincmd w
-2wincmd w
+exe 'vert 1resize ' . ((&columns * 86 + 86) / 173)
+exe 'vert 2resize ' . ((&columns * 86 + 86) / 173)
+tabnext
+edit core/controllers/selection/selection_controller.py
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 86 + 86) / 173)
+exe 'vert 2resize ' . ((&columns * 86 + 86) / 173)
+argglobal
+balt core/actions/selection/select_action.py
+setlocal fdm=marker
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=1
+setlocal fen
+let s:l = 26 - ((23 * winheight(0) + 17) / 35)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 26
+normal! 017|
+wincmd w
+argglobal
+if bufexists(fnamemodify("core/actions/selection/select_action.py", ":p")) | buffer core/actions/selection/select_action.py | else | edit core/actions/selection/select_action.py | endif
+if &buftype ==# 'terminal'
+  silent file core/actions/selection/select_action.py
+endif
+balt core/controllers/selection/selection_controller.py
+setlocal fdm=marker
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=1
+setlocal fen
+let s:l = 23 - ((22 * winheight(0) + 17) / 35)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 23
+normal! 026|
+wincmd w
 exe 'vert 1resize ' . ((&columns * 86 + 86) / 173)
 exe 'vert 2resize ' . ((&columns * 86 + 86) / 173)
 tabnext 2

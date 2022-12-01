@@ -1,9 +1,8 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
 
 from abc import ABC
 from abc import abstractmethod
-from typing import TYPE_CHECKING
-
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -12,7 +11,7 @@ if TYPE_CHECKING:
 
 class BaseAction(ABC):
 
-    def __init__(self, *, key: str | None = None, pass_turn: bool = True, quiet: bool = False) -> None:
+    def __init__(self, *, key: str = '', pass_turn: bool = True, quiet: bool = False) -> None:
         """
         Constructor creating an abstract action with its actor.
 

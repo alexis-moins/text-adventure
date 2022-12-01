@@ -1,5 +1,4 @@
 from __future__ import annotations
-from enum import Enum
 import os
 
 from abc import ABC
@@ -9,36 +8,24 @@ from typing import TYPE_CHECKING
 from core.utils.strings import parse_colors
 from core.utils.strings import StringBuilder
 
-
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.actions.base_action import BaseAction
 
 
-class Render(Enum):
-    """
-
-    """
-    PINNED_FIRST = 0
-    PINNED_LAST = 1
-
-
 class View(ABC):
     """
-    Abstract view used to render models and interfaces.
+    Abstract view used to render models and menu.
     """
 
-    def __init__(self, dungeon: Dungeon, model) -> None:
+    def __init__(self, dungeon: Dungeon) -> None:
         """
-        Constructor creating a new abstract view or interface.
+        Constructor creating a new abstract view.
 
         Arguments:
         dungeon - the currently opened dungeon
-        model - the model to render
         """
-        self.model = model
         self.dungeon = dungeon
-
         self.builder = StringBuilder()
 
     def _get_bar(self, value: int, maximum: int, color: str, character: str, *, length: int = 15, empty_char: str = ' ') -> str:
@@ -80,7 +67,7 @@ class View(ABC):
     @abstractmethod
     def show(self) -> None:
         """
-        Show the scenery on screen.
+        Show the view on screen.
         """
         pass
 
