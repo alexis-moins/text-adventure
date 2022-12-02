@@ -41,7 +41,7 @@ class NPC(Character):
         Returns:
         A string
         """
-        sign = 'RED[!]WHITE' if self.is_hostile else f'YELLOW[{self.character}]WHITE'
+        sign = 'RED(hostile)WHITE' if self.is_hostile else f'CYAN(peaceful)WHITE'
         return self._builder.add(self.name + f' {sign}').build()
 
     def long_description(self) -> str:

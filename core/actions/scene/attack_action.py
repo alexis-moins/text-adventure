@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from core.views.message import Message
 from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
@@ -39,13 +40,17 @@ class AttackAction(BaseAction):
         selector = controller.dungeon.factory.selection_controller(
             'Who will be the target of your attack ?')
 
-        selection = selector.select(controller.dungeon.room.npc)
+        enemy = selector.select(controller.dungeon.room.npc)
 
-        if not selection:
+        if not enemy:
             return False
 
-        input(f'attacking {selection}')
+        damage = controller.dungeon.player.strength
+        enemy.receive_damage(damage)
 
+        message = Message(controller.dungeon,
+                          f'You deal YELLOW{damage} damageWHITE to the {enemy.short_description()}.')
+        message.show()
         return True
 
     def __str__(self) -> str:
