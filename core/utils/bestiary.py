@@ -27,8 +27,7 @@ class Bestiary:
         A new NPC
         """
         data = self._book[creature].copy()
-        fighter = Fighter(**data.pop('statistics'))
-        return NPC(**data, fighter=fighter)
+        return NPC(**data)
 
     def load(self, path: str) -> None:
         """

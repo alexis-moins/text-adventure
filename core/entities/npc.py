@@ -1,25 +1,27 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from core.entities.character import Character
-from core.fight.fighter import Fighter
+
+if TYPE_CHECKING:
+    from core.fight.statistics import Statistics
 
 
 class NPC(Character):
 
-    def __init__(self, name: str, description: str, fighter: Fighter, *, is_hostile: bool, character: str) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, *, is_hostile: bool, character: str) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
         Arguments:
         name - the name of the NPC
         description - the description of the NPC
-        fighter - the fighter component to use
 
         Keyword Arguments:
         is_hostile - whether the NPC is hostile to the player or not
         character - the character to represent the NPC (when peaceful)
         """
-        super().__init__(name, description, fighter)
+        super().__init__(name, description, statistics)
         self.is_hostile = is_hostile
         self.character = character
 
@@ -39,7 +41,7 @@ class NPC(Character):
         Returns:
         A string
         """
-        sign = 'RED[!]WHITE' if self.is_hostile else f'GREEN[{self.character}]WHITE'
+        sign = 'RED[!]WHITE' if self.is_hostile else f'YELLOW[{self.character}]WHITE'
         return self._builder.add(self.name + f' {sign}').build()
 
     def long_description(self) -> str:
