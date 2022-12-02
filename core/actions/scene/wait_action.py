@@ -9,9 +9,9 @@ if TYPE_CHECKING:
     from core.controllers.scene_controller import SceneController
 
 
-class AttackAction(BaseAction):
+class WaitAction(BaseAction):
     """
-    Class representing the action of attacking an entity in the room.
+    Class representing the action of doing nothing.
     """
 
     def can_be_performed(self, context: Dungeon) -> bool:
@@ -24,9 +24,9 @@ class AttackAction(BaseAction):
         Returns:
         a boolean
         """
-        return len(context.room.entities) > 0
+        return True
 
-    def execute(self, controller: SceneController) -> bool:
+    def execute(self, _: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -37,20 +37,6 @@ class AttackAction(BaseAction):
         Returns:
         A boolean
         """
-        selector = controller.dungeon.factory.selection_controller(
-            'Who will be the target of your attack ?')
-
-        enemy = selector.select(controller.dungeon.room.npc)
-
-        if not enemy:
-            return False
-
-        damage = controller.dungeon.player.strength
-        enemy.receive_damage(damage)
-
-        message = Message(controller.dungeon,
-                          f'You deal YELLOW{damage} damageWHITE to the {enemy.short_description()}.')
-        message.show()
         return True
 
     def __str__(self) -> str:
@@ -60,4 +46,4 @@ class AttackAction(BaseAction):
         Returns:
         A string
         """
-        return 'attack'
+        return 'wait'

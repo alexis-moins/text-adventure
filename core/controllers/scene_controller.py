@@ -39,4 +39,9 @@ class SceneController(Controller):
             if not action:
                 continue
 
-            _ = action.execute(self)
+            pass_turn = action.execute(self)
+
+            if not pass_turn:
+                continue
+
+            input('next turn')

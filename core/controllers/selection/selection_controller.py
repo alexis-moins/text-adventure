@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Any
 
 from core.controllers.controller import Controller
 from core.actions.menu.select_action import SelectAction
+from core.entities.npc import NPC
 
 
 if TYPE_CHECKING:
@@ -26,7 +27,7 @@ class SelectionController(Controller):
         super().__init__(dungeon, view, actions, pinned)
         self.selection: Describable | None = None
 
-    def select(self, models: list[Describable]) -> Describable | None:
+    def select(self, models: list[NPC]) -> NPC | None:
         """
         Start the controller and ask the user to select exactly one
         item from a list of items.
