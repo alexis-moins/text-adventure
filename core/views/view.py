@@ -1,36 +1,32 @@
+from __future__ import annotations
 import os
+
 from abc import ABC
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
-from core.actions import BaseAction
-from core.dungeon import Dungeon
 from core.utils.strings import parse_colors
 from core.utils.strings import StringBuilder
+
+if TYPE_CHECKING:
+    from core.dungeon import Dungeon
+    from core.actions.base_action import BaseAction
 
 
 class View(ABC):
     """
-    Abstract view used to render models and interfaces.
+    Abstract view used to render models and menu.
     """
 
-    def __init__(self, dungeon: Dungeon, model) -> None:
+    def __init__(self, dungeon: Dungeon) -> None:
         """
-        Constructor creating a new abstract view or interface.
+        Constructor creating a new abstract view.
 
         Arguments:
         dungeon - the currently opened dungeon
-        model - the model to render
         """
-        self.model = model
         self.dungeon = dungeon
         self.builder = StringBuilder()
-
-    @abstractmethod
-    def show(self, actions: list[BaseAction]) -> None:
-        """
-        Show the scenery on screen.
-        """
-        pass
 
     def _get_bar(self, value: int, maximum: int, color: str, character: str, *, length: int = 15, empty_char: str = ' ') -> str:
         """
@@ -62,20 +58,43 @@ class View(ABC):
 
         print(f'health {health}    magic {magic}\n')
 
-    def clear(self) -> None:
+    def clear_screen(self) -> None:
         """
         Clear the screen.
         """
         os.system('clear')
 
-    def show_actions(self, actions: list[BaseAction]) -> None:
+    @abstractmethod
+    def show(self) -> None:
         """
+        Show the view on screen.
+        """
+        pass
 
+    def show_actions(self, actions: list[BaseAction], pinned: dict[str, BaseAction], *, pinned_first: bool = True) -> None:
         """
-        if actions:
+        Show the available actions on screen.
+
+        Argument:
+        actions - the list of (anonymous) actions
+        pinned - the dictionary of pinned (named) actions
+
+        Keyword Argument:
+        pinned_first - whether the pinned should be rendered first
+        """
+        self.builder.add('\n')
+
+        if pinned_first:
+            for key, action in pinned.items():
+                self.builder.add(f'[GREEN{key}WHITE] {action}')
             self.builder.add('\n')
 
         for index, action in enumerate(actions):
             self.builder.add(f'[CYAN{index}WHITE] {action}')
+
+        if not pinned_first:
+            self.builder.add('\n')
+            for key, action in pinned.items():
+                self.builder.add(f'[GREEN{key}WHITE] {action}')
 
         print(self.builder.build())

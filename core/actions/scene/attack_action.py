@@ -1,12 +1,13 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
+from core.views.selection.selection_view import SelectionMenu
+from core.controllers.selection.selection_controller import SelectionController
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers import SceneController
+    from core.controllers.scene_controller import SceneController
 
 
 class AttackAction(BaseAction):
@@ -37,8 +38,16 @@ class AttackAction(BaseAction):
         Returns:
         A boolean
         """
-        # selector = SelectionController(controller.dungeon, None)
-        # selection = selector.select(['a', 'b'])
+        selector = SelectionController(controller.dungeon, SelectionMenu(
+            controller.dungeon, 'Who will be the target of you attack ?'))
+
+        selection = selector.select(controller.dungeon.room.npc)
+
+        if not selection:
+            return False
+
+        input(f'attacking {selection}')
+
         return True
 
     def __str__(self) -> str:

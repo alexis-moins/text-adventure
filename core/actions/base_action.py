@@ -1,24 +1,26 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
 
 from abc import ABC
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers import SceneController
+    from core.controllers.controller import Controller
 
 
 class BaseAction(ABC):
 
-    def __init__(self, *, pass_turn: bool = True, quiet: bool = False) -> None:
+    def __init__(self, *, key: str = '', pass_turn: bool = True, quiet: bool = False) -> None:
         """
         Constructor creating an abstract action with its actor.
 
         Argument:
+        key - the key that need to be pressed in order to trigegr the action
         pass_turn - whether the action consumes a turn or not upon success
         quiet - whether the action should display it messages
         """
+        self.key = key
         self.pass_turn = pass_turn
         self.quiet = quiet
 
@@ -38,7 +40,7 @@ class BaseAction(ABC):
         pass
 
     @abstractmethod
-    def execute(self, controller: SceneController) -> bool:
+    def execute(self, controller: Controller) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
