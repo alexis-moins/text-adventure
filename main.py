@@ -1,20 +1,17 @@
-from core.controllers.room_controller import RoomController
-
 from core.dungeon import Dungeon
-from core.entities.player import Player
-from core.generation.room import Room
 from core.utils.bestiary import Bestiary
-from core.views.sceneries.room_scenery import RoomScenery
 
+from core.generation.room import Room
+from core.entities.player import Player
 
-room = Room('Castle entrance',
-            'The castle entrance is often guarded by royal guards.')
+room = Room('Wind Meadows (East)',
+            'The east part of the wind meadows is more hilly than the other 3 parts. Wolves love to stay there.')
 
-royal_guard = Bestiary().summon('royal-guard')
+royal_guard = Bestiary().summon('grey-wolf')
 room.npc.append(royal_guard)
 
 player = Player()
 dungeon = Dungeon(player, room)
 
-controller = RoomController(dungeon, RoomScenery(dungeon, room))
+controller = dungeon.factory.room_controller(room)
 controller.start()

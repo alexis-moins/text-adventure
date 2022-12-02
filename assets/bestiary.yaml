@@ -6,3 +6,11 @@ royal-guard:
 
     is_hostile: false
     character: '-'
+
+grey-wolf:
+    name: grey wolf
+    description: Despite being the least aggressive, grey wolves tend to defend fiercely their territory
+    statistics: {health: 10, magic: 2, strength: 5, defense: 3}
+
+    is_hostile: true
+    character: '-'

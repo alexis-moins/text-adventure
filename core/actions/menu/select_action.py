@@ -1,16 +1,17 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING
-from core.actions.menu_action import MenuAction
+
+from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
+    from core.dungeon import Dungeon
     from core.entities.describable import Describable
     from core.controllers.selection.selection_controller import SelectionController
 
 
-class SelectAction(MenuAction):
+class SelectAction(BaseAction):
 
-    def __init__(self, model: Describable, *, key: str = '', multi: bool = False) -> None:
+    def __init__(self, model: Describable, *, multi: bool = False, quiet: bool = False, pass_turn: bool = False) -> None:
         """
         Constructor creating an abstract action with its actor.
 
@@ -18,14 +19,16 @@ class SelectAction(MenuAction):
         model - the model that would be selected
 
         Keyword Arguments:
-        key - the key that need to be pressed in order to trigger the action
         multi - whether the UI if that of a multi selection
         """
-        super().__init__(key=key)
+        super().__init__(quiet, pass_turn)
         self.is_selected = False
 
         self.model = model
         self.multi = multi
+
+    def can_be_performed(self, _: Dungeon) -> bool:
+        return True
 
     def execute(self, controller: SelectionController) -> bool:
         """
