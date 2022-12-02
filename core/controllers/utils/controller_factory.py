@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from core.actions.menu.quit_action import QuitAction
 from core.actions.scene.attack_action import AttackAction
+from core.actions.scene.wait_action import WaitAction
 
 from core.controllers.scene_controller import SceneController
 from core.controllers.selection.selection_controller import SelectionController
@@ -31,8 +32,11 @@ class ControllerFactory:
         Return a new room controller.
         """
         return SceneController(self._dungeon, RoomScenery(self._dungeon, room),
-                               [AttackAction()],
-                               {
+                               [
+                                   WaitAction(),
+                                   AttackAction()
+        ],
+            {
                                    'q': QuitAction()
         })
 
