@@ -52,7 +52,7 @@ class View(ABC):
         """
         Display the status bar of the player.
         """
-        player = self.dungeon.player.fighter
+        player = self.dungeon.player
         health = self._get_bar(player.health, player.max_health, 'RED', '=')
         magic = self._get_bar(player.magic, player.max_magic, 'GREEN', '=')
 

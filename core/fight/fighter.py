@@ -1,6 +1,6 @@
 class Fighter:
 
-    def __init__(self, health: int = 20, magic: int = 10, strength: int = 2, defense: int = 2) -> None:
+    def __init__(self, health: int, magic: int, strength: int, defence: int) -> None:
         """
         Constructor creating a Fighter component.
 
@@ -18,7 +18,7 @@ class Fighter:
         self.max_magic = magic
 
         self.strength = strength
-        self.defense = defense
+        self.defence = defence
 
     @property
     def health(self) -> int:

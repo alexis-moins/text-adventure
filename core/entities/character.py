@@ -2,11 +2,12 @@ from abc import ABC, abstractmethod
 
 from core.entities.entity import Entity
 from core.fight.fighter import Fighter
+from core.fight.statistics import Statistics
 
 
-class Character(Entity, ABC):
+class Character(Entity, Fighter, ABC):
 
-    def __init__(self, name: str, description: str, fighter: Fighter) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics) -> None:
         """
         Constructor creating a new abstract character.
 
@@ -14,8 +15,8 @@ class Character(Entity, ABC):
         name - the name of the character
         description - the description of the character
         """
-        super().__init__(name, description)
-        self.fighter = fighter
+        Entity.__init__(self, name, description)
+        Fighter.__init__(self, **statistics)
 
     @abstractmethod
     def take_turn(self) -> bool:
