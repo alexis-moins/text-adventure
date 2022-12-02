@@ -1,16 +1,29 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.actions.menu_action import MenuAction
+from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
+    from core.dungeon import Dungeon
     from core.controllers.scene_controller import SceneController
 
 
-class QuitAction(MenuAction):
+class QuitAction(BaseAction):
     """
     Class representing the action of leaving the current controller.
     """
+
+    def can_be_performed(self, _: Dungeon) -> bool:
+        """
+        Return true whether this action can be performed in the given context.
+
+        Argument:
+        context - the current dungeon
+
+        Returns:
+        a boolean
+        """
+        return True
 
     def execute(self, controller: SceneController) -> bool:
         """

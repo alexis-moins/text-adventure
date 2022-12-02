@@ -1,11 +1,8 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING
-
 
 if TYPE_CHECKING:
     from core.actions.base_action import BaseAction
-    from core.controllers.utils.action_handler import ControllerActions
 
 
 class Parser:

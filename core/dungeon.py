@@ -1,5 +1,11 @@
-from core.entities.player import Player
-from core.generation.room import Room
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+from core.controllers.utils.controller_factory import ControllerFactory
+
+if TYPE_CHECKING:
+    from core.generation.room import Room
+    from core.entities.player import Player
 
 
 class Dungeon:
@@ -14,3 +20,5 @@ class Dungeon:
         """
         self.player = player
         self.room = start
+
+        self.factory = ControllerFactory(self)

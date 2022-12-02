@@ -1,19 +1,20 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
-from core.actions.menu.quit_action import QuitAction
+from core.controllers.controller import Controller
 from core.actions.menu.select_action import SelectAction
-from core.controllers.selection.selector import Selector
 
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.actions.base_action import BaseAction
+    from core.entities.describable import Describable
     from core.views.selection.selection_view import SelectionMenu
 
 
-class SelectionController(Selector):
+class SelectionController(Controller):
 
-    def __init__(self, dungeon: Dungeon, view: SelectionMenu) -> None:
+    def __init__(self, dungeon: Dungeon, view: SelectionMenu, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """
         Constructor creating a new menu to select one element
         from a given list.
@@ -22,12 +23,10 @@ class SelectionController(Selector):
         dungeon - the currently opened dungeon
         view - the view associated with the controller
         """
-        super().__init__(dungeon, view)
-        self.add_pinned_actions(QuitAction(key='q'))
+        super().__init__(dungeon, view, actions, pinned)
+        self.selection: Describable | None = None
 
-        self.selection = None
-
-    def select(self, models: list[Any]) -> Any | None:
+    def select(self, models: list[Describable]) -> Describable | None:
         """
         Start the controller and ask the user to select exactly one
         item from a list of items.
@@ -35,7 +34,8 @@ class SelectionController(Selector):
         Argument:
         items - a list of items to choose from
         """
-        self.actions = [SelectAction(model) for model in models]
+        self.actions: list[BaseAction] = [
+            SelectAction(model) for model in models]
 
         while self.is_running:
             self.view.show()

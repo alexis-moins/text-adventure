@@ -13,7 +13,7 @@ class ActionHandler:
     Class providing ways for controllers to manage actions.
     """
 
-    def __init__(self, dungeon: Dungeon) -> None:
+    def __init__(self, dungeon: Dungeon, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """
         Constructor creating a new manager of controller actions.
 
@@ -22,23 +22,8 @@ class ActionHandler:
         """
         self.dungeon = dungeon
 
-        self.actions: list[BaseAction] = []
-        self.pinned: dict[str, BaseAction] = {}
-
-    def add_actions(self, *actions: BaseAction) -> None:
-        """
-        Add the given actions to the controller. Note that the actions
-        will be displayed in the order they were added in.
-
-        Argument:
-        actions - the tuple of all BaseActions passed to the function
-        """
-        self.actions.extend(actions)
-
-    def add_pinned_actions(self, *actions: BaseAction) -> None:
-        """"""
-        self.pinned.update(
-            {action.key: action for action in actions if action.key})
+        self.actions = actions
+        self.pinned = pinned
 
     def filter_actions(self) -> tuple[list[BaseAction], dict[str, BaseAction]]:
         """
