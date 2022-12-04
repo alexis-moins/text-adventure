@@ -52,19 +52,34 @@ class StringBuilder:
         self.wrapper = TextWrapper(width=width, break_long_words=False,
                                    replace_whitespace=False)
 
-    def add(self, string: str) -> StringBuilder:
+    def add(self, string: str, *, wrap: bool = True) -> StringBuilder:
         """
         Add a string to the builder's internal buffer.
 
         Argument:
         string - the string to add to the builder
 
+        Keyword Argument:
+        wrap - whether the string should be wrapped or not
+
         Returns:
         The current StringBuilder instance
         """
         colored_string = parse_colors(string)
-        self._buffer.append(self.wrapper.fill(colored_string))
+
+        self._buffer.append(self.wrapper.fill(
+            colored_string) if wrap else colored_string)
+
         return self
+
+    def new_line(self, number: int = 1) -> None:
+        """
+        Add a number of new lines to the buffer (default: 1).
+
+        Argument:
+        number - the number of new lines to add to the buffer
+        """
+        self._buffer[-1] += '\n' * number
 
     def build(self) -> str:
         """
@@ -77,3 +92,10 @@ class StringBuilder:
         self._buffer = []
 
         return string
+
+    def print(self) -> None:
+        """
+        Build and print the buffer on screen.
+        """
+        string = self.build()
+        print(string)

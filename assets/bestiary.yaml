@@ -2,15 +2,13 @@
 royal-guard:
     name: Royal guard
     description: A trained soldier with a steel heavy armour
-    statistics: {health: 100, magic: 20, strength: 15, defence: 10}
 
+    statistics: {health: 100, magic: 20, strength: 15, defence: 10}
     is_hostile: false
-    character: '-'
 
 grey-wolf:
     name: grey wolf
     description: Despite being the least aggressive, grey wolves tend to defend fiercely their territory
-    statistics: {health: 10, magic: 2, strength: 5, defence: 3}
 
+    statistics: {health: 10, magic: 2, strength: 5, defence: 3}
     is_hostile: true
-    character: '-'

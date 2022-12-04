@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class NPC(Character):
 
-    def __init__(self, name: str, description: str, statistics: Statistics, *, is_hostile: bool, character: str) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, *, is_hostile: bool) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
@@ -19,11 +19,9 @@ class NPC(Character):
 
         Keyword Arguments:
         is_hostile - whether the NPC is hostile to the player or not
-        character - the character to represent the NPC (when peaceful)
         """
         super().__init__(name, description, statistics)
         self.is_hostile = is_hostile
-        self.character = character
 
     def take_turn(self) -> bool:
         """
@@ -42,7 +40,7 @@ class NPC(Character):
         A string
         """
         sign = 'RED(hostile)WHITE' if self.is_hostile else f'CYAN(peaceful)WHITE'
-        return self._builder.add(self.name + f' {sign}').build()
+        return self.b.add(self.name + f' {sign}').build()
 
     def long_description(self) -> str:
         """

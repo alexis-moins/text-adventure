@@ -27,7 +27,7 @@ class Message(View):
         """
         self.clear_screen()
 
-        self.builder.add('\n').add(self.message)
-        self.builder.add('\n').add('-- GREENEnterWHITE --')
+        self.b.add('\n').add(self.message)
+        self.b.add('\n').add('-- GREENEnterWHITE --')
 
-        input(self.builder.build())
+        input(self.b.build())

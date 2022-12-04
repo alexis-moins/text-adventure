@@ -1,6 +1,5 @@
 from yaml import safe_load
 
-from core.fight.fighter import Fighter
 from core.entities.npc import NPC
 
 

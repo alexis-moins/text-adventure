@@ -31,9 +31,7 @@ class SceneController(Controller):
         while self.is_running:
             actions, pinned = self.filter_actions()
 
-            self.view.show()
-            self.view.show_actions(actions, pinned)
-
+            self.view.show(actions, pinned)
             action = self.get_action(actions, pinned)
 
             if not action:

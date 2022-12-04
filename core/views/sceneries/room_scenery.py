@@ -20,11 +20,9 @@ class RoomScenery(Scenery):
         """
         super().__init__(dungeon, room)
 
-    def show(self) -> None:
+    def on_show(self) -> None:
         """
         Show the scenery on screen.
         """
-        self.clear_screen()
         self.show_status_bar()
-
-        print(self.model.long_description())
+        self.b.add(self.model.long_description())

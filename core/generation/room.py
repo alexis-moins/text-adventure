@@ -89,16 +89,18 @@ class Room(Describable):
         Returns:
         A string
         """
-        self._builder.add(self.name).add(self.description)
+        self.b.add(self.name).add(self.description)
 
         if not self.entities:
-            return self._builder.build()
+            return self.b.build()
+
+        self.b.new_line()
 
         verb = 'is' if len(self.entities) == 1 else 'are'
-        self._builder.add(f'\nAround you {verb}:')
+        self.b.add(f'Around you {verb}:')
 
         for entity in self.entities:
-            self._builder.add(
+            self.b.add(
                 f'BLUEx1WHITE {entity.short_description()}')
 
-        return self._builder.build()
+        return self.b.build()
