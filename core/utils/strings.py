@@ -52,7 +52,7 @@ class StringBuilder:
         self._wrapper = TextWrapper(width=width, break_long_words=False,
                                     replace_whitespace=False)
 
-    def add(self, string: str, *, wrap: bool = True, test: bool = False) -> Self:
+    def add(self, string: str, *, wrap: bool = True) -> Self:
         """
         Add a string to the builder's internal buffer.
 
@@ -68,8 +68,7 @@ class StringBuilder:
         colored_string = parse_colors(string)
 
         if '\n' in colored_string:
-            _list = colored_string.split('\n')
-            self._buffer.extend(_list)
+            self._buffer.extend(colored_string.split('\n'))
             return self
 
         self._buffer.append(self._wrapper.fill(
