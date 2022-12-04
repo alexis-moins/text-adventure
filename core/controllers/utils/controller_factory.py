@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from core.actions.menu.quit_action import QuitAction
 from core.actions.scene.attack_action import AttackAction
 from core.actions.scene.wait_action import WaitAction
+from core.controllers.room_controller import RoomController
 
 from core.controllers.scene_controller import SceneController
 from core.controllers.selection.selection_controller import SelectionController
@@ -12,8 +13,8 @@ from core.views.sceneries.room_scenery import RoomScenery
 from core.views.selection.selection_view import SelectionMenu
 
 if TYPE_CHECKING:
+    from core.room import Room
     from core.dungeon import Dungeon
-    from core.generation.room import Room
 
 
 class ControllerFactory:
@@ -31,13 +32,13 @@ class ControllerFactory:
         """
         Return a new room controller.
         """
-        return SceneController(self._dungeon, RoomScenery(self._dungeon, room),
-                               [
-                                   WaitAction(),
-                                   AttackAction()
+        return RoomController(self._dungeon, RoomScenery(self._dungeon, room),
+                              [
+            WaitAction(),
+            AttackAction()
         ],
             {
-                                   'q': QuitAction()
+            'q': QuitAction()
         })
 
     def selection_controller(self, prompt: str, *, multi: bool = False) -> SelectionController:

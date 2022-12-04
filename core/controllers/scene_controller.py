@@ -1,4 +1,5 @@
 from __future__ import annotations
+from abc import ABC
 from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
@@ -9,7 +10,7 @@ if TYPE_CHECKING:
     from core.views.view import View
 
 
-class SceneController(Controller):
+class SceneController(ABC, Controller):
     """
     Abstract class representing a scene controller.
     """
@@ -24,11 +25,18 @@ class SceneController(Controller):
         """
         super().__init__(dungeon, view, actions, pinned)
 
+    def on_next_turn(self) -> None:
+        """
+        Method called whenever the end of turn is reached.
+        Does nothing by default.
+        """
+        pass
+
     def start(self) -> None:
         """
         Start the controller.
         """
-        while self.is_running:
+        while self.is_running and self.dungeon.player.is_alive():
             actions, pinned = self.filter_actions()
 
             self.view.show(actions, pinned)
@@ -42,4 +50,4 @@ class SceneController(Controller):
             if not pass_turn:
                 continue
 
-            input('next turn')
+            self.on_next_turn()

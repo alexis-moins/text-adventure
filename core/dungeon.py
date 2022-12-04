@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.controllers.utils.controller_factory import ControllerFactory
+from core.utils.strings import StringBuilder
+from core.views.message import Message
 
 if TYPE_CHECKING:
-    from core.generation.room import Room
+    from core.room import Room
     from core.entities.player import Player
 
 
@@ -16,9 +18,27 @@ class Dungeon:
 
     def __init__(self, player: Player, start: Room) -> None:
         """
+        Constructor creating a new dungeon.
 
+        Arguments:
+        player - the player
+        start - the starting room
         """
         self.player = player
         self.room = start
 
         self.factory = ControllerFactory(self)
+        self.b = StringBuilder()
+
+    def add_log(self, log: str) -> None:
+        """
+
+        """
+        self.b.add(log)
+
+    def show_logs(self) -> None:
+        """
+
+        """
+        message = Message(self, self.b.build())
+        message.show()

@@ -13,7 +13,7 @@ class Menu(View):
         """
         Constructor creating a new bare menu interface.
         """
-        super().__init__(dungeon)
+        super().__init__(dungeon, pinned_first=False)
         self.prompt = prompt
 
 
@@ -26,9 +26,8 @@ class SelectionMenu(Menu):
         """
         super().__init__(dungeon, prompt)
 
-    def show(self) -> None:
+    def on_show(self) -> None:
         """
         Show the menu on screen.
         """
-        self.clear_screen()
-        self.b.add('\n').add(self.prompt)
+        self.b.new_line().add(self.prompt)

@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from core.entities.character import Character
 
 if TYPE_CHECKING:
+    from core.dungeon import Dungeon
     from core.fight.statistics import Statistics
 
 
@@ -23,13 +24,23 @@ class NPC(Character):
         super().__init__(name, description, statistics)
         self.is_hostile = is_hostile
 
-    def take_turn(self) -> bool:
+    def take_turn(self, dungeon: Dungeon) -> bool:
         """
         Make the NPC take its turn.
+
+        Argument:
+        dungeon - the current dungeon
 
         Returns:
         true if the actor has executed an action, false otherwise
         """
+        if self.is_hostile:
+            damage = self.strength
+            dungeon.player.receive_damage(damage)
+
+            dungeon.add_log(
+                f'The {self.short_description()} deals you YELLOW{damage} damageWHITE.')
+
         return True
 
     def short_description(self) -> str:

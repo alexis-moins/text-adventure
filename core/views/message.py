@@ -22,12 +22,20 @@ class Message(View):
 
     def show(self) -> None:
         """
+        Display the message on screen.
+        """
+        super().show(actions=[], pinned={})
+
+    def on_show(self) -> None:
+        """
         Show the message on screen, then log the message in
         the dungeon history.
         """
-        self.clear_screen()
+        self.b.new_line().add(self.message)
 
-        self.b.add('\n').add(self.message)
-        self.b.add('\n').add('-- GREENEnterWHITE --')
-
+    def after_show(self) -> None:
+        """
+        Method executed after showing the view.
+        """
+        self.b.new_line().add('-- GREENEnterWHITE --')
         input(self.b.build())
