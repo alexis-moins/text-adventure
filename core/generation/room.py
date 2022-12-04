@@ -1,12 +1,9 @@
 from __future__ import annotations
+from typing import Generic, Iterator, TypeVar
 
-from typing import Generic
-from typing import Iterator
-from typing import TypeVar
 
-from core.entities import Describable
-from core.entities import Entity
 from core.entities.npc import NPC
+from core.entities import Describable
 
 
 T = TypeVar('T')
@@ -53,52 +50,3 @@ class Container(Generic[T]):
         """
         """
         return bool(self._elements)
-
-
-class Room(Describable):
-    """
-    Represents a room, a space containing entities (characters and / or items).
-    """
-
-    def __init__(self, name: str, description: str, npc: list[NPC] | None = None) -> None:
-        """
-        """
-        super().__init__()
-
-        self.name = name
-        self.description = description
-
-        self.npc = npc or []
-
-        self.is_boss_room: bool = False
-
-    @property
-    def entities(self) -> list[NPC]:
-        """
-
-        """
-        return self.npc  # + self.items
-
-    def short_description(self) -> str:
-        pass
-
-    def long_description(self) -> str:
-        """
-        Return the long description of the room.
-
-        Returns:
-        A string
-        """
-        self._builder.add(self.name).add(self.description)
-
-        if not self.entities:
-            return self._builder.build()
-
-        verb = 'is' if len(self.entities) == 1 else 'are'
-        self._builder.add(f'\nAround you {verb}:')
-
-        for entity in self.entities:
-            self._builder.add(
-                f'BLUEx1WHITE {entity.short_description()}')
-
-        return self._builder.build()

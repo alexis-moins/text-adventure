@@ -1,11 +1,10 @@
 from __future__ import annotations
-import os
+from typing import TYPE_CHECKING
 
 from abc import ABC
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
-from core.utils.strings import parse_colors
+import os
 from core.utils.strings import StringBuilder
 
 if TYPE_CHECKING:
@@ -26,7 +25,7 @@ class View(ABC):
         dungeon - the currently opened dungeon
         """
         self.dungeon = dungeon
-        self.builder = StringBuilder()
+        self.b = StringBuilder()
 
     def _get_bar(self, value: int, maximum: int, color: str, character: str, *, length: int = 15, empty_char: str = ' ') -> str:
         """
@@ -46,7 +45,7 @@ class View(ABC):
         """
         percentage = round(value / maximum * length)
         bar = f'[{color}{character * percentage}WHITE{empty_char * (length - percentage)}]'
-        return parse_colors(f'{bar} {color}{value}WHITE/{color}{maximum}WHITE')
+        return f'{bar} {color}{value}WHITE/{color}{maximum}WHITE'
 
     def show_status_bar(self) -> None:
         """
@@ -56,20 +55,14 @@ class View(ABC):
         health = self._get_bar(player.health, player.max_health, 'RED', '=')
         magic = self._get_bar(player.magic, player.max_magic, 'GREEN', '=')
 
-        print(f'health {health}    magic {magic}\n')
+        self.b.add(f'health {health}    magic {magic}', wrap=False)
+        self.b.new_line()
 
     def clear_screen(self) -> None:
         """
         Clear the screen.
         """
         os.system('clear')
-
-    @abstractmethod
-    def show(self) -> None:
-        """
-        Show the view on screen.
-        """
-        pass
 
     def show_actions(self, actions: list[BaseAction], pinned: dict[str, BaseAction], *, pinned_first: bool = True) -> None:
         """
@@ -82,19 +75,40 @@ class View(ABC):
         Keyword Argument:
         pinned_first - whether the pinned should be rendered first
         """
-        self.builder.add('\n')
+        self.b.new_line()
 
         if pinned_first:
             for key, action in pinned.items():
-                self.builder.add(f'[GREEN{key}WHITE] {action}')
-            self.builder.add('\n')
+                self.b.add(f'[GREEN{key}WHITE] {action}')
+            self.b.new_line()
 
         for index, action in enumerate(actions):
-            self.builder.add(f'[CYAN{index}WHITE] {action}')
+            self.b.add(f'[CYAN{index}WHITE] {action}')
 
         if not pinned_first:
-            self.builder.add('\n')
+            self.b.new_line()
             for key, action in pinned.items():
-                self.builder.add(f'[GREEN{key}WHITE] {action}')
+                self.b.add(f'[GREEN{key}WHITE] {action}')
 
-        print(self.builder.build())
+    def show(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
+        """
+        Display the view on screen.
+
+        Argument:
+        actions - the list of (anonymous) actions
+        pinned - the dictionary of pinned (named) actions
+        """
+        self.clear_screen()
+
+        self.on_show()
+        self.show_actions(actions, pinned)
+
+        self.b.print()
+
+    @abstractmethod
+    def on_show(self) -> None:
+        """
+        Method executed after clearing the view and before displaying
+        the actions for the view.
+        """
+        pass

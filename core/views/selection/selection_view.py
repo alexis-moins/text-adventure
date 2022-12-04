@@ -31,4 +31,4 @@ class SelectionMenu(Menu):
         Show the menu on screen.
         """
         self.clear_screen()
-        self.builder.add('\n').add(self.prompt)
+        self.b.add('\n').add(self.prompt)

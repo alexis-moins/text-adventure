@@ -13,7 +13,7 @@ class Describable(ABC):
         """
         Constructor creating a new describable element of the world.
         """
-        self._builder = StringBuilder()
+        self.b = StringBuilder()
 
     @abstractmethod
     def short_description(self) -> str:

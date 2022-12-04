@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 from core.views.scenery import Scenery
 
 if TYPE_CHECKING:
+    from core.room import Room
     from core.dungeon import Dungeon
-    from core.generation.room import Room
 
 
 class RoomScenery(Scenery):
@@ -20,11 +20,9 @@ class RoomScenery(Scenery):
         """
         super().__init__(dungeon, room)
 
-    def show(self) -> None:
+    def on_show(self) -> None:
         """
         Show the scenery on screen.
         """
-        self.clear_screen()
         self.show_status_bar()
-
-        print(self.model.long_description())
+        self.b.add(self.model.long_description())
