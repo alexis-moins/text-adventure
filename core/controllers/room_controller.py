@@ -1,49 +1,31 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
-
-from core.actions.menu.quit_action import QuitAction
-from core.actions.scene.attack_action import AttackAction
 from core.controllers.scene_controller import SceneController
-
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.actions.base_action import BaseAction
     from core.views.sceneries.room_scenery import RoomScenery
 
 
 class RoomController(SceneController):
 
-    def __init__(self, dungeon: Dungeon, view: RoomScenery) -> None:
+    def __init__(self, dungeon: Dungeon, view: RoomScenery, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """
-        Constructor creating a new room controller.
+        Constructor creating a new room controller
 
         Arguments:
-        dungeon - the currently opened dungeon
-        view - the view associated with the controller
+        dungeon - the current dungeon
+        view - the room scenery
         """
-        super().__init__(dungeon, view)
+        super().__init__(dungeon, view, actions, pinned)
 
-        self.add_actions(
-            AttackAction()
-        )
-
-        self.add_pinned_actions(
-            QuitAction(key='q')
-        )
-
-    def start(self) -> None:
+    def on_next_turn(self) -> None:
         """
-        Start the controller.
+        Method called whenever the end of turn is reached.
         """
-        while self.is_running:
-            actions, pinned = self.filter_actions()
+        for npc in self.dungeon.room.entities:
+            npc.take_turn(self.dungeon)
 
-            self.view.show()
-            self.view.show_actions(actions, pinned)
-
-            action = self.get_action(actions, pinned)
-
-            if not action:
-                continue
-
-            action.execute(self)
+        self.dungeon.show_logs()

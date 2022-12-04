@@ -17,13 +17,14 @@ class View(ABC):
     Abstract view used to render models and menu.
     """
 
-    def __init__(self, dungeon: Dungeon) -> None:
+    def __init__(self, dungeon: Dungeon, *, pinned_first: bool = True) -> None:
         """
         Constructor creating a new abstract view.
 
         Arguments:
         dungeon - the currently opened dungeon
         """
+        self.pinned_first = pinned_first
         self.dungeon = dungeon
         self.b = StringBuilder()
 
@@ -64,7 +65,7 @@ class View(ABC):
         """
         os.system('clear')
 
-    def show_actions(self, actions: list[BaseAction], pinned: dict[str, BaseAction], *, pinned_first: bool = True) -> None:
+    def show_actions(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """
         Show the available actions on screen.
 
@@ -77,7 +78,7 @@ class View(ABC):
         """
         self.b.new_line()
 
-        if pinned_first:
+        if self.pinned_first:
             for key, action in pinned.items():
                 self.b.add(f'[GREEN{key}WHITE] {action}')
             self.b.new_line()
@@ -85,7 +86,7 @@ class View(ABC):
         for index, action in enumerate(actions):
             self.b.add(f'[CYAN{index}WHITE] {action}')
 
-        if not pinned_first:
+        if not self.pinned_first:
             self.b.new_line()
             for key, action in pinned.items():
                 self.b.add(f'[GREEN{key}WHITE] {action}')
@@ -101,14 +102,23 @@ class View(ABC):
         self.clear_screen()
 
         self.on_show()
-        self.show_actions(actions, pinned)
+
+        if actions or pinned:
+            self.show_actions(actions, pinned)
 
         self.b.print()
+        self.after_show()
 
     @abstractmethod
     def on_show(self) -> None:
         """
         Method executed after clearing the view and before displaying
         the actions for the view.
+        """
+        pass
+
+    def after_show(self) -> None:
+        """
+        Method executed after showing the view.
         """
         pass

@@ -49,6 +49,7 @@ class StringBuilder:
         formatted multi-line strings with ease.
         """
         self._buffer = []
+        self._new_line = False
         self._wrapper = TextWrapper(width=width, break_long_words=False,
                                     replace_whitespace=False)
 
@@ -74,16 +75,27 @@ class StringBuilder:
         self._buffer.append(self._wrapper.fill(
             colored_string) if wrap else colored_string)
 
+        if self._new_line:
+            self._new_line = False
+            self._buffer[0] = '\n' + self._buffer[0]
+
         return self
 
-    def new_line(self, number: int = 1) -> None:
+    def new_line(self, number: int = 1) -> Self:
         """
         Add a number of new lines to the buffer (default: 1).
 
         Argument:
         number - the number of new lines to add to the buffer
+
+        Returns:
+        The current StringBuilder instance
         """
-        self._buffer[-1] += '\n' * number
+        if not self._buffer:
+            self._new_line = True
+        else:
+            self._buffer[-1] += '\n' * number
+        return self
 
     def build(self) -> str:
         """

@@ -81,3 +81,12 @@ class Fighter:
         amount - how many magic is consumed
         """
         self.magic -= amount
+
+    def is_alive(self) -> bool:
+        """
+        Return true if this character is alive, return false otherwise.
+
+        Returns:
+        A boolean
+        """
+        return self.health > 0
