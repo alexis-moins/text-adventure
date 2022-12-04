@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 from core.views.scenery import Scenery
 
 if TYPE_CHECKING:
+    from core.room import Room
     from core.dungeon import Dungeon
-    from core.generation.room import Room
 
 
 class RoomScenery(Scenery):

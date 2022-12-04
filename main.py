@@ -1,7 +1,7 @@
 from core.dungeon import Dungeon
 from core.utils.bestiary import Bestiary
 
-from core.generation.room import Room
+from core.room import Room
 from core.entities.player import Player
 
 room = Room('Wind Meadows YELLOW<East>WHITE',

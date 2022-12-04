@@ -2,7 +2,7 @@
 Module providing a StringBuilder class to build and format strings, as
 well as a parse_colors function to create colored strings.
 """
-from __future__ import annotations
+from typing import Self
 from textwrap import TextWrapper
 
 from colorama import Fore
@@ -43,16 +43,16 @@ class StringBuilder:
     multi-line outputs with ease.
     """
 
-    def __init__(self, width: int = 90) -> None:
+    def __init__(self, width: int = 70) -> None:
         """
         Constructor creating a new StringBuilder, useful for creating
         formatted multi-line strings with ease.
         """
         self._buffer = []
-        self.wrapper = TextWrapper(width=width, break_long_words=False,
-                                   replace_whitespace=False)
+        self._wrapper = TextWrapper(width=width, break_long_words=False,
+                                    replace_whitespace=False)
 
-    def add(self, string: str, *, wrap: bool = True) -> StringBuilder:
+    def add(self, string: str, *, wrap: bool = True, test: bool = False) -> Self:
         """
         Add a string to the builder's internal buffer.
 
@@ -67,7 +67,12 @@ class StringBuilder:
         """
         colored_string = parse_colors(string)
 
-        self._buffer.append(self.wrapper.fill(
+        if '\n' in colored_string:
+            _list = colored_string.split('\n')
+            self._buffer.extend(_list)
+            return self
+
+        self._buffer.append(self._wrapper.fill(
             colored_string) if wrap else colored_string)
 
         return self
