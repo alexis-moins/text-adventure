@@ -34,11 +34,11 @@ class ControllerFactory:
         """
         return RoomController(self._dungeon, RoomScenery(self._dungeon, room),
                               [
-            WaitAction(),
-            AttackAction()
+            WaitAction(self._dungeon),
+            AttackAction(self._dungeon)
         ],
             {
-            'q': QuitAction()
+            'q': QuitAction(self._dungeon)
         })
 
     def selection_controller(self, prompt: str, *, multi: bool = False) -> SelectionController:
@@ -47,4 +47,4 @@ class ControllerFactory:
         """
         return SelectionController(self._dungeon, SelectionMenu(self._dungeon, prompt),
                                    [],
-                                   {'q': QuitAction()})
+                                   {'q': QuitAction(self._dungeon)})

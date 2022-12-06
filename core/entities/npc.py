@@ -35,7 +35,7 @@ class NPC(Character):
         true if the actor has executed an action, false otherwise
         """
         if self.is_hostile:
-            damage = self.strength
+            damage = self.get_damage()
             dungeon.player.receive_damage(damage)
 
             dungeon.add_log(

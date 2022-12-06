@@ -63,4 +63,4 @@ class AttackAction(BaseAction):
         Returns:
         A string
         """
-        return 'attack'
+        return self.b.add('attack YELLOW(with your bare hands)WHITE').build()
