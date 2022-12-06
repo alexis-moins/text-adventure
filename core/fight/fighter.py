@@ -1,3 +1,6 @@
+import random
+
+
 class Fighter:
 
     def __init__(self, health: int, magic: int, strength: int, defence: int) -> None:
@@ -90,3 +93,13 @@ class Fighter:
         A boolean
         """
         return self.health > 0
+
+    def get_damage(self) -> int:
+        """
+        Return the damage dealt by the fighter this turn.
+
+        Returns:
+        An integer
+        """
+        # TODO don't mitigate damage if no weapon equiped
+        return max(self.strength + random.randint(-2, 2), 0)

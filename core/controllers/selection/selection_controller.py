@@ -22,7 +22,7 @@ class SelectionController(SceneController):
         self.selection: Describable | None = None
 
         self.actions: list[BaseAction] = [
-            SelectAction(model) for model in models]
+            SelectAction(self.dungeon, model) for model in models]
 
         super().start()
 
