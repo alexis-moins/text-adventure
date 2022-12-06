@@ -40,5 +40,6 @@ class Dungeon:
         """
 
         """
-        message = Message(self, self.b.build())
-        message.show()
+        if not self.b.is_empty():
+            message = Message(self, self.b.build())
+            message.show()

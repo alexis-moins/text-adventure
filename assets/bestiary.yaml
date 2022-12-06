@@ -10,5 +10,5 @@ grey-wolf:
     name: grey wolf
     description: Despite being the least aggressive, grey wolves tend to defend fiercely their territory
 
-    statistics: {health: 10, magic: 2, strength: 5, defence: 3}
+    statistics: {health: 10, magic: 2, strength: 3, defence: 3}
     is_hostile: true

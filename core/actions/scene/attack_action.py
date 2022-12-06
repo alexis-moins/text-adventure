@@ -25,7 +25,7 @@ class AttackAction(BaseAction):
         Returns:
         a boolean
         """
-        return len(context.room.entities) > 0
+        return len(context.room.npc) > 0
 
     def execute(self, controller: SceneController) -> bool:
         """
