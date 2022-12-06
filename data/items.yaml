@@ -1,0 +1,8 @@
+---
+iron sword:
+  name: iron sword
+  description: to be added
+  type: weapon
+
+  damage: 5
+  price: 10

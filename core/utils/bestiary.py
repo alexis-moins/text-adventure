@@ -1,6 +1,9 @@
 from yaml import safe_load
+from core.containers.container import Container
 
 from core.entities.npc import NPC
+from core.items.item import Item
+from core.utils.armoury import Armoury
 
 
 class Bestiary:
@@ -13,7 +16,14 @@ class Bestiary:
         Constructor creating a new bestiary.
         """
         self._book: dict[str, dict] = {}
-        self.load('assets/bestiary.yaml')
+        self.armoury = Armoury()
+        self.load('data/bestiary.yaml')
+
+    def make_inventory(self, items: list[str]) -> Container[Item]:
+        """
+
+        """
+        return Container([self.armoury.take(item) for item in items])
 
     def summon(self, creature: str) -> NPC:
         """
@@ -26,7 +36,8 @@ class Bestiary:
         A new NPC
         """
         data = self._book[creature].copy()
-        return NPC(**data)
+        inventory = self.make_inventory(data.pop('inventory'))
+        return NPC(**data, inventory=inventory)
 
     def load(self, path: str) -> None:
         """

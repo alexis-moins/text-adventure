@@ -47,8 +47,8 @@ class AttackAction(BaseAction):
         if not enemy:
             return False
 
-        damage = controller.dungeon.player.strength
-        enemy.receive_damage(damage)
+        damage = controller.dungeon.player.fighter.get_damage()
+        enemy.fighter.receive_damage(damage)
 
         message = Message(controller.dungeon,
                           f'You deal YELLOW{damage} damageWHITE to the {enemy.short_description()}.')
@@ -63,4 +63,7 @@ class AttackAction(BaseAction):
         Returns:
         A string
         """
-        return self.b.add('attack YELLOW(with your bare hands)WHITE').build()
+        weapon = self.dungeon.player.fighter.equipments.get('weapon')
+        weapon_name = 'bare hands' if not weapon else weapon.name
+
+        return self.b.add(f'attack YELLOW(with your {weapon_name})WHITE').build()

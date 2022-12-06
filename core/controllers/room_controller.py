@@ -34,7 +34,7 @@ class RoomController(SceneController):
         Method called whenever the end of turn is reached.
         """
         for npc in self.dungeon.room.npc:
-            if not npc.is_alive():
+            if not npc.fighter.is_alive():
                 self.loot(npc)
                 continue
 
