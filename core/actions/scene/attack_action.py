@@ -25,7 +25,7 @@ class AttackAction(BaseAction):
         Returns:
         a boolean
         """
-        return len(context.room.entities) > 0
+        return len(context.room.npc) > 0
 
     def execute(self, controller: SceneController) -> bool:
         """
@@ -41,7 +41,7 @@ class AttackAction(BaseAction):
         selector = controller.dungeon.factory.selection_controller(
             'Who will be the target of your attack ?')
 
-        selector.start(controller.dungeon.room.entities)
+        selector.start(controller.dungeon.room.npc)
         enemy: NPC = selector.selection
 
         if not enemy:

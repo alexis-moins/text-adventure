@@ -14,14 +14,14 @@ class Room(Describable):
     Represents a room, a space containing entities.
     """
 
-    def __init__(self, name: str, description: str, entities: list[Entity] | None = None) -> None:
+    def __init__(self, name: str, description: str, npc: list[NPC] | None = None) -> None:
         """
         """
         super().__init__()
         self.name = name
         self.description = description
 
-        self.entities: Container[Entity] = Container(entities)
+        self.npc: Container[NPC] = Container(npc)
         self.is_boss_room: bool = False
 
     def short_description(self) -> str:
@@ -36,15 +36,15 @@ class Room(Describable):
         """
         self.b.add(self.name).add(self.description)
 
-        if not self.entities:
+        if not self.npc:
             return self.b.build()
 
         self.b.new_line()
 
-        verb = 'is' if len(self.entities) == 1 else 'are'
+        verb = 'is' if len(self.npc) == 1 else 'are'
         self.b.add(f'Around you {verb}:')
 
-        for entity in self.entities:
+        for entity in self.npc:
             self.b.add(
                 f'BLUEx1WHITE {entity.short_description()}')
 

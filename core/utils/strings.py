@@ -109,6 +109,15 @@ class StringBuilder:
 
         return string
 
+    def is_empty(self) -> bool:
+        """
+        Return true if the string builder is empty.
+
+        Returns:
+        A boolean
+        """
+        return len(self._buffer) == 0
+
     def print(self) -> None:
         """
         Build and print the buffer on screen.

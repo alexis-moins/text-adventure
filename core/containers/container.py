@@ -31,6 +31,12 @@ class Container(Generic[T]):
         entities = [entity for entity in self._entities if name in entity.name]
         return entities[0]
 
+    def remove(self, entity: T) -> None:
+        """
+
+        """
+        self._entities.remove(entity)
+
     def take(self, name: str) -> T | None:
         """"""
         entity = self.find(name)
