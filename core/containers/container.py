@@ -6,7 +6,7 @@ T = TypeVar('T')
 
 class Container(Generic[T]):
 
-    def __init__(self, entities=None) -> None:
+    def __init__(self, entities: list[T] | None = None) -> None:
         """
         Constructor creating a new container.
         """

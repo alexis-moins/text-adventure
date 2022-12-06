@@ -5,12 +5,14 @@ from core.entities.character import Character
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.items.item import Item
     from core.fight.statistics import Statistics
+    from core.containers.container import Container
 
 
 class NPC(Character):
 
-    def __init__(self, name: str, description: str, statistics: Statistics, *, is_hostile: bool) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Container[Item], *, is_hostile: bool) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
@@ -21,7 +23,7 @@ class NPC(Character):
         Keyword Arguments:
         is_hostile - whether the NPC is hostile to the player or not
         """
-        super().__init__(name, description, statistics)
+        super().__init__(name, description, statistics, inventory)
         self.is_hostile = is_hostile
 
     def take_turn(self, dungeon: Dungeon) -> bool:
@@ -35,8 +37,8 @@ class NPC(Character):
         true if the actor has executed an action, false otherwise
         """
         if self.is_hostile:
-            damage = self.get_damage()
-            dungeon.player.receive_damage(damage)
+            damage = self.fighter.get_damage()
+            dungeon.player.fighter.receive_damage(damage)
 
             dungeon.add_log(
                 f'The {self.short_description()} deals you YELLOW{damage} damageWHITE.')
