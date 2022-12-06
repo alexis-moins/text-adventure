@@ -6,12 +6,13 @@ from core.controllers.scene_controller import SceneController
 
 if TYPE_CHECKING:
     from core.actions.base_action import BaseAction
+    from core.containers.container import Container
     from core.entities.describable import Describable
 
 
 class SelectionController(SceneController):
 
-    def start(self, models: list[Describable]) -> Describable | None:
+    def start(self, models: Container[Describable]) -> Describable | None:
         """
         Start the controller and ask the user to select exactly one
         item from a list of items.

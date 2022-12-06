@@ -41,7 +41,7 @@ class AttackAction(BaseAction):
         selector = controller.dungeon.factory.selection_controller(
             'Who will be the target of your attack ?')
 
-        selector.start(controller.dungeon.room.npc)
+        selector.start(controller.dungeon.room.entities)
         enemy: NPC = selector.selection
 
         if not enemy:

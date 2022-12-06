@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from core.containers.container import Container
 from core.entities import Describable
+from core.entities.entity import Entity
 
 if TYPE_CHECKING:
     from core.entities.npc import NPC
@@ -12,24 +14,15 @@ class Room(Describable):
     Represents a room, a space containing entities.
     """
 
-    def __init__(self, name: str, description: str, npc: list[NPC] | None = None) -> None:
+    def __init__(self, name: str, description: str, entities: list[Entity] | None = None) -> None:
         """
         """
         super().__init__()
-
         self.name = name
         self.description = description
 
-        self.npc = npc or []
-
+        self.entities: Container[Entity] = Container(entities)
         self.is_boss_room: bool = False
-
-    @property
-    def entities(self) -> list[NPC]:
-        """
-
-        """
-        return self.npc  # + self.items
 
     def short_description(self) -> str:
         return ''
