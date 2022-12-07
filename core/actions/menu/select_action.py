@@ -42,6 +42,7 @@ class SelectAction(BaseAction):
         A boolean
         """
         controller.selection = self.model
+        self.is_selected = not self.is_selected
         return True
 
     def short_description(self) -> str:
@@ -51,5 +52,5 @@ class SelectAction(BaseAction):
         Returns:
         A string
         """
-        char = f'[{"RED*WHITE" if self.is_selected else " "}] ' if self.multi else ''
+        char = f'({"RED*WHITE" if self.is_selected else " "}) ' if self.multi else ''
         return f'{char}the {self.model.short_description().lower()}'

@@ -43,7 +43,7 @@ class Container(Describable):
         Returns:
         A boolean
         """
-        if not entity in self:
+        if not entity in self.get_entities():
             return False
 
         success = self.slots[entity.name].remove(entity, quantity)

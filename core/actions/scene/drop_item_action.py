@@ -42,7 +42,7 @@ class DropItemAction(BaseAction):
         selector = context.dungeon.factory.selection_controller(
             'Which item(s) do you want to drop')
 
-        selector.start(self.inventory.get_slots())
+        selector.start(self.inventory.get_slots(), multi=True)  # type: ignore
 
         return False
 
