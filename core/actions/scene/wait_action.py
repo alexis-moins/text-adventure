@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.views.message import Message
 from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
@@ -14,7 +13,7 @@ class WaitAction(BaseAction):
     Class representing the action of doing nothing.
     """
 
-    def can_be_performed(self, context: Dungeon) -> bool:
+    def can_be_performed(self, _: Dungeon) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -39,9 +38,9 @@ class WaitAction(BaseAction):
         """
         return True
 
-    def __str__(self) -> str:
+    def short_description(self) -> str:
         """
-        Return the string used to render the action.
+        Return the short description of this element.
 
         Returns:
         A string

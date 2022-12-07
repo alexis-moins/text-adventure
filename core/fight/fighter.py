@@ -1,29 +1,25 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
 
 import random
-from core.items.equipable import Equipable
-
-from core.items.weapon import Weapon
-
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from core.items.item import Item
-    from core.fight.equipments import Equipments
-    from core.containers.container import Container
+    from core.containers.inventory import Inventory
 
 
 class Fighter:
 
-    def __init__(self, health: int, magic: int, strength: int, defence: int, inventory: Container[Item]) -> None:
+    def __init__(self, health: int, magic: int, strength: int, defence: int, inventory: Inventory) -> None:
         """
         Constructor creating a Fighter component.
 
         Arguments:
         health - used to take damage
         magic - used to cast spells
+
         strength - used to deal physical damage
         defense - used to mitigate physical damages
+
         inventory - all the possessions of the fighter
         """
         self._health = health
@@ -36,7 +32,6 @@ class Fighter:
         self.defence = defence
 
         self.inventory = inventory
-        self.equipments: Equipments = {}
 
     @property
     def health(self) -> int:
@@ -116,13 +111,7 @@ class Fighter:
         Returns:
         An integer
         """
-        weapon = self.equipments.get('weapon')
+        weapon = self.inventory.equipments.get('weapon')
         weapon_damage = 0 if not weapon else weapon.damage
 
         return max(self.strength + weapon_damage + random.randint(-2, 2), 0)
-
-    def equip(self, item: Equipable) -> None:
-        """
-        Handle or wear the given item.
-        """
-        self.equipments[item.slot] = item

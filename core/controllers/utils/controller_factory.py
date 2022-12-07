@@ -1,8 +1,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from core.actions.base_action import BaseAction
 
 from core.actions.menu.quit_action import QuitAction
 from core.actions.scene.attack_action import AttackAction
+from core.actions.scene.open_inventory_action import OpenInventoryAction
 from core.actions.scene.wait_action import WaitAction
 from core.controllers.room_controller import RoomController
 
@@ -26,25 +28,42 @@ class ControllerFactory:
         """
         Constructor creating the controller factory.
         """
-        self._dungeon = dungeon
+        self.dungeon = dungeon
 
     def room_controller(self, room: Room) -> SceneController:
         """
         Return a new room controller.
+
+        Argument:
+        room - the room to be displayed
         """
-        return RoomController(self._dungeon, RoomScenery(self._dungeon, room),
-                              [
-            WaitAction(self._dungeon),
-            AttackAction(self._dungeon)
-        ],
-            {
-            'q': QuitAction(self._dungeon)
-        })
+        actions = [
+            WaitAction(),
+            AttackAction(self.dungeon.player.fighter)
+        ]
+
+        pinned = {
+            'i': OpenInventoryAction(self.dungeon.player.fighter.inventory),
+            'q': QuitAction()
+        }
+
+        return RoomController(self.dungeon, RoomScenery(self.dungeon, room), actions, pinned)
 
     def selection_controller(self, prompt: str, *, multi: bool = False) -> SelectionController:
         """
 
         """
-        return SelectionController(self._dungeon, SelectionMenu(self._dungeon, prompt),
+        return SelectionController(self.dungeon, SelectionMenu(self.dungeon, prompt),
                                    [],
-                                   {'q': QuitAction(self._dungeon)})
+                                   {'q': QuitAction('Cancel')})
+
+    def inventory_controller(self) -> SceneController:
+        """
+        Return a new controller over an inventory.
+        """
+        actions = []
+        pinned = {
+            'q': QuitAction()
+        }
+
+        return SceneController(self.dungeon, InventoryView(), actions, pinned)

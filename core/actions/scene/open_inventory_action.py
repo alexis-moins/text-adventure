@@ -5,24 +5,21 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.containers.inventory import Inventory
     from core.controllers.scene_controller import SceneController
 
 
-class QuitAction(BaseAction):
+class OpenInventoryAction(BaseAction):
     """
-    Class representing the action of leaving the current controller.
+    Class representing the action of opening the inventory menu.
     """
 
-    def __init__(self, text: str = 'quit') -> None:
+    def __init__(self, inventory: Inventory) -> None:
         """
-        Constructor creating a new action of quitting the current
-        controller.
 
-        Argument:
-        text - the text displayed
         """
         super().__init__()
-        self.text = text
+        self.inventory = inventory
 
     def can_be_performed(self, _: Dungeon) -> bool:
         """
@@ -36,7 +33,7 @@ class QuitAction(BaseAction):
         """
         return True
 
-    def execute(self, controller: SceneController) -> bool:
+    def execute(self, context: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -47,7 +44,7 @@ class QuitAction(BaseAction):
         Returns:
         A boolean
         """
-        controller.is_running = False
+        context.dungeon.factory.inventory_controller().start()
         return False
 
     def short_description(self) -> str:
@@ -57,4 +54,4 @@ class QuitAction(BaseAction):
         Returns:
         A string
         """
-        return self.text
+        return self.b.add(f'inventory {self.inventory.short_description()}').build()

@@ -1,60 +1,94 @@
 from __future__ import annotations
-from typing import Generic, Iterator, TypeVar
+from typing import TYPE_CHECKING, Iterator
 
-T = TypeVar('T')
+from core.containers.slot import Slot
+from core.entities.describable import Describable
+
+if TYPE_CHECKING:
+    from core.entities.entity import Entity
 
 
-class Container(Generic[T]):
+class Container(Describable):
 
-    def __init__(self, entities: list[T] | None = None) -> None:
+    def __init__(self, entities: list[Entity]) -> None:
         """
         Constructor creating a new container.
         """
-        self._entities = entities or []
+        super().__init__()
+        self.slots: dict[str, Slot] = {}
 
-    def add(self, entity: T) -> None:
+        for entity in entities:
+            self.add(entity)
+
+    def add(self, entity: Entity) -> None:
         """
         Add an entity to the container.
         """
-        self._entities.append(entity)
+        if entity.name in self.slots:
+            self.slots[entity.name].add(entity)
+        else:
+            self.slots[entity.name] = Slot([entity])
 
-    def find(self, name: str) -> T | None:
+    def remove(self, entity: Entity, *, quantity: int = 1) -> bool:
         """
-        Return the instance of T matching the given name.
+        Remove an entity from the container. Return true if the
+        entity was successfully removed, otherwise return false.
 
         Argument:
-        name - the name of the entity you want to find
+        entity - the entity to be removed from the container
+
+        Keyword Argument:
+        quantity - the number of entities to remove
 
         Returns:
-        An instance of T or None
+        A boolean
         """
-        entities = [entity for entity in self._entities if name in entity.name]
-        return entities[0]
+        if not entity in self:
+            return False
 
-    def remove(self, entity: T) -> None:
+        success = self.slots[entity.name].remove(entity, quantity)
+
+        if not success:
+            return False
+
+        if not self.slots[entity.name]:
+            del self.slots[entity.name]
+
+        return True
+
+    def short_description(self) -> str:
         """
+        Return the short description of this element.
 
+        Returns:
+        A string
         """
-        self._entities.remove(entity)
+        return self.b.add('TEST').build()
 
-    def take(self, name: str) -> T | None:
-        """"""
-        entity = self.find(name)
+    def long_description(self) -> str:
+        """
+        Return the long description of this element.
 
-        if not entity:
-            return None
+        Returns:
+        A string
+        """
+        for slot in self.slots.values():
+            self.b.add(slot.short_description())
 
-        self._entities.remove(entity)
-        return entity
+        return self.b.build()
 
-    def __iter__(self) -> Iterator[T]:
+    def __iter__(self) -> Iterator[Entity]:
         """
         Return an iterator over the entities of the container.
 
         Returns:
         An iterator of entities
         """
-        return iter(self._entities)
+        entities = []
+        for slot in self.slots.values():
+            entities.extend(slot.entities)
+
+        return iter(entities)
 
     def __len__(self) -> int:
         """
@@ -63,7 +97,7 @@ class Container(Generic[T]):
         Returns:
         An integer
         """
-        return len(self._entities)
+        return len(self.slots)
 
     def __bool__(self) -> bool:
         """
@@ -73,4 +107,4 @@ class Container(Generic[T]):
         Returns:
         A boolean
         """
-        return bool(self._entities)
+        return bool(self.slots)

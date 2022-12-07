@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from core.containers.container import Container
 from core.entities import Describable
-from core.entities.entity import Entity
 
 if TYPE_CHECKING:
     from core.entities.npc import NPC
@@ -21,7 +20,7 @@ class Room(Describable):
         self.name = name
         self.description = description
 
-        self.npc: Container[NPC] = Container(npc)
+        self.npc = Container(npc or [])  # type: ignore
         self.is_boss_room: bool = False
 
     def short_description(self) -> str:
@@ -44,8 +43,5 @@ class Room(Describable):
         verb = 'is' if len(self.npc) == 1 else 'are'
         self.b.add(f'Around you {verb}:')
 
-        for entity in self.npc:
-            self.b.add(
-                f'BLUEx1WHITE {entity.short_description()}')
-
+        self.b.add(self.npc.long_description())
         return self.b.build()

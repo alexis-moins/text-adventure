@@ -3,33 +3,14 @@ from typing import TYPE_CHECKING
 
 from abc import ABC
 from abc import abstractmethod
-
-from core.utils.strings import StringBuilder
+from core.entities.describable import Describable
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.controllers.controller import Controller
 
 
-class BaseAction(ABC):
-
-    def __init__(self, dungeon: Dungeon, *, quiet: bool = False, pass_turn: bool = True) -> None:
-        """
-        Constructor creating an abstract action with its actor.
-
-        Argument:
-        dungeon -
-
-        Keyword Arguments:
-        quiet - whether the action should display it messages
-        pass_turn - whether the action consumes a turn or not upon success
-        """
-        self.dungeon = dungeon
-
-        self.quiet = quiet
-        self.pass_turn = pass_turn
-
-        self.b = StringBuilder()
+class BaseAction(Describable, ABC):
 
     @abstractmethod
     def can_be_performed(self, context: Dungeon) -> bool:
@@ -58,12 +39,11 @@ class BaseAction(ABC):
         """
         pass
 
-    @abstractmethod
-    def __str__(self) -> str:
+    def long_description(self) -> str:
         """
-        Return the string used to render the action.
+        Return the long description of this element.
 
         Returns:
         A string
         """
-        pass
+        return 'NOT IMPLEMENTED'

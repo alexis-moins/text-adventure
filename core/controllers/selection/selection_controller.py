@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class SelectionController(SceneController):
 
-    def start(self, models: Container[Describable]) -> Describable | None:
+    def start(self, models: Container) -> Describable | None:
         """
         Start the controller and ask the user to select exactly one
         item from a list of items.
@@ -23,7 +23,7 @@ class SelectionController(SceneController):
         self.selection: Describable | None = None
 
         self.actions: list[BaseAction] = [
-            SelectAction(self.dungeon, model) for model in models]
+            SelectAction(model) for model in models]
 
         super().start()
 

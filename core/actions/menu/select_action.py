@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class SelectAction(BaseAction):
 
-    def __init__(self, dungeon: Dungeon, model: Describable, *, multi: bool = False, quiet: bool = False, pass_turn: bool = False) -> None:
+    def __init__(self, model: Describable, *, multi: bool = False) -> None:
         """
         Constructor creating an abstract action with its actor.
 
@@ -21,7 +21,7 @@ class SelectAction(BaseAction):
         Keyword Arguments:
         multi - whether the UI if that of a multi selection
         """
-        super().__init__(dungeon, quiet=quiet, pass_turn=pass_turn)
+        super().__init__()
         self.is_selected = False
 
         self.model = model
@@ -44,9 +44,9 @@ class SelectAction(BaseAction):
         controller.selection = self.model
         return True
 
-    def __str__(self) -> str:
+    def short_description(self) -> str:
         """
-        Return the string used to render the action.
+        Return the short description of this element.
 
         Returns:
         A string

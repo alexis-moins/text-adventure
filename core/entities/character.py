@@ -1,21 +1,19 @@
 from __future__ import annotations
-
-from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
+from abc import ABC, abstractmethod
 from core.fight.fighter import Fighter
 from core.entities.entity import Entity
 
 if TYPE_CHECKING:
-    from core.items.item import Item
     from core.dungeon import Dungeon
     from core.fight.statistics import Statistics
-    from core.containers.container import Container
+    from core.containers.inventory import Inventory
 
 
 class Character(Entity, ABC):
 
-    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Container[Item]) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory) -> None:
         """
         Constructor creating a new abstract character.
 
