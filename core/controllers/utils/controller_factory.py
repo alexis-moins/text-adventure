@@ -4,12 +4,14 @@ from core.actions.base_action import BaseAction
 
 from core.actions.menu.quit_action import QuitAction
 from core.actions.scene.attack_action import AttackAction
+from core.actions.scene.drop_item_action import DropItemAction
 from core.actions.scene.open_inventory_action import OpenInventoryAction
 from core.actions.scene.wait_action import WaitAction
 from core.controllers.room_controller import RoomController
 
 from core.controllers.scene_controller import SceneController
 from core.controllers.selection.selection_controller import SelectionController
+from core.views.sceneries.inventory_scenery import InventoryView
 
 from core.views.sceneries.room_scenery import RoomScenery
 from core.views.selection.selection_view import SelectionMenu
@@ -61,9 +63,12 @@ class ControllerFactory:
         """
         Return a new controller over an inventory.
         """
-        actions = []
+        actions = [
+            DropItemAction(self.dungeon.player.fighter.inventory)
+        ]
+
         pinned = {
-            'q': QuitAction()
+            'q': QuitAction('Close')
         }
 
-        return SceneController(self.dungeon, InventoryView(), actions, pinned)
+        return SceneController(self.dungeon, InventoryView(self.dungeon, self.dungeon.player.fighter), actions, pinned)

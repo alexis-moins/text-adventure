@@ -38,3 +38,4 @@ class Inventory(Container):
         """
         if isinstance(item, Equipable):
             self.equipments[item.slot] = item
+            item.equiped = True

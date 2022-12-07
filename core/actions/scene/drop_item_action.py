@@ -9,22 +9,14 @@ if TYPE_CHECKING:
     from core.controllers.scene_controller import SceneController
 
 
-class OpenInventoryAction(BaseAction):
-    """
-    Class representing the action of opening the inventory menu.
-    """
+class DropItemAction(BaseAction):
 
     def __init__(self, inventory: Inventory) -> None:
-        """
-        Constructor creating a new action to open an inventory.
-
-        Argument:
-        inventory - the inventory to open
-        """
+        """"""
         super().__init__()
         self.inventory = inventory
 
-    def can_be_performed(self, _: Dungeon) -> bool:
+    def can_be_performed(self, context: Dungeon) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -34,7 +26,7 @@ class OpenInventoryAction(BaseAction):
         Returns:
         a boolean
         """
-        return True
+        return bool(context.player.fighter.inventory)
 
     def execute(self, context: SceneController) -> bool:
         """
@@ -47,7 +39,11 @@ class OpenInventoryAction(BaseAction):
         Returns:
         A boolean
         """
-        context.dungeon.factory.inventory_controller().start()
+        selector = context.dungeon.factory.selection_controller(
+            'Which item(s) do you want to drop')
+
+        selector.start(self.inventory.get_slots())
+
         return False
 
     def short_description(self) -> str:
@@ -57,4 +53,4 @@ class OpenInventoryAction(BaseAction):
         Returns:
         A string
         """
-        return self.b.add(f'Inventory {self.inventory.short_description()}').build()
+        return self.b.add(f'Drop an item').build()

@@ -22,7 +22,8 @@ class Weapon(Equipable):
         Returns:
         A string
         """
-        return self.b.add(f'{self.name} PURPLE[{self.damage} damage]WHITE').build()
+        held = 'BLUE(held)WHITE' if self.equiped else ''
+        return self.b.add(f'{self.name} MAGENTA[{self.damage} damage]WHITE {held}').build()
 
     def long_description(self) -> str:
         """

@@ -52,8 +52,9 @@ class AttackAction(BaseAction):
         selector = controller.dungeon.factory.selection_controller(
             'Who will be the target of your attack ?')
 
-        selector.start(controller.dungeon.room.npc)
-        enemy: NPC = selector.selection
+        # type: ignore
+        selector.start(controller.dungeon.room.npc.get_entities())
+        enemy: NPC = selector.selection  # type: ignore
 
         if not enemy:
             return False
@@ -77,4 +78,4 @@ class AttackAction(BaseAction):
         weapon = self.fighter.inventory.equipments.get('weapon')
         weapon_name = 'bare hands' if not weapon else weapon.name
 
-        return self.b.add(f'attack YELLOW(with your {weapon_name})WHITE').build()
+        return self.b.add(f'Attack YELLOW(with your {weapon_name})WHITE').build()

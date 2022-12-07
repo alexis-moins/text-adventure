@@ -13,7 +13,7 @@ class QuitAction(BaseAction):
     Class representing the action of leaving the current controller.
     """
 
-    def __init__(self, text: str = 'quit') -> None:
+    def __init__(self, text: str = 'Quit') -> None:
         """
         Constructor creating a new action of quitting the current
         controller.

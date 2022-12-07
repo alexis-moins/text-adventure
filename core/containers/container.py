@@ -77,18 +77,27 @@ class Container(Describable):
 
         return self.b.build()
 
-    def __iter__(self) -> Iterator[Entity]:
+    def get_entities(self) -> list[Entity]:
         """
-        Return an iterator over the entities of the container.
+        Return the list of the entities in the container.
 
         Returns:
-        An iterator of entities
+        A list of entities
         """
         entities = []
         for slot in self.slots.values():
             entities.extend(slot.entities)
 
-        return iter(entities)
+        return entities
+
+    def get_slots(self) -> list[Slot]:
+        """
+        Return an iterator over the slots of the container.
+
+        Returns:
+        An iterator of Slots
+        """
+        return list(self.slots.values())
 
     def __len__(self) -> int:
         """

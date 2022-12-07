@@ -45,4 +45,4 @@ class WaitAction(BaseAction):
         Returns:
         A string
         """
-        return 'wait'
+        return 'Wait'
