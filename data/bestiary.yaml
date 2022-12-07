@@ -13,4 +13,5 @@ grey-wolf:
     is_hostile: true
 
     statistics: {health: 10, magic: 2, strength: 3, defence: 3}
-    inventory: []
+    inventory:
+      - iron sword

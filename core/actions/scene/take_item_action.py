@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from core.controllers.scene_controller import SceneController
 
 
-class DropItemAction(BaseAction):
+class TakeItemAction(BaseAction):
 
     def __init__(self, inventory: Inventory) -> None:
         """
@@ -22,7 +22,7 @@ class DropItemAction(BaseAction):
         super().__init__()
         self.inventory = inventory
 
-    def can_be_performed(self, _: Dungeon) -> bool:
+    def can_be_performed(self, context: Dungeon) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -32,7 +32,7 @@ class DropItemAction(BaseAction):
         Returns:
         a boolean
         """
-        return True
+        return bool(context.room.items)
 
     def execute(self, context: SceneController) -> bool:
         """
@@ -59,4 +59,4 @@ class DropItemAction(BaseAction):
         Returns:
         A string
         """
-        return self.b.add(f'Drop an item').build()
+        return self.b.add(f'Take an item').build()

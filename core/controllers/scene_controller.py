@@ -36,7 +36,7 @@ class SceneController(ABC, Controller):
         """
         Start the controller.
         """
-        while self.is_running and self.dungeon.player.fighter.is_alive():
+        while self.is_running and self.dungeon.player.is_alive():
             actions, pinned = self.filter_actions()
 
             self.view.show(actions, pinned)

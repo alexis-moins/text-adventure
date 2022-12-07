@@ -52,7 +52,6 @@ class AttackAction(BaseAction):
         selector = controller.dungeon.factory.selection_controller(
             'Who will be the target of your attack ?')
 
-        # type: ignore
         selector.start(controller.dungeon.room.npc.get_entities())
         enemy: NPC = selector.selection  # type: ignore
 
@@ -60,7 +59,7 @@ class AttackAction(BaseAction):
             return False
 
         damage = self.fighter.get_damage()
-        enemy.fighter.receive_damage(damage)
+        enemy.receive_damage(damage)
 
         message = Message(controller.dungeon,
                           f'You deal YELLOW{damage} damageWHITE to the {enemy.short_description()}.')

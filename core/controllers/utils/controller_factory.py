@@ -1,11 +1,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from core.actions.base_action import BaseAction
 
 from core.actions.menu.quit_action import QuitAction
 from core.actions.scene.attack_action import AttackAction
 from core.actions.scene.drop_item_action import DropItemAction
 from core.actions.scene.open_inventory_action import OpenInventoryAction
+from core.actions.scene.take_item_action import TakeItemAction
 from core.actions.scene.wait_action import WaitAction
 from core.controllers.room_controller import RoomController
 
@@ -41,11 +41,12 @@ class ControllerFactory:
         """
         actions = [
             WaitAction(),
-            AttackAction(self.dungeon.player.fighter)
+            AttackAction(self.dungeon.player),
+            TakeItemAction(self.dungeon.player.inventory)
         ]
 
         pinned = {
-            'i': OpenInventoryAction(self.dungeon.player.fighter.inventory),
+            'i': OpenInventoryAction(self.dungeon.player.inventory),
             'q': QuitAction()
         }
 
@@ -64,11 +65,11 @@ class ControllerFactory:
         Return a new controller over an inventory.
         """
         actions = [
-            DropItemAction(self.dungeon.player.fighter.inventory)
+            DropItemAction(self.dungeon.player.inventory)
         ]
 
         pinned = {
             'q': QuitAction('Close')
         }
 
-        return SceneController(self.dungeon, InventoryView(self.dungeon, self.dungeon.player.fighter), actions, pinned)
+        return SceneController(self.dungeon, InventoryView(self.dungeon, self.dungeon.player), actions, pinned)

@@ -24,7 +24,7 @@ class OpenInventoryAction(BaseAction):
         super().__init__()
         self.inventory = inventory
 
-    def can_be_performed(self, _: Dungeon) -> bool:
+    def can_be_performed(self, context: Dungeon) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -34,7 +34,7 @@ class OpenInventoryAction(BaseAction):
         Returns:
         a boolean
         """
-        return True
+        return bool(context.player.inventory)
 
     def execute(self, context: SceneController) -> bool:
         """
