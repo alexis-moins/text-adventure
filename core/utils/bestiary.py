@@ -1,8 +1,7 @@
 from yaml import safe_load
-from core.containers.container import Container
+from core.containers.inventory import Inventory
 
 from core.entities.npc import NPC
-from core.items.item import Item
 from core.utils.armoury import Armoury
 
 
@@ -19,11 +18,11 @@ class Bestiary:
         self.armoury = Armoury()
         self.load('data/bestiary.yaml')
 
-    def make_inventory(self, items: list[str]) -> Container[Item]:
+    def make_inventory(self, items: list[str]) -> Inventory:
         """
 
         """
-        return Container([self.armoury.take(item) for item in items])
+        return Inventory([self.armoury.take(item) for item in items])
 
     def summon(self, creature: str) -> NPC:
         """

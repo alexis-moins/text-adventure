@@ -1,42 +1,36 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
 
 import random
-from core.items.equipable import Equipable
+from typing import TYPE_CHECKING
 
-from core.items.weapon import Weapon
-
+from core.entities.character import Character
+from core.fight.statistics import Statistics
 
 if TYPE_CHECKING:
-    from core.items.item import Item
-    from core.fight.equipments import Equipments
-    from core.containers.container import Container
+    from core.containers.inventory import Inventory
 
 
-class Fighter:
+class Fighter(Character):
 
-    def __init__(self, health: int, magic: int, strength: int, defence: int, inventory: Container[Item]) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory) -> None:
         """
-        Constructor creating a Fighter component.
+        Constructor creating a character with the ability to fight.
 
         Arguments:
-        health - used to take damage
-        magic - used to cast spells
-        strength - used to deal physical damage
-        defense - used to mitigate physical damages
         inventory - all the possessions of the fighter
         """
-        self._health = health
-        self.max_health = health
+        super().__init__(name, description)
 
-        self._magic = magic
-        self.max_magic = magic
+        self._health = statistics['health']
+        self.max_health = statistics['health']
 
-        self.strength = strength
-        self.defence = defence
+        self._magic = statistics['magic']
+        self.max_magic = statistics['magic']
+
+        self.strength = statistics['strength']
+        self.defence = statistics['defence']
 
         self.inventory = inventory
-        self.equipments: Equipments = {}
 
     @property
     def health(self) -> int:
@@ -116,13 +110,7 @@ class Fighter:
         Returns:
         An integer
         """
-        weapon = self.equipments.get('weapon')
+        weapon = self.inventory.equipments.get('weapon')
         weapon_damage = 0 if not weapon else weapon.damage
 
         return max(self.strength + weapon_damage + random.randint(-2, 2), 0)
-
-    def equip(self, item: Equipable) -> None:
-        """
-        Handle or wear the given item.
-        """
-        self.equipments[item.slot] = item

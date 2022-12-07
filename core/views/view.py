@@ -52,7 +52,7 @@ class View(ABC):
         """
         Display the status bar of the player.
         """
-        player = self.dungeon.player.fighter
+        player = self.dungeon.player
         health = self._get_bar(player.health, player.max_health, 'RED', '=')
         magic = self._get_bar(player.magic, player.max_magic, 'GREEN', '=')
 
@@ -80,16 +80,16 @@ class View(ABC):
 
         if self.pinned_first:
             for key, action in pinned.items():
-                self.b.add(f'[GREEN{key}WHITE] {action}')
+                self.b.add(f'[GREEN{key}WHITE] {action.short_description()}')
             self.b.new_line()
 
         for index, action in enumerate(actions):
-            self.b.add(f'[CYAN{index}WHITE] {action}')
+            self.b.add(f'[CYAN{index}WHITE] {action.short_description()}')
 
         if not self.pinned_first:
             self.b.new_line()
             for key, action in pinned.items():
-                self.b.add(f'[GREEN{key}WHITE] {action}')
+                self.b.add(f'[GREEN{key}WHITE] {action.short_description()}')
 
     def show(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """

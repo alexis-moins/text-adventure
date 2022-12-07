@@ -1,24 +1,26 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.entities.character import Character
+from core.fight.fighter import Fighter
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.items.item import Item
     from core.fight.statistics import Statistics
-    from core.containers.container import Container
+    from core.containers.inventory import Inventory
 
 
-class NPC(Character):
+class NPC(Fighter):
 
-    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Container[Item], *, is_hostile: bool) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory, *, is_hostile: bool) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
         Arguments:
         name - the name of the NPC
         description - the description of the NPC
+
+        statistics - the statistics of the NPC
+        inventory - the possessions of the NPC
 
         Keyword Arguments:
         is_hostile - whether the NPC is hostile to the player or not
@@ -37,8 +39,8 @@ class NPC(Character):
         true if the actor has executed an action, false otherwise
         """
         if self.is_hostile:
-            damage = self.fighter.get_damage()
-            dungeon.player.fighter.receive_damage(damage)
+            damage = self.get_damage()
+            dungeon.player.receive_damage(damage)
 
             dungeon.add_log(
                 f'The {self.short_description()} deals you YELLOW{damage} damageWHITE.')

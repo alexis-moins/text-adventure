@@ -7,6 +7,7 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.fight.fighter import Fighter
     from core.controllers.scene_controller import SceneController
 
 
@@ -14,6 +15,16 @@ class AttackAction(BaseAction):
     """
     Class representing the action of attacking an entity in the room.
     """
+
+    def __init__(self, fighter: Fighter) -> None:
+        """
+        Constructor creating a new attack action.
+
+        Argument:
+        fighter - the actor making the action
+        """
+        super().__init__()
+        self.fighter = fighter
 
     def can_be_performed(self, context: Dungeon) -> bool:
         """
@@ -41,14 +52,14 @@ class AttackAction(BaseAction):
         selector = controller.dungeon.factory.selection_controller(
             'Who will be the target of your attack ?')
 
-        selector.start(controller.dungeon.room.npc)
-        enemy: NPC = selector.selection
+        selector.start(controller.dungeon.room.npc.get_entities())
+        enemy: NPC = selector.selection  # type: ignore
 
         if not enemy:
             return False
 
-        damage = controller.dungeon.player.fighter.get_damage()
-        enemy.fighter.receive_damage(damage)
+        damage = self.fighter.get_damage()
+        enemy.receive_damage(damage)
 
         message = Message(controller.dungeon,
                           f'You deal YELLOW{damage} damageWHITE to the {enemy.short_description()}.')
@@ -56,14 +67,14 @@ class AttackAction(BaseAction):
         message.show()
         return True
 
-    def __str__(self) -> str:
+    def short_description(self) -> str:
         """
-        Return the string used to render the action.
+        Return the short description of this element.
 
         Returns:
         A string
         """
-        weapon = self.dungeon.player.fighter.equipments.get('weapon')
+        weapon = self.fighter.inventory.equipments.get('weapon')
         weapon_name = 'bare hands' if not weapon else weapon.name
 
-        return self.b.add(f'attack YELLOW(with your {weapon_name})WHITE').build()
+        return self.b.add(f'Attack YELLOW(with your {weapon_name})WHITE').build()

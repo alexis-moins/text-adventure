@@ -5,15 +5,26 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.containers.inventory import Inventory
     from core.controllers.scene_controller import SceneController
 
 
-class WaitAction(BaseAction):
+class OpenInventoryAction(BaseAction):
     """
-    Class representing the action of doing nothing.
+    Class representing the action of opening the inventory menu.
     """
 
-    def can_be_performed(self, _: Dungeon) -> bool:
+    def __init__(self, inventory: Inventory) -> None:
+        """
+        Constructor creating a new action to open an inventory.
+
+        Argument:
+        inventory - the inventory to open
+        """
+        super().__init__()
+        self.inventory = inventory
+
+    def can_be_performed(self, context: Dungeon) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -23,9 +34,9 @@ class WaitAction(BaseAction):
         Returns:
         a boolean
         """
-        return True
+        return bool(context.player.inventory)
 
-    def execute(self, _: SceneController) -> bool:
+    def execute(self, context: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -36,7 +47,8 @@ class WaitAction(BaseAction):
         Returns:
         A boolean
         """
-        return True
+        context.dungeon.factory.inventory_controller().start()
+        return False
 
     def short_description(self) -> str:
         """
@@ -45,4 +57,4 @@ class WaitAction(BaseAction):
         Returns:
         A string
         """
-        return 'Wait'
+        return self.b.add(f'Inventory {self.inventory.short_description()}').build()

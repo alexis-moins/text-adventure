@@ -27,14 +27,24 @@ class RoomController(SceneController):
 
         """
         self.dungeon.room.npc.remove(npc)
-        # TODO: add stuff to room and add corpse
+        self.dungeon.add_log(f'\nThe {npc.short_description()} is dead.')
+
+        # TODO: would be better to work directly with slots here
+        # in case we have 64+ items in a slot.
+        for item in npc.inventory.get_entities():
+            self.dungeon.room.items.add(item)
+
+        self.dungeon.add_log(
+            '\nIt YELLOWdropped somethingWHITE on the ground:')
+        self.dungeon.add_log(npc.inventory.long_description())
 
     def on_next_turn(self) -> None:
         """
         Method called whenever the end of turn is reached.
         """
-        for npc in self.dungeon.room.npc:
-            if not npc.fighter.is_alive():
+        for npc in self.dungeon.room.npc.get_entities():
+
+            if not npc.is_alive():
                 self.loot(npc)
                 continue
 

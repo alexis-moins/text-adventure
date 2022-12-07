@@ -5,13 +5,22 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.containers.inventory import Inventory
     from core.controllers.scene_controller import SceneController
 
 
-class WaitAction(BaseAction):
-    """
-    Class representing the action of doing nothing.
-    """
+class DropItemAction(BaseAction):
+
+    def __init__(self, inventory: Inventory) -> None:
+        """
+        Constructor creating a new action of dropping one (or more)
+        items in the room.
+
+        Argument:
+        inventory - the inventory to drop from
+        """
+        super().__init__()
+        self.inventory = inventory
 
     def can_be_performed(self, _: Dungeon) -> bool:
         """
@@ -25,7 +34,7 @@ class WaitAction(BaseAction):
         """
         return True
 
-    def execute(self, _: SceneController) -> bool:
+    def execute(self, context: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -36,7 +45,12 @@ class WaitAction(BaseAction):
         Returns:
         A boolean
         """
-        return True
+        selector = context.dungeon.factory.selection_controller(
+            'Which item(s) do you want to drop')
+
+        selector.start(self.inventory.get_slots(), multi=True)  # type: ignore
+
+        return False
 
     def short_description(self) -> str:
         """
@@ -45,4 +59,4 @@ class WaitAction(BaseAction):
         Returns:
         A string
         """
-        return 'Wait'
+        return self.b.add(f'Drop an item').build()
