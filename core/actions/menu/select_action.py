@@ -53,4 +53,4 @@ class SelectAction(BaseAction):
         A string
         """
         char = f'({"RED*WHITE" if self.is_selected else " "}) ' if self.multi else ''
-        return f'{char}the {self.model.short_description().lower()}'
+        return f'{char}{self.model.short_description().lower()}'

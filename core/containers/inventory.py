@@ -37,7 +37,7 @@ class Inventory(Container):
         A string
         """
         for slot in self.get_slots():
-            self.b.add(slot.short_description())
+            self.b.add(f'- {slot.short_description()}')
 
         return self.b.build()
 

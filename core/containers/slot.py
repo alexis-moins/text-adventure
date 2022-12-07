@@ -14,8 +14,11 @@ class Slot(Describable):
         Constructor creating a new slot of up to 20 entities.
         """
         super().__init__()
-        self.entities = entities
+        self.entities = []
         self.size = 20
+
+        for entity in entities:
+            self.add(entity)
 
     def is_full(self) -> bool:
         """
@@ -26,12 +29,21 @@ class Slot(Describable):
         """
         return len(self.entities) == self.size
 
+    def is_empty(self) -> bool:
+        """
+
+        """
+        return len(self.entities) == 0
+
     def add(self, entity: Entity) -> bool:
         """
 
         """
         if self.is_full():
             return False
+
+        if self.is_empty():
+            self.name = entity.name
 
         self.entities.append(entity)
         return True
@@ -52,7 +64,7 @@ class Slot(Describable):
         A string
         """
         entity = self.entities[0]
-        return self.b.add(f'- CYANx{len(self)}WHITE {entity.short_description()}').build()
+        return self.b.add(f'CYANx{len(self)}WHITE {entity.short_description()}').build()
 
     def long_description(self) -> str:
         """

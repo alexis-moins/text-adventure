@@ -5,6 +5,7 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.containers.slot import Slot
     from core.containers.inventory import Inventory
     from core.controllers.scene_controller import SceneController
 
@@ -46,11 +47,18 @@ class TakeItemAction(BaseAction):
         A boolean
         """
         selector = context.dungeon.factory.selection_controller(
-            'Which item(s) do you want to drop')
+            'Which item(s) do you want to take :')
 
-        selector.start(self.inventory.get_slots(), multi=True)  # type: ignore
+        selector.start(context.dungeon.room.items.get_slots())  # type: ignore
+        slot = selector.selection
 
-        return False
+        if not slot:
+            return False
+
+        context.dungeon.player.inventory.add_slot(slot)
+        context.dungeon.room.items.remove_slot(slot)
+
+        return True
 
     def short_description(self) -> str:
         """

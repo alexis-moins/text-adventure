@@ -29,6 +29,18 @@ class Container(Describable):
         else:
             self.slots[entity.name] = Slot([entity])
 
+    def add_slot(self, slot: Slot) -> None:
+        """
+
+        """
+        self.slots[slot.name] = slot
+
+    def remove_slot(self, slot: Slot) -> None:
+        """
+
+        """
+        del self.slots[slot.name]
+
     def remove(self, entity: Entity, *, quantity: int = 1) -> bool:
         """
         Remove an entity from the container. Return true if the
@@ -73,7 +85,7 @@ class Container(Describable):
         A string
         """
         for slot in self.slots.values():
-            self.b.add(slot.short_description())
+            self.b.add(f'- {slot.short_description()}')
 
         return self.b.build()
 
