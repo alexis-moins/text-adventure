@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.controllers.utils.controller_factory import ControllerFactory
+from core.entities.npc import NPC
 from core.utils.strings import StringBuilder
 from core.views.message import Message
 
@@ -43,3 +44,17 @@ class Dungeon:
         if not self.b.is_empty():
             message = Message(self, self.b.build())
             message.show()
+
+    def next_turn(self) -> None:
+        """"""
+        npcs: list[NPC] = self.room.npc.get_entities()  # type: ignore
+
+        for npc in npcs:
+
+            if not npc.is_alive():
+                npc.die(self)
+                continue
+
+            npc.take_turn(self)
+
+        self.show_logs()

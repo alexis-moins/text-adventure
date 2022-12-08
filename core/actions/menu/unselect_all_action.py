@@ -39,7 +39,7 @@ class UnselectAllAction(BaseAction):
                 action.is_selected = False
                 controller.selection.remove(action.model)
 
-        return True
+        return False
 
     def short_description(self) -> str:
         """

@@ -9,10 +9,13 @@ room = Room('Wind Meadows YELLOW<East>WHITE',
             'The east part of the wind meadows is more hilly than the other 3 parts. Wolves love to stay there.')
 
 wolf_one = Bestiary().summon('grey wolf')
-iron_sword = Armoury().take('iron sword')
+iron_swords = [Armoury().take('iron sword') for _ in range(3)]
+
 
 room.npc.add(wolf_one)
-room.items.add(iron_sword)
+
+for sword in iron_swords:
+    room.items.add(sword)
 
 player = Player()
 dungeon = Dungeon(player, room)

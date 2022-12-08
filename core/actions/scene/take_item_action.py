@@ -70,4 +70,4 @@ class TakeItemAction(BaseAction):
         Returns:
         A string
         """
-        return self.b.add(f'Take an item').build()
+        return self.b.add(f'Take').build()

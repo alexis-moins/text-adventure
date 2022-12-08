@@ -34,7 +34,7 @@ class ValidateAction(BaseAction):
         A boolean
         """
         controller.is_running = False
-        return True
+        return False
 
     def short_description(self) -> str:
         """

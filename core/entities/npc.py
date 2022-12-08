@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.fight.fighter import Fighter
+from core.room import Room
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -46,6 +47,20 @@ class NPC(Fighter):
                 f'\nThe {self.name} deals you YELLOW{damage} damageWHITE.')
 
         return True
+
+    def die(self, dungeon: Dungeon) -> None:
+        """
+
+        """
+        dungeon.room.npc.remove(self)
+        dungeon.add_log(f'\nThe {self.name} is REDdead!WHITE')
+
+        for slot in self.inventory.get_slots():
+            dungeon.room.items.add_slot(slot)
+
+        dungeon.add_log(
+            '\nIt dropped something on the ground :')
+        dungeon.add_log(self.inventory.long_description())
 
     def short_description(self) -> str:
         """

@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
 from core.controllers.controller import Controller
+from core.entities.npc import NPC
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -26,7 +27,7 @@ class SceneController(Controller):
         Method called whenever the end of turn is reached.
         Does nothing by default.
         """
-        pass
+        self.dungeon.next_turn()
 
     def on_quit(self) -> None:
         """

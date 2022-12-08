@@ -13,7 +13,6 @@ from core.actions.scene.inventory.drink_potion import DrinkPotionAction
 from core.actions.scene.open_inventory_action import OpenInventoryAction
 from core.actions.scene.take_item_action import TakeItemAction
 from core.actions.scene.wait_action import WaitAction
-from core.controllers.room_controller import RoomController
 
 from core.controllers.scene_controller import SceneController
 from core.controllers.selection.multi_selection_controller import MultiSelectionController
@@ -57,7 +56,7 @@ class ControllerFactory:
             'q': QuitAction()
         }
 
-        return RoomController(self.dungeon, RoomScenery(self.dungeon, room), actions, pinned)
+        return SceneController(self.dungeon, RoomScenery(self.dungeon, room), actions, pinned)
 
     def selection_controller(self, prompt: str) -> SelectionController:
         """

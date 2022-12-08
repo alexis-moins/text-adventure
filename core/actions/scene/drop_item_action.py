@@ -69,4 +69,4 @@ class DropItemAction(BaseAction):
         Returns:
         A string
         """
-        return self.b.add(f'Drop an item').build()
+        return self.b.add(f'Drop').build()

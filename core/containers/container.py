@@ -30,15 +30,14 @@ class Container(Describable):
         if entity.name in self.slots:
             self.slots[entity.name].add(entity)
         else:
-            self.slots[entity.name] = Slot.of(entity)
+            self.slots[entity.name] = Slot(entity)
 
     def add_slot(self, slot: Slot) -> None:
         """
 
         """
         if slot.name in self.slots:
-            for item in slot:
-                self.slots[slot.name].add(item)
+            self.slots[slot.name] += slot
         else:
             self.slots[slot.name] = slot
 
