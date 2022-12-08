@@ -54,7 +54,10 @@ class NPC(Fighter):
         Returns:
         A string
         """
-        sign = 'RED(hostile)WHITE' if self.is_hostile else f'CYAN(peaceful)WHITE'
+        percentage = int(self.health / self.max_health * 100)
+        sign = 'RED(hostile' if self.is_hostile else f'CYAN(peaceful'
+        sign += f', {percentage}%)WHITE'
+
         return self.b.add(self.name + f' {sign}').build()
 
     def long_description(self) -> str:

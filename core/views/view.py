@@ -84,7 +84,8 @@ class View(ABC):
             self.b.new_line()
 
         for index, action in enumerate(actions):
-            self.b.add(f'[CYAN{index}WHITE] {action.short_description()}')
+            self.b.add(
+                f'[CYAN{index}WHITE] {action.short_description()}', wrap=False)
 
         if not self.pinned_first:
             self.b.new_line()
