@@ -1,5 +1,6 @@
 from yaml import safe_load
 from core.items.item import Item
+from core.items.potions.healing_potion import HealingPotion
 from core.items.weapon import Weapon
 
 
@@ -26,7 +27,8 @@ class Armoury:
         item_type = data.pop('type')
 
         return {
-            'weapon': Weapon
+            'weapon': Weapon,
+            'healing potion': HealingPotion,
         }[item_type](**data)
 
     def load(self, path: str) -> None:
