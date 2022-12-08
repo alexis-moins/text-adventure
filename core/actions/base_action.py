@@ -8,12 +8,13 @@ from core.entities.describable import Describable
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.controllers.controller import Controller
+    from core.controllers.scene_controller import SceneController
 
 
 class BaseAction(Describable, ABC):
 
     @abstractmethod
-    def can_be_performed(self, context: Dungeon) -> bool:
+    def can_be_performed(self, context: Dungeon, controller: SceneController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 

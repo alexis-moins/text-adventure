@@ -7,11 +7,10 @@ from core.containers.slot import Slot
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.entities.describable import Describable
-    from core.controllers.scene_controller import SceneController
-    from core.controllers.selection.selection_controller import SelectionController
+    from core.controllers.selection.multi_selection_controller import MultiSelectionController
 
 
-class SelectAction(BaseAction):
+class MultiSelectAction(BaseAction):
 
     def __init__(self, model: Describable) -> None:
         """
@@ -24,7 +23,7 @@ class SelectAction(BaseAction):
         self.is_selected = False
         self.model = model
 
-    def can_be_performed(self, _: Dungeon, controller: SceneController) -> bool:
+    def can_be_performed(self, _: Dungeon, controller: MultiSelectionController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -36,7 +35,7 @@ class SelectAction(BaseAction):
         """
         return True
 
-    def execute(self, controller: SelectionController) -> bool:
+    def execute(self, controller: MultiSelectionController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -47,10 +46,12 @@ class SelectAction(BaseAction):
         Returns:
         A boolean
         """
-        controller.selection = self.model
-        self.is_selected = not self.is_selected
+        if self.model in controller.selection:
+            controller.selection.remove(self.model)
+        else:
+            controller.selection.append(self.model)
 
-        controller.is_running = False
+        self.is_selected = not self.is_selected
         return True
 
     def short_description(self) -> str:
@@ -60,5 +61,6 @@ class SelectAction(BaseAction):
         Returns:
         A string
         """
+        char = '[RED*WHITE]' if self.is_selected else '[ ]'
         determiner = '' if isinstance(self.model, Slot) else 'the '
-        return f'{determiner}{self.model.short_description().lower()}'
+        return f'{char} {determiner}{self.model.short_description().lower()}'

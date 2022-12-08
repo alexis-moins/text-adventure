@@ -1,7 +1,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from core.actions.base_action import BaseAction
 
 from core.actions.menu.quit_action import QuitAction
+from core.actions.menu.select_all_action import SelectAllAction
+from core.actions.menu.unselect_all_action import UnselectAllAction
+from core.actions.menu.validate_action import ValidateAction
 from core.actions.scene.attack_action import AttackAction
 from core.actions.scene.drop_item_action import DropItemAction
 from core.actions.scene.equip_action import EquipAction
@@ -11,6 +15,7 @@ from core.actions.scene.wait_action import WaitAction
 from core.controllers.room_controller import RoomController
 
 from core.controllers.scene_controller import SceneController
+from core.controllers.selection.multi_selection_controller import MultiSelectionController
 from core.controllers.selection.selection_controller import SelectionController
 from core.views.sceneries.inventory_scenery import InventoryView
 
@@ -53,13 +58,31 @@ class ControllerFactory:
 
         return RoomController(self.dungeon, RoomScenery(self.dungeon, room), actions, pinned)
 
-    def selection_controller(self, prompt: str, *, multi: bool = False) -> SelectionController:
+    def selection_controller(self, prompt: str) -> SelectionController:
         """
 
         """
-        return SelectionController(self.dungeon, SelectionMenu(self.dungeon, prompt),
-                                   [],
-                                   {'q': QuitAction('Cancel')})
+        pinned: dict[str, BaseAction] = {
+            'q': QuitAction('Cancel')
+        }
+
+        return SelectionController(self.dungeon, SelectionMenu(self.dungeon, prompt), pinned)
+
+    def multi_selection_controller(self, prompt: str) -> MultiSelectionController:
+        """
+        Return a new controller to select multiple items from a given list.
+
+        Returns:
+        A MultiSelectionController
+        """
+        pinned = {
+            'q': QuitAction('Cancel'),
+            'a': SelectAllAction(),
+            'u': UnselectAllAction(),
+            'v': ValidateAction()
+        }
+
+        return MultiSelectionController(self.dungeon, SelectionMenu(self.dungeon, prompt), pinned)
 
     def inventory_controller(self) -> SceneController:
         """

@@ -25,7 +25,7 @@ class ActionHandler:
         self.actions = actions
         self.pinned = pinned
 
-    def filter_actions(self) -> tuple[list[BaseAction], dict[str, BaseAction]]:
+    def filter_actions(self, controller) -> tuple[list[BaseAction], dict[str, BaseAction]]:
         """
         Filter the actions available in the current context from the
         list of all possible actions in the handler.
@@ -36,9 +36,9 @@ class ActionHandler:
         • a dictionary of pinned actions and their keys
         """
         actions = [action for action in self.actions
-                   if action.can_be_performed(self.dungeon)]
+                   if action.can_be_performed(self.dungeon, controller)]
 
         pinned = {key: action for key, action in self.pinned.items()
-                  if action.can_be_performed(self.dungeon)}
+                  if action.can_be_performed(self.dungeon, controller)}
 
         return actions, pinned

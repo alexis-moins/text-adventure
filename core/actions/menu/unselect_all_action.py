@@ -5,28 +5,24 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.controllers.controller import Controller
-    from core.controllers.scene_controller import SceneController
+    from core.controllers.selection.multi_selection_controller import MultiSelectionController
 
 
-class WaitAction(BaseAction):
-    """
-    Class representing the action of doing nothing.
-    """
+class UnselectAllAction(BaseAction):
 
-    def can_be_performed(self, _: Dungeon, controller: Controller) -> bool:
+    def can_be_performed(self, _: Dungeon, controller: MultiSelectionController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the current dungeon
+        context - the currently opened dungeon
 
         Returns:
         a boolean
         """
-        return True
+        return all(action.is_selected for action in controller.actions)
 
-    def execute(self, _: SceneController) -> bool:
+    def execute(self, controller: MultiSelectionController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -37,6 +33,12 @@ class WaitAction(BaseAction):
         Returns:
         A boolean
         """
+        for action in controller.actions:
+
+            if action.is_selected:
+                action.is_selected = False
+                controller.selection.remove(action.model)
+
         return True
 
     def short_description(self) -> str:
@@ -46,4 +48,4 @@ class WaitAction(BaseAction):
         Returns:
         A string
         """
-        return 'Wait'
+        return 'Unselect all'

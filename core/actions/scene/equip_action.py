@@ -7,6 +7,7 @@ from core.items.equipable import Equipable
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.containers.inventory import Inventory
+    from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
 
@@ -25,7 +26,7 @@ class EquipAction(BaseAction):
         super().__init__()
         self.inventory = inventory
 
-    def can_be_performed(self, _: Dungeon) -> bool:
+    def can_be_performed(self, _: Dungeon, controller: Controller) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -48,16 +49,17 @@ class EquipAction(BaseAction):
         Returns:
         A boolean
         """
-        selector = context.dungeon.factory.selection_controller(
-            'Which equipment(s) do you want to wear :')
+        items: list[Equipable] = self.inventory.filter(Equipable)
 
-        selector.start(self.inventory.filter(Equipable))
+        equipments: list[Equipable] = context.dungeon.factory.multi_selection_controller(
+            'Which equipment(s) do you want to wear :').select(items)  # type: ignore
 
-        equipment = selector.selection
-        if not equipment:
+        if not equipments:
             return False
 
-        context.dungeon.player.inventory.equip(equipment)
+        for equipment in equipments:
+            context.dungeon.player.inventory.equip(equipment)
+
         return True
 
     def short_description(self) -> str:
