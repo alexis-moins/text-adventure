@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from core.containers.slot import Slot
 from core.entities.npc import NPC
 from core.views.message import Message
 from core.actions.base_action import BaseAction
@@ -50,10 +51,10 @@ class AttackAction(BaseAction):
         A boolean
         """
         selector = controller.dungeon.factory.selection_controller(
-            'Who will be the target of your attack ?')
+            'Who will be the target of your attack :')
 
         selector.start(controller.dungeon.room.npc.get_entities())
-        enemy: NPC = selector.selection  # type: ignore
+        enemy = selector.selection
 
         if not enemy:
             return False
@@ -62,7 +63,7 @@ class AttackAction(BaseAction):
         enemy.receive_damage(damage)
 
         message = Message(controller.dungeon,
-                          f'You deal YELLOW{damage} damageWHITE to the {enemy.short_description()}.')
+                          f'You deal YELLOW{damage} damageWHITE to the {enemy.name}.')
 
         message.show()
         return True

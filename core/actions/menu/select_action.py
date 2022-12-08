@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
+from core.containers.slot import Slot
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -52,5 +53,6 @@ class SelectAction(BaseAction):
         Returns:
         A string
         """
-        char = f'({"RED*WHITE" if self.is_selected else " "}) ' if self.multi else ''
-        return f'{char}{self.model.short_description().lower()}'
+        char = f'[{"RED*WHITE" if self.is_selected else " "}] ' if self.multi else ''
+        determiner = '' if isinstance(self.model, Slot) else 'the '
+        return f'{char}{determiner}{self.model.short_description().lower()}'
