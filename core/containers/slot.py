@@ -64,7 +64,7 @@ class Slot(Describable):
         A string
         """
         entity = self.entities[0]
-        return self.b.add(f'CYANx{len(self)}WHITE {entity.short_description()}').build()
+        return self.b.add(f'BLUEx{len(self)}WHITE {entity.short_description()}').build()
 
     def long_description(self) -> str:
         """

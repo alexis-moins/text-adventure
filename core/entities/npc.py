@@ -43,7 +43,7 @@ class NPC(Fighter):
             dungeon.player.receive_damage(damage)
 
             dungeon.add_log(
-                f'The {self.short_description()} deals you YELLOW{damage} damageWHITE.')
+                f'\nThe {self.name} deals you YELLOW{damage} damageWHITE.')
 
         return True
 

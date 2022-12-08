@@ -13,7 +13,7 @@ class Menu(View):
         """
         Constructor creating a new bare menu interface.
         """
-        super().__init__(dungeon, pinned_first=False)
+        super().__init__(dungeon)
         self.prompt = prompt
 
 
