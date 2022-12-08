@@ -39,6 +39,12 @@ class Inventory(Container):
         for slot in self.get_slots():
             self.b.add(f'- {slot.short_description()}')
 
+        if self.equipments:
+            self.b.new_line()
+
+        for slot, equipment in self.equipments.items():
+            self.b.add(f'YELLOW{slot.upper()}:WHITE {equipment.name}')
+
         return self.b.build()
 
     def equip(self, item: Entity) -> None:

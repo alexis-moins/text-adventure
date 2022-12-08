@@ -8,10 +8,8 @@ room = Room('Wind Meadows YELLOW<East>WHITE',
             'The east part of the wind meadows is more hilly than the other 3 parts. Wolves love to stay there.')
 
 wolf_one = Bestiary().summon('grey-wolf')
-wolf_two = Bestiary().summon('grey-wolf')
 
 room.npc.add(wolf_one)
-room.npc.add(wolf_two)
 
 player = Player()
 dungeon = Dungeon(player, room)
