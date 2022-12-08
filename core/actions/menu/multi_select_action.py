@@ -52,7 +52,7 @@ class MultiSelectAction(BaseAction):
             controller.selection.append(self.model)
 
         self.is_selected = not self.is_selected
-        return True
+        return False
 
     def short_description(self) -> str:
         """

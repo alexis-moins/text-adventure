@@ -51,7 +51,7 @@ class SelectAction(BaseAction):
         self.is_selected = not self.is_selected
 
         controller.is_running = False
-        return True
+        return False
 
     def short_description(self) -> str:
         """

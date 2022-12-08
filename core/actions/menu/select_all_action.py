@@ -37,7 +37,7 @@ class SelectAllAction(BaseAction):
             if not action.is_selected:
                 action.execute(controller)
 
-        return True
+        return False
 
     def short_description(self) -> str:
         """

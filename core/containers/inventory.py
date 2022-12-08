@@ -41,13 +41,15 @@ class Inventory(Container):
 
         return self.b.build()
 
-    def equip(self, item: Entity) -> None:
+    def equip(self, equipment: Equipable) -> None:
         """
-        Handle or wear the given item.
+        Handle or wear the given equipment.
         """
-        if isinstance(item, Equipable):
-            self.equipments[item.slot] = item
-            item.equiped = True
+        if equipment.slot in self.equipments:
+            self.take_off(self.equipments[equipment.slot])
+
+        self.equipments[equipment.slot] = equipment
+        equipment.equiped = True
 
     def take_off(self, equipment: Equipable) -> None:
         """
