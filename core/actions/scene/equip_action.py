@@ -7,6 +7,7 @@ from core.items.equipable import Equipable
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.containers.inventory import Inventory
+    from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
 
@@ -25,7 +26,7 @@ class EquipAction(BaseAction):
         super().__init__()
         self.inventory = inventory
 
-    def can_be_performed(self, _: Dungeon) -> bool:
+    def can_be_performed(self, _: Dungeon, controller: Controller) -> bool:
         """
         Return true whether this action can be performed in the given context.
 

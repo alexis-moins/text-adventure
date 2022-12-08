@@ -1,5 +1,4 @@
 from __future__ import annotations
-from abc import ABC
 from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
@@ -10,10 +9,7 @@ if TYPE_CHECKING:
     from core.views.view import View
 
 
-class SceneController(ABC, Controller):
-    """
-    Abstract class representing a scene controller.
-    """
+class SceneController(Controller):
 
     def __init__(self, dungeon: Dungeon, view: View, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """
@@ -32,22 +28,36 @@ class SceneController(ABC, Controller):
         """
         pass
 
+    def on_quit(self) -> None:
+        """
+        Method called whenever the QuitAction is executed in
+        the controller. Does nothing by default.
+        """
+        pass
+
+    def execute_turn(self) -> None:
+        """
+        Dispay the controller view on screen, then ask for
+        input to finally execute the corresponding action.
+        """
+        actions, pinned = self.filter_actions(self)
+
+        self.view.show(actions, pinned)
+        action = self.get_action(actions, pinned)
+
+        if not action:
+            return
+
+        pass_turn = action.execute(self)
+
+        if not pass_turn:
+            return
+
+        self.on_next_turn()
+
     def start(self) -> None:
         """
         Start the controller.
         """
         while self.is_running and self.dungeon.player.is_alive():
-            actions, pinned = self.filter_actions()
-
-            self.view.show(actions, pinned)
-            action = self.get_action(actions, pinned)
-
-            if not action:
-                continue
-
-            pass_turn = action.execute(self)
-
-            if not pass_turn:
-                continue
-
-            self.on_next_turn()
+            self.execute_turn()

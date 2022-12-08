@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
+from core.controllers.selection.multi_selection_controller import MultiSelectionController
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -24,7 +25,7 @@ class QuitAction(BaseAction):
         super().__init__()
         self.text = text
 
-    def can_be_performed(self, _: Dungeon) -> bool:
+    def can_be_performed(self, dungeon: Dungeon, controller: SceneController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -47,6 +48,7 @@ class QuitAction(BaseAction):
         Returns:
         A boolean
         """
+        controller.on_quit()
         controller.is_running = False
         return False
 

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.containers.slot import Slot
-from core.entities.npc import NPC
 from core.views.message import Message
 from core.actions.base_action import BaseAction
 
@@ -27,7 +25,7 @@ class AttackAction(BaseAction):
         super().__init__()
         self.fighter = fighter
 
-    def can_be_performed(self, context: Dungeon) -> bool:
+    def can_be_performed(self, context: Dungeon, _: SceneController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -50,11 +48,8 @@ class AttackAction(BaseAction):
         Returns:
         A boolean
         """
-        selector = controller.dungeon.factory.selection_controller(
-            'Who will be the target of your attack :')
-
-        selector.start(controller.dungeon.room.npc.get_entities())
-        enemy = selector.selection
+        enemy = controller.dungeon.factory.selection_controller(
+            'Who will be the target of your attack :').select(controller.dungeon.room.npc.get_entities())
 
         if not enemy:
             return False

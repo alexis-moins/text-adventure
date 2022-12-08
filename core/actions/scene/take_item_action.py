@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
+from core.containers.slot import Slot
+from core.entities.describable import Describable
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.containers.slot import Slot
     from core.containers.inventory import Inventory
+    from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
 
@@ -23,7 +25,7 @@ class TakeItemAction(BaseAction):
         super().__init__()
         self.inventory = inventory
 
-    def can_be_performed(self, context: Dungeon) -> bool:
+    def can_be_performed(self, context: Dungeon, controller: Controller) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -46,17 +48,18 @@ class TakeItemAction(BaseAction):
         Returns:
         A boolean
         """
-        selector = context.dungeon.factory.selection_controller(
-            'Which item(s) do you want to take :')
+        items: list[Describable] = context.dungeon.room.items.get_slots(
+        )  # type: ignore
 
-        selector.start(context.dungeon.room.items.get_slots())  # type: ignore
-        slot = selector.selection
+        slots: list[Slot] = context.dungeon.factory.multi_selection_controller(
+            'Which item(s) do you want to take :').select(items)  # type: ignore
 
-        if not slot:
+        if not slots:
             return False
 
-        context.dungeon.player.inventory.add_slot(slot)
-        context.dungeon.room.items.remove_slot(slot)
+        for slot in slots:
+            context.dungeon.player.inventory.add_slot(slot)
+            context.dungeon.room.items.remove_slot(slot)
 
         return True
 
