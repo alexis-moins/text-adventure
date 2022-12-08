@@ -1,11 +1,14 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Type, TypeVar
 
 from core.containers.slot import Slot
 from core.entities.describable import Describable
 
 if TYPE_CHECKING:
     from core.entities.entity import Entity
+
+
+T = TypeVar('T')
 
 
 class Container(Describable):
@@ -67,6 +70,12 @@ class Container(Describable):
             del self.slots[entity.name]
 
         return True
+
+    def filter(self, _type: Type[T]) -> list[T]:
+        """
+
+        """
+        return list(filter(lambda x: isinstance(x, _type), self.get_entities()))  # type: ignore
 
     def short_description(self) -> str:
         """

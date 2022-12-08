@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from core.actions.menu.quit_action import QuitAction
 from core.actions.scene.attack_action import AttackAction
 from core.actions.scene.drop_item_action import DropItemAction
+from core.actions.scene.equip_action import EquipAction
 from core.actions.scene.open_inventory_action import OpenInventoryAction
 from core.actions.scene.take_item_action import TakeItemAction
 from core.actions.scene.wait_action import WaitAction
@@ -65,6 +66,7 @@ class ControllerFactory:
         Return a new controller over an inventory.
         """
         actions = [
+            EquipAction(self.dungeon.player.inventory),
             DropItemAction(self.dungeon.player.inventory)
         ]
 
