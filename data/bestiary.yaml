@@ -7,11 +7,11 @@ royal-guard:
     statistics: {health: 100, magic: 20, strength: 15, defence: 10}
     inventory: []
 
-grey-wolf:
+grey wolf:
     name: grey wolf
     description: Despite being the least aggressive, grey wolves tend to defend fiercely their territory
     is_hostile: true
 
     statistics: {health: 10, magic: 2, strength: 3, defence: 3}
     inventory:
-      - iron sword
+      - potion of healing

@@ -34,4 +34,5 @@ class Entity(Describable, ABC):
         self.name = name
         self._description = description
 
+        self.stack_size = 20
         self.determiner = indefinite_determiner(self.name)

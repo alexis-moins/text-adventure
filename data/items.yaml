@@ -6,3 +6,12 @@ iron sword:
 
   damage: 5
   price: 10
+
+potion of healing:
+  name: potion of healing
+  description: A shiny red decoction used to heal the wounds.
+
+  type: healing potion
+  price: 25
+
+  health: 10

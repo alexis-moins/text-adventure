@@ -15,7 +15,7 @@ class Player(Fighter):
         Constructor creating a new player.
         """
         super().__init__('Patate', '', {
-            'health': 20, 'magic': 10, 'strength': 12, 'defence': 2}, Inventory())
+            'health': 20, 'magic': 10, 'strength': 5, 'defence': 2}, Inventory())
 
     def short_description(self) -> str:
         """

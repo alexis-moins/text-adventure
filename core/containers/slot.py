@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterator
 from core.entities.describable import Describable
 
 if TYPE_CHECKING:
@@ -9,16 +9,22 @@ if TYPE_CHECKING:
 
 class Slot(Describable):
 
-    def __init__(self, entities: list[Entity]) -> None:
+    def __init__(self, entity: Entity, size: int) -> None:
         """
-        Constructor creating a new slot of up to 20 entities.
+        Constructor creating a new slot of the given size.
         """
         super().__init__()
-        self.entities = []
-        self.size = 20
+        self.size = size
 
-        for entity in entities:
-            self.add(entity)
+        self.entities = [entity]
+        self.name = entity.name
+
+    @staticmethod
+    def of(entity: Entity) -> Slot:
+        """
+
+        """
+        return Slot(entity, entity.stack_size)
 
     def is_full(self) -> bool:
         """
@@ -41,9 +47,6 @@ class Slot(Describable):
         """
         if self.is_full():
             return False
-
-        if self.is_empty():
-            self.name = entity.name
 
         self.entities.append(entity)
         return True
@@ -83,3 +86,9 @@ class Slot(Describable):
         An integer
         """
         return len(self.entities)
+
+    def __iter__(self) -> Iterator[Entity]:
+        """
+
+        """
+        return iter(self.entities)
