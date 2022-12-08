@@ -65,6 +65,18 @@ class View(ABC):
         """
         os.system('clear')
 
+    def show_pinned_actions(self, pinned: dict[str, BaseAction]) -> None:
+        """
+        Show the pinned actions on screen.
+
+        Argument:
+        pinned - the pinned actions to display
+        """
+        self.b.new_line()
+        for key, action in pinned.items():
+            self.b.add(
+                f'[GREEN{key}WHITE] {action.short_description()}', wrap=False)
+
     def show_actions(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """
         Show the available actions on screen.
@@ -76,11 +88,10 @@ class View(ABC):
         Keyword Argument:
         pinned_first - whether the pinned should be rendered first
         """
-        self.b.new_line()
-
         if self.pinned_first:
-            for key, action in pinned.items():
-                self.b.add(f'[GREEN{key}WHITE] {action.short_description()}')
+            self.show_pinned_actions(pinned)
+
+        if actions:
             self.b.new_line()
 
         for index, action in enumerate(actions):
@@ -88,9 +99,7 @@ class View(ABC):
                 f'[CYAN{index}WHITE] {action.short_description()}', wrap=False)
 
         if not self.pinned_first:
-            self.b.new_line()
-            for key, action in pinned.items():
-                self.b.add(f'[GREEN{key}WHITE] {action.short_description()}')
+            self.show_pinned_actions(pinned)
 
     def show(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
         """

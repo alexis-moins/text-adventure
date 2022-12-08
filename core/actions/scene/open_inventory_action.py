@@ -35,7 +35,7 @@ class OpenInventoryAction(BaseAction):
         Returns:
         a boolean
         """
-        return bool(context.player.inventory)
+        return True
 
     def execute(self, context: SceneController) -> bool:
         """
