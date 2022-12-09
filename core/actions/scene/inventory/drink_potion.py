@@ -4,11 +4,9 @@ from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
 from core.fight.fighter import Fighter
 from core.items.potion import Potion
-from core.views.message import Message
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.containers.inventory import Inventory
     from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
@@ -59,7 +57,8 @@ class DrinkPotionAction(BaseAction):
 
         potion.drink(self.fighter)
 
-        Message(context.dungeon, f'You drink your {potion.name}.').show()
+        context.dungeon.add_log(f'You drink your YELLOW{potion.name}WHITE.')
+        context.dungeon.add_log(potion.drink_sentence())
         return True
 
     def short_description(self) -> str:
@@ -69,4 +68,4 @@ class DrinkPotionAction(BaseAction):
         Returns:
         A string
         """
-        return self.b.add(f'Drink a potion').build()
+        return self.b.add(f'Drink').build()

@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 from core.controllers.utils.controller_factory import ControllerFactory
 from core.entities.npc import NPC
 from core.utils.strings import StringBuilder
-from core.views.message import Message
 
 if TYPE_CHECKING:
     from core.room import Room
@@ -42,8 +41,7 @@ class Dungeon:
 
         """
         if not self.b.is_empty():
-            message = Message(self, self.b.build())
-            message.show()
+            self.factory.message_controller(self.b.build()).start()
 
     def next_turn(self) -> None:
         """"""

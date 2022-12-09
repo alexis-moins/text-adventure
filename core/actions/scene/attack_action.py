@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.views.message import Message
 from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
@@ -64,9 +63,7 @@ class AttackAction(BaseAction):
         if not damage:
             message = f'You YELLOWmissWHITE the {enemy.name}'
 
-        message = Message(controller.dungeon, message)
-
-        message.show()
+        controller.dungeon.add_log(message)
         return True
 
     def short_description(self) -> str:

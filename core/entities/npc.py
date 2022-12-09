@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.fight.fighter import Fighter
-from core.room import Room
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -46,9 +45,9 @@ class NPC(Fighter):
             damage = dungeon.player.mitigate_damage(damage)
 
             if not damage:
-                message = f'\nThe {self.name} YELLOWmissesWHITE you!'
+                message = f'The {self.name} YELLOWmissesWHITE you!'
             else:
-                message = f'\nThe {self.name} deals you YELLOW{damage} damageWHITE.'
+                message = f'The {self.name} deals you YELLOW{damage} damageWHITE.'
 
             dungeon.add_log(message)
 
@@ -59,7 +58,7 @@ class NPC(Fighter):
 
         """
         dungeon.room.npc.remove(self)
-        dungeon.add_log(f'\nThe {self.name} is REDdead!WHITE')
+        dungeon.add_log(f'The {self.name} is REDdead!WHITE')
 
         for slot in self.inventory.slots:
             dungeon.room.items.add_slot(slot)

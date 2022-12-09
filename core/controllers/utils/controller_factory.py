@@ -20,7 +20,7 @@ from core.controllers.selection.selection_controller import SelectionController
 from core.views.sceneries.inventory_scenery import InventoryView
 
 from core.views.sceneries.room_scenery import RoomScenery
-from core.views.selection.selection_view import SelectionMenu
+from core.views.selection.selection_view import MessageView
 
 if TYPE_CHECKING:
     from core.room import Room
@@ -66,7 +66,7 @@ class ControllerFactory:
             'q': QuitAction('Cancel')
         }
 
-        return SelectionController(self.dungeon, SelectionMenu(self.dungeon, prompt), pinned)
+        return SelectionController(self.dungeon, MessageView(self.dungeon, prompt), pinned)
 
     def multi_selection_controller(self, prompt: str) -> MultiSelectionController:
         """
@@ -82,7 +82,7 @@ class ControllerFactory:
             'v': ValidateAction()
         }
 
-        return MultiSelectionController(self.dungeon, SelectionMenu(self.dungeon, prompt), pinned)
+        return MultiSelectionController(self.dungeon, MessageView(self.dungeon, prompt), pinned)
 
     def inventory_controller(self) -> SceneController:
         """
@@ -98,4 +98,19 @@ class ControllerFactory:
             'q': QuitAction('Close')
         }
 
-        return SceneController(self.dungeon, InventoryView(self.dungeon, self.dungeon.player), actions, pinned)
+        return SceneController(self.dungeon, InventoryView(self.dungeon, self.dungeon.player),
+                               actions, pinned)
+
+    def message_controller(self, message: str) -> SceneController:
+        """
+        Return a scene controller displaying the given message and waiting
+        for confirmation to give back control.
+
+        Argument:
+        message - the message to display
+
+        Returns:
+        A SceneController
+        """
+        return SceneController(self.dungeon, MessageView(self.dungeon, message),
+                               [], {'c': QuitAction('Continue')})
