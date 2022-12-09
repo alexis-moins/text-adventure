@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from core.actions.menu.quantity_select import QuantitySelectAction
 
 from core.containers.slot import Slot
 from core.controllers.scene_controller import SceneController
@@ -21,26 +22,35 @@ class QuantityController(SceneController):
         view - the view used to render the scene
         """
         super().__init__(dungeon, view, [], pinned)
+        self.quantity = 1
+        self.maximum = 0
 
-    def execute_turn(self) -> None:
+    def get_action(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> BaseAction | None:
         """
-        Dispay the controller view on screen, then ask for
-        input to finally execute the corresponding action.
+        Format and parse the user input and return the corresponding action
+        or None if the input was invalid.
+
+        Argument:
+        actions - list of actions the user can choose from
+        pinned - list of the pinned actions the user can choose from
+
+        Returns:
+        A BaseAction or None
         """
-        actions, pinned = self.filter_actions(self)
+        user_input = self.get_input()
 
-        self.view.show(actions, pinned)
-        action = self.get_action(actions, pinned)
+        if user_input in pinned:
+            return pinned[user_input]
 
-        if not action:
-            return
+        if not user_input.isnumeric():
+            return None
 
-        pass_turn = action.execute(self)
+        user_input = int(user_input)
 
-        if not pass_turn:
-            return
+        if user_input < 0:
+            return None
 
-        self.on_next_turn()
+        return QuantitySelectAction(user_input)
 
     def select(self, slot: Slot) -> int:
         """
@@ -50,7 +60,15 @@ class QuantityController(SceneController):
         Argument:
         items - a list of items to choose from
         """
+        self.maximum = slot.size
+
         while self.is_running:
             self.execute_turn()
 
-        return 0
+        return self.quantity
+
+    def on_quit(self) -> None:
+        """
+
+        """
+        self.quantity = 0

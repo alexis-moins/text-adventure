@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from core.containers.slot import Slot
 from core.views.view import View
 
 if TYPE_CHECKING:
@@ -31,3 +32,13 @@ class SelectionMenu(Menu):
         Show the menu on screen.
         """
         self.b.new_line().add(self.prompt)
+
+
+class QuantitySelectionMenu(Menu):
+
+    def __init__(self, dungeon: Dungeon, slot: Slot, prompt: str) -> None:
+        super().__init__(dungeon, prompt)
+        self.slot = slot
+
+    def on_show(self) -> None:
+        self.b.new_line().add(self.prompt + '')
