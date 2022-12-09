@@ -1,12 +1,4 @@
 ---
-royal-guard:
-    name: Royal guard
-    description: A trained soldier with a steel heavy armour
-    is_hostile: false
-
-    statistics: {health: 100, magic: 20, strength: 15, defence: 10}
-    inventory: []
-
 grey wolf:
     name: grey wolf
     description: Despite being the least aggressive, grey wolves tend to defend fiercely their territory
@@ -14,9 +6,4 @@ grey wolf:
 
     statistics: {health: 10, magic: 2, strength: 3, defence: 3}
     inventory:
-      - potion of healing
-      - potion of healing
-      - potion of healing
-      - potion of healing
-      - potion of healing
       - potion of healing

@@ -1,10 +1,11 @@
 from yaml import safe_load
+from core.items.armor import Armor
 from core.items.item import Item
 from core.items.potions.healing_potion import HealingPotion
 from core.items.weapon import Weapon
 
 
-class Armoury:
+class Armory:
 
     def __init__(self) -> None:
         """
@@ -28,6 +29,7 @@ class Armoury:
 
         return {
             'weapon': Weapon,
+            'armor': Armor,
             'healing potion': HealingPotion,
         }[item_type](**data)
 

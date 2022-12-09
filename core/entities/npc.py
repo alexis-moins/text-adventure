@@ -43,8 +43,14 @@ class NPC(Fighter):
             damage = self.get_damage()
             dungeon.player.receive_damage(damage)
 
-            dungeon.add_log(
-                f'\nThe {self.name} deals you YELLOW{damage} damageWHITE.')
+            damage = dungeon.player.mitigate_damage(damage)
+
+            if not damage:
+                message = f'\nThe {self.name} YELLOWmissesWHITE you!'
+            else:
+                message = f'\nThe {self.name} deals you YELLOW{damage} damageWHITE.'
+
+            dungeon.add_log(message)
 
         return True
 

@@ -57,8 +57,14 @@ class AttackAction(BaseAction):
         damage = self.fighter.get_damage()
         enemy.receive_damage(damage)
 
-        message = Message(controller.dungeon,
-                          f'You deal YELLOW{damage} damageWHITE to the {enemy.name}.')
+        damage = enemy.mitigate_damage(damage)
+
+        message = f'You deal YELLOW{damage} damageWHITE to the {enemy.name}.'
+
+        if not damage:
+            message = f'You YELLOWmissWHITE the {enemy.name}'
+
+        message = Message(controller.dungeon, message)
 
         message.show()
         return True
