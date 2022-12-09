@@ -15,6 +15,7 @@ class Potion(Item, ABC):
 
         """
         super().__init__(name, description, price)
+        self.stack_size = 10
 
     @abstractmethod
     def drink(self, actor: Fighter) -> None:

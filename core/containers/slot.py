@@ -9,13 +9,22 @@ if TYPE_CHECKING:
 
 class Slot(Describable):
 
-    def __init__(self, entity: Entity) -> None:
+    def __init__(self, entity: Entity, *, size: int = 20) -> None:
         """
         Constructor creating a new slot of the given size.
         """
         super().__init__()
         self.entities = [entity]
+
+        self.size = size
         self.name = entity.name
+
+    @staticmethod
+    def of(entity: Entity) -> Slot:
+        """
+        Return a new slot of entity.
+        """
+        return Slot(entity, size=entity.stack_size)
 
     def is_empty(self) -> bool:
         """
@@ -23,14 +32,21 @@ class Slot(Describable):
         """
         return len(self.entities) == 0
 
+    def is_full(self) -> bool:
+        """"""
+        return len(self.entities) == self.size
+
     def add(self, entity: Entity) -> bool:
         """
 
         """
+        if self.is_full():
+            return False
+
         self.entities.append(entity)
         return True
 
-    def remove(self, entity: Entity, quantity: int) -> bool:
+    def remove(self, entity: Entity) -> bool:
         """"""
         if entity not in self.entities:
             return False
@@ -72,9 +88,9 @@ class Slot(Describable):
         """
         return iter(self.entities)
 
-    def __add__(self, other: Slot) -> Slot:
-        """
-
-        """
-        self.entities.extend(other.entities)
-        return self
+    # def __add__(self, other: Slot) -> Slot:
+    #     """
+    #
+    #     """
+    #     self.entities.extend(other.entities)
+    #     return self

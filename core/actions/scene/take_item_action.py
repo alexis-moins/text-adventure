@@ -48,8 +48,7 @@ class TakeItemAction(BaseAction):
         Returns:
         A boolean
         """
-        items: list[Describable] = context.dungeon.room.items.get_slots(
-        )  # type: ignore
+        items = context.dungeon.room.items.slots
 
         slots: list[Slot] = context.dungeon.factory.multi_selection_controller(
             'Which item(s) do you want to take :').select(items)  # type: ignore
