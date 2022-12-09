@@ -28,6 +28,16 @@ class Potion(Item, ABC):
         """
         pass
 
+    @abstractmethod
+    def drink_sentence(self) -> str:
+        """
+        Return the sentence to display when a potion is drank.
+
+        Returns:
+        A string
+        """
+        pass
+
     def short_description(self) -> str:
         """
         Return the short description of this element.

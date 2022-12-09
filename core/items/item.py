@@ -9,3 +9,9 @@ class Item(Entity):
         """
         super().__init__(name, description)
         self.price = price
+
+    def action_sentence(self) -> str:
+        """
+
+        """
+        return ''

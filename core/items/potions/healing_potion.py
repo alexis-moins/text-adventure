@@ -26,6 +26,16 @@ class HealingPotion(Potion):
         fighter.health += self.recovery
         fighter.inventory.remove(self)
 
+    def drink_sentence(self) -> str:
+        """
+        Return the sentence to display when a potion is drank.
+
+        Returns:
+        A string
+        """
+        word = 'point' if self.recovery == 1 else 'points'
+        return f'You regained GREEN{self.recovery} health {word}!WHITE'
+
     def short_description(self) -> str:
         """
         Return the short description of this element.
