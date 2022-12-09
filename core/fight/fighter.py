@@ -74,15 +74,16 @@ class Fighter(Character):
         """
         self._magic = max(0, min(value, self.max_magic))
 
-    def receive_damage(self, amount: int) -> None:
+    def receive_damage(self, damage: int) -> None:
         """
         Decrease the health of the fighter according to the
         amount of damage received.
 
         Argument:
-        amount - how many damage is received
+        damage - how many damage is received
         """
-        self.health -= amount
+        mitigated_damage = self.mitigate_damage(damage)
+        self.health -= mitigated_damage
 
     def consume_magic(self, amount: int) -> None:
         """
@@ -114,3 +115,16 @@ class Fighter(Character):
         weapon_damage = 0 if not weapon else weapon.damage
 
         return max(self.strength + weapon_damage + random.randint(-2, 2), 0)
+
+    def get_resistance(self) -> int:
+        """
+        Return the resistance of the fighter
+        """
+        armor = self.inventory.equipments.get('armor')
+        return armor.protection if armor else 0
+
+    def mitigate_damage(self, damage: int) -> int:
+        """
+
+        """
+        return max(damage - self.get_resistance(), 0)

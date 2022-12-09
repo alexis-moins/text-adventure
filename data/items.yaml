@@ -15,3 +15,12 @@ potion of healing:
   price: 25
 
   health: 10
+
+leather armor:
+  name: leather armor
+  description: TBA
+
+  type: armor
+  price: 40
+
+  protection: 2

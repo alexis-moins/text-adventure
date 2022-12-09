@@ -2,7 +2,7 @@ from yaml import safe_load
 from core.containers.inventory import Inventory
 
 from core.entities.npc import NPC
-from core.utils.armoury import Armoury
+from core.utils.armory import Armory
 
 
 class Bestiary:
@@ -15,7 +15,7 @@ class Bestiary:
         Constructor creating a new bestiary.
         """
         self._book: dict[str, dict] = {}
-        self.armoury = Armoury()
+        self.armoury = Armory()
         self.load('data/bestiary.yaml')
 
     def make_inventory(self, items: list[str]) -> Inventory:
