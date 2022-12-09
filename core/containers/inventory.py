@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from core.containers.slot import Slot
 
 from core.items.equipable import Equipable
 from core.containers.container import Container
@@ -66,15 +67,23 @@ class Inventory(Container):
         Returns:
         A boolean
         """
-        slot = self.get_slot(entity)
+        slot = self.get_slot_by_name(entity)
 
-        if slot is None and self.is_full():
+        if slot is None:
+
+            if self.is_full():
+                return False
+
+            self.slots.append(Slot.of(entity))
+            return True
+
+        if slot.add(entity):
+            return True
+
+        if self.is_full():
             return False
 
-        if slot is not None and slot.is_full():
-            return False
-
-        return super().add(entity)
+        self.slots.append(Slot.of(entity))
 
     def equip(self, equipment: Equipable) -> None:
         """

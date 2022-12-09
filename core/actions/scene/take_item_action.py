@@ -1,9 +1,8 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING
-from core.actions.base_action import BaseAction
+
 from core.containers.slot import Slot
-from core.entities.describable import Describable
+from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon

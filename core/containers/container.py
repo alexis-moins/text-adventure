@@ -45,10 +45,11 @@ class Container(Describable):
         Argument:
         entity - the entity to be added
         """
-        slot = self.get_slot(entity)
+        slot = self.get_slot_by_name(entity)
 
         if slot:
-            slot.add(entity)
+            if slot.add(entity):
+                return True
 
         self.slots.append(Slot.of(entity))
         return True
@@ -128,6 +129,16 @@ class Container(Describable):
         """
         for slot in self.slots:
             if entity in slot:
+                return slot
+
+        return None
+
+    def get_slot_by_name(self, entity: Entity) -> Slot | None:
+        """
+
+        """
+        for slot in self.slots:
+            if entity.name == slot.name:
                 return slot
 
         return None
