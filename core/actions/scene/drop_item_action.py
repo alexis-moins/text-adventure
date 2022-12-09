@@ -48,10 +48,10 @@ class DropItemAction(BaseAction):
         Returns:
         A boolean
         """
-        items: list[Item] = self.inventory.get_slots()  # type: ignore
+        slots = self.inventory.slots
 
         slots: list[Slot] = context.dungeon.factory.multi_selection_controller(
-            'Which item(s) do you want to drop :').select(items)  # type: ignore
+            'Which item(s) do you want to drop :').select(slots)  # type: ignore
 
         if not slots:
             return False

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Type, TypeVar
+from typing import TYPE_CHECKING, Iterator, Type, TypeVar
 
 from core.containers.slot import Slot
 from core.entities.describable import Describable
@@ -13,66 +13,71 @@ T = TypeVar('T')
 
 class Container(Describable):
 
-    def __init__(self, entities: list[Entity]) -> None:
+    def __init__(self) -> None:
         """
         Constructor creating a new container.
         """
         super().__init__()
-        self.slots: dict[str, Slot] = {}
+        self.slots: list[Slot] = []
+
+    @staticmethod
+    def of(entities: list[Entity]) -> Container:
+        """
+        Return a container with the given entities inside.
+
+        Argument:
+        entities - a list of entities
+
+        Returns:
+        A container
+        """
+        container = Container()
 
         for entity in entities:
-            self.add(entity)
+            container.add(entity)
 
-    def add(self, entity: Entity) -> None:
+        return container
+
+    def add(self, entity: Entity) -> bool:
         """
         Add an entity to the container.
+
+        Argument:
+        entity - the entity to be added
         """
-        if entity.name in self.slots:
-            self.slots[entity.name].add(entity)
-        else:
-            self.slots[entity.name] = Slot(entity)
+        slot = self.get_slot(entity)
+
+        if slot:
+            slot.add(entity)
+
+        self.slots.append(Slot.of(entity))
+        return True
 
     def add_slot(self, slot: Slot) -> None:
         """
 
         """
-        if slot.name in self.slots:
-            self.slots[slot.name] += slot
-        else:
-            self.slots[slot.name] = slot
+        for entity in slot:
+            self.add(entity)
 
     def remove_slot(self, slot: Slot) -> None:
         """
-
-        """
-        del self.slots[slot.name]
-
-    def remove(self, entity: Entity, *, quantity: int = 1) -> bool:
-        """
-        Remove an entity from the container. Return true if the
-        entity was successfully removed, otherwise return false.
+        Remove a slot from the container.
 
         Argument:
-        entity - the entity to be removed from the container
-
-        Keyword Argument:
-        quantity - the number of entities to remove
-
-        Returns:
-        A boolean
+        slot - the slot to be removed
         """
-        if not entity in self.get_entities():
-            return False
+        self.slots.remove(slot)
 
-        success = self.slots[entity.name].remove(entity, quantity)
+    def remove(self, entity: Entity) -> None:
+        """"""
+        slot = self.get_slot(entity)
 
-        if not success:
-            return False
+        if slot:
+            slot.remove(entity)
 
-        if not self.slots[entity.name]:
-            del self.slots[entity.name]
-
-        return True
+            if slot.is_empty():
+                self.slots.remove(slot)
 
     def filter(self, _type: Type[T]) -> list[T]:
         """
@@ -96,7 +101,7 @@ class Container(Describable):
         Returns:
         A string
         """
-        for slot in self.slots.values():
+        for slot in self.slots:
             self.b.add(f'- {slot.short_description()}')
 
         return self.b.build()
@@ -109,19 +114,23 @@ class Container(Describable):
         A list of entities
         """
         entities = []
-        for slot in self.slots.values():
+        for slot in self.slots:
             entities.extend(slot.entities)
 
         return entities
 
-    def get_slots(self) -> list[Slot]:
+    def get_slot(self, entity: Entity) -> Slot | None:
         """
         Return an iterator over the slots of the container.
 
         Returns:
         An iterator of Slots
         """
-        return list(self.slots.values())
+        for slot in self.slots:
+            if entity in slot:
+                return slot
+
+        return None
 
     def __len__(self) -> int:
         """
@@ -131,6 +140,23 @@ class Container(Describable):
         An integer
         """
         return len(self.slots)
+
+    def __contains__(self, entity: Entity) -> bool:
+        """
+        Return true of the container contains the given entity,
+        otherwise return false.
+
+        Argument:
+        entity - the considered entity
+
+        Returns:
+        A boolean
+        """
+        return entity in self.get_entities()
+
+    def __iter__(self) -> Iterator[Slot]:
+        """"""
+        return iter(self.slots)
 
     def __bool__(self) -> bool:
         """

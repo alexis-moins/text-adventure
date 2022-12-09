@@ -20,8 +20,8 @@ class Room(Describable):
         self.name = name
         self.description = description
 
-        self.npc = Container(npc or [])  # type: ignore
-        self.items = Container([])
+        self.npc = Container.of(npc or [])  # type: ignore
+        self.items = Container()
         self.is_boss_room: bool = False
 
     def short_description(self) -> str:

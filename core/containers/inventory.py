@@ -16,9 +16,23 @@ class Inventory(Container):
         Constructor creating a new inventory, a sized container for items
         of all kinds.
         """
-        super().__init__(items or [])
+        super().__init__()
         self.size = size
+
+        for item in items or []:
+            self.add(item)
+
         self.equipments: Equipments = {}
+
+    def is_full(self) -> bool:
+        """
+        Return true if the inventory is full, otherwise
+        return false.
+
+        Returns:
+        A boolean
+        """
+        return len(self.slots) == self.size
 
     def short_description(self) -> str:
         """
@@ -36,10 +50,31 @@ class Inventory(Container):
         Returns:
         A string
         """
-        for slot in self.get_slots():
+        for slot in self.slots:
             self.b.add(f'- {slot.short_description()}')
 
         return self.b.build()
+
+    def add(self, entity: Entity) -> bool:
+        """
+        Add an entity to the container. Return false if
+        it is impossible to add items to the inventory.
+
+        Argument:
+        entity - the entity to be added
+
+        Returns:
+        A boolean
+        """
+        slot = self.get_slot(entity)
+
+        if slot is None and self.is_full():
+            return False
+
+        if slot is not None and slot.is_full():
+            return False
+
+        return super().add(entity)
 
     def equip(self, equipment: Equipable) -> None:
         """

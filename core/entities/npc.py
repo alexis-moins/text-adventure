@@ -55,7 +55,7 @@ class NPC(Fighter):
         dungeon.room.npc.remove(self)
         dungeon.add_log(f'\nThe {self.name} is REDdead!WHITE')
 
-        for slot in self.inventory.get_slots():
+        for slot in self.inventory.slots:
             dungeon.room.items.add_slot(slot)
 
         dungeon.add_log(
