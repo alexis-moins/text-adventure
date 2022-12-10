@@ -14,7 +14,7 @@ class Bestiary:
         """
         Constructor creating a new bestiary.
         """
-        self._book: dict[str, dict] = {}
+        self.book: dict[str, dict] = {}
         self.armoury = Armory()
         self.load('data/bestiary.yaml')
 
@@ -34,7 +34,7 @@ class Bestiary:
         Returns:
         A new NPC
         """
-        data = self._book[creature].copy()
+        data = self.book[creature].copy()
         inventory = self.make_inventory(data.pop('inventory'))
         return NPC(**data, inventory=inventory)
 
@@ -46,4 +46,4 @@ class Bestiary:
         path - the path to the bestiary
         """
         with open(path, 'r') as file:
-            self._book = safe_load(file)
+            self.book = safe_load(file)
