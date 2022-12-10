@@ -23,8 +23,6 @@ class Inventory(Container):
         for item in items or []:
             self.add(item)
 
-        self.equipments: Equipments = {}
-
     def is_empty(self) -> bool:
         """
         Return true if the inventory is empty, otherwise
@@ -94,20 +92,4 @@ class Inventory(Container):
             return False
 
         self.slots.append(Slot.of(entity))
-
-    def equip(self, equipment: Equipable) -> None:
-        """
-        Handle or wear the given equipment.
-        """
-        if equipment.slot in self.equipments:
-            self.take_off(self.equipments[equipment.slot])
-
-        self.equipments[equipment.slot] = equipment
-        equipment.is_equiped = True
-
-    def take_off(self, equipment: Equipable) -> None:
-        """
-
-        """
-        del self.equipments[equipment.slot]
-        equipment.is_equiped = False
+        return True

@@ -73,7 +73,7 @@ class AttackAction(BaseAction):
         Returns:
         A string
         """
-        weapon = self.fighter.inventory.equipments.get('weapon')
+        weapon = self.fighter.equipments.get('weapon')
         weapon_name = 'bare hands' if not weapon else weapon.name
 
         return self.b.add(f'Attack YELLOW(with your {weapon_name})WHITE').build()

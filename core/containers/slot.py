@@ -23,17 +23,53 @@ class Slot(Describable):
     def of(entity: Entity) -> Slot:
         """
         Return a new slot of entity.
+
+        Argument:
+        entity - the entity of the slot
+
+        Returns:
+        A slot
         """
         return Slot(entity, size=entity.stack_size)
 
+    def take(self, n: int) -> list[Entity]:
+        """
+        Remove and return the n first entities of the slot.
+
+        Argument:
+        n - the number of entities to take
+
+        Returns:
+        A list of entities
+        """
+        if len(self.entities) < n:
+            return []
+
+        entities = self.entities[:n]
+
+        for entity in self.entities:
+            self.entities.remove(entity)
+
+        return entities
+
     def is_empty(self) -> bool:
         """
+        Return true if the slot is empty, return
+        false otherwise.
 
+        Returns:
+        A boolean
         """
         return len(self.entities) == 0
 
     def is_full(self) -> bool:
-        """"""
+        """
+        Return true if the slot is full, return
+        false otherwise.
+
+        Returns:
+        A boolean
+        """
         return len(self.entities) == self.size
 
     def add(self, entity: Entity) -> bool:
@@ -84,13 +120,9 @@ class Slot(Describable):
 
     def __iter__(self) -> Iterator[Entity]:
         """
+        Return an iterator over the entities of the slot.
 
+        Returns:
+        An iterator of entities
         """
         return iter(self.entities)
-
-    # def __add__(self, other: Slot) -> Slot:
-    #     """
-    #
-    #     """
-    #     self.entities.extend(other.entities)
-    #     return self

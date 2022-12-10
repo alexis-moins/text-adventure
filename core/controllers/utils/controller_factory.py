@@ -17,7 +17,7 @@ from core.actions.scene.wait_action import WaitAction
 from core.controllers.scene_controller import SceneController
 from core.controllers.selection.multi_selection_controller import MultiSelectionController
 from core.controllers.selection.selection_controller import SelectionController
-from core.views.sceneries.inventory_scenery import InventoryView
+from core.views.sceneries.inventory_view import InventoryView
 
 from core.views.sceneries.room_scenery import RoomScenery
 from core.views.selection.selection_view import MessageView
