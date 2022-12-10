@@ -48,6 +48,11 @@ class OpenInventoryAction(BaseAction):
         Returns:
         A boolean
         """
+        if self.inventory.is_empty():
+            context.dungeon.factory.message_controller(
+                'Your inventory is YELLOWempty!WHITE').start()
+            return False
+
         context.dungeon.factory.inventory_controller().start()
         return False
 

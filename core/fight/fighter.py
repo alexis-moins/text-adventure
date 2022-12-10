@@ -3,10 +3,12 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING
 
-from core.entities.character import Character
+from core.items.equipable import Equipable
 from core.fight.statistics import Statistics
+from core.entities.character import Character
 
 if TYPE_CHECKING:
+    from core.fight.equipments import Equipments
     from core.containers.inventory import Inventory
 
 
@@ -31,6 +33,7 @@ class Fighter(Character):
         self.defence = statistics['defence']
 
         self.inventory = inventory
+        self.equipments: Equipments = {}
 
     @property
     def health(self) -> int:
@@ -111,7 +114,7 @@ class Fighter(Character):
         Returns:
         An integer
         """
-        weapon = self.inventory.equipments.get('weapon')
+        weapon = self.equipments.get('weapon')
         weapon_damage = 0 if not weapon else weapon.damage
 
         return max(self.strength + weapon_damage + random.randint(-2, 2), 0)
@@ -120,7 +123,7 @@ class Fighter(Character):
         """
         Return the resistance of the fighter
         """
-        armor = self.inventory.equipments.get('armor')
+        armor = self.equipments.get('armor')
         return armor.protection if armor else 0
 
     def mitigate_damage(self, damage: int) -> int:
@@ -128,3 +131,20 @@ class Fighter(Character):
 
         """
         return max(damage - self.get_resistance(), 0)
+
+    def equip(self, equipment: Equipable) -> None:
+        """
+        Handle or wear the given equipment.
+        """
+        if equipment.slot in self.equipments:
+            self.take_off(self.equipments[equipment.slot])
+
+        self.equipments[equipment.slot] = equipment
+        equipment.is_equiped = True
+
+    def take_off(self, equipment: Equipable) -> None:
+        """
+
+        """
+        del self.equipments[equipment.slot]
+        equipment.is_equiped = False

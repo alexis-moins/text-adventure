@@ -12,6 +12,7 @@ armory = Armory()
 bestiary = Bestiary()
 
 room.npc.add(bestiary.summon('grey wolf'))
+room.npc.add(bestiary.summon('grey wolf'))
 
 room.items.add(armory.take('leather armor'))
 room.items.add(armory.take('iron sword'))

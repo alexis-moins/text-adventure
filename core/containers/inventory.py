@@ -2,12 +2,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from core.containers.slot import Slot
 
-from core.items.equipable import Equipable
 from core.containers.container import Container
 
 if TYPE_CHECKING:
     from core.entities.entity import Entity
-    from core.fight.equipments import Equipments
 
 
 class Inventory(Container):
@@ -23,7 +21,15 @@ class Inventory(Container):
         for item in items or []:
             self.add(item)
 
-        self.equipments: Equipments = {}
+    def is_empty(self) -> bool:
+        """
+        Return true if the inventory is empty, otherwise
+        return false.
+
+        Returns:
+        A boolean
+        """
+        return len(self.slots) == 0
 
     def is_full(self) -> bool:
         """
@@ -84,20 +90,4 @@ class Inventory(Container):
             return False
 
         self.slots.append(Slot.of(entity))
-
-    def equip(self, equipment: Equipable) -> None:
-        """
-        Handle or wear the given equipment.
-        """
-        if equipment.slot in self.equipments:
-            self.take_off(self.equipments[equipment.slot])
-
-        self.equipments[equipment.slot] = equipment
-        equipment.equiped = True
-
-    def take_off(self, equipment: Equipable) -> None:
-        """
-
-        """
-        del self.equipments[equipment.slot]
-        equipment.equiped = False
+        return True
