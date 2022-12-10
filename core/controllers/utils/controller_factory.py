@@ -94,12 +94,8 @@ class ControllerFactory:
             DrinkPotionAction(self.dungeon.player)
         ]
 
-        pinned = {
-            'q': QuitAction('Close')
-        }
-
         return SceneController(self.dungeon, InventoryView(self.dungeon, self.dungeon.player),
-                               actions, pinned)
+                               actions, {'q': QuitAction('Close')})
 
     def message_controller(self, message: str) -> SceneController:
         """

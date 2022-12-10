@@ -7,6 +7,6 @@ class Equipable(Item):
         super().__init__(name, description, price)
 
         self.slot = slot
-        self.equiped = False
+        self.is_equiped = False
 
         self.stack_size = 1

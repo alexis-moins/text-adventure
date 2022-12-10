@@ -25,6 +25,16 @@ class Inventory(Container):
 
         self.equipments: Equipments = {}
 
+    def is_empty(self) -> bool:
+        """
+        Return true if the inventory is empty, otherwise
+        return false.
+
+        Returns:
+        A boolean
+        """
+        return len(self.slots) == 0
+
     def is_full(self) -> bool:
         """
         Return true if the inventory is full, otherwise
@@ -93,11 +103,11 @@ class Inventory(Container):
             self.take_off(self.equipments[equipment.slot])
 
         self.equipments[equipment.slot] = equipment
-        equipment.equiped = True
+        equipment.is_equiped = True
 
     def take_off(self, equipment: Equipable) -> None:
         """
 
         """
         del self.equipments[equipment.slot]
-        equipment.equiped = False
+        equipment.is_equiped = False

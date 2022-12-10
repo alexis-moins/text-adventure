@@ -26,8 +26,7 @@ class InventoryView(View):
         """
         self.show_status_bar()
 
-        self.b.add(
-            'Your inventory is empty...' if not self.fighter.inventory else 'Your inventory contains:')
+        self.b.add('Your inventory contains:')
 
         if self.fighter.inventory:
             self.b.add(self.fighter.inventory.long_description())
