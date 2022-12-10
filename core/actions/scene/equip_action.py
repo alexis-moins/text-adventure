@@ -49,8 +49,8 @@ class EquipAction(BaseAction):
         Returns:
         A boolean
         """
-        items: list[Equipable] = [
-            e for e in self.inventory.filter(Equipable) if not e.is_equiped]
+        items = [equipment for equipment in self.inventory.filter(
+            Equipable) if not equipment.is_equiped]
 
         equipments: list[Equipable] = context.dungeon.factory.multi_selection_controller(
             'Which equipment(s) do you want to wear :').select(items)  # type: ignore
@@ -59,7 +59,7 @@ class EquipAction(BaseAction):
             return False
 
         for equipment in equipments:
-            context.dungeon.player.inventory.equip(equipment)
+            context.dungeon.player.equip(equipment)
 
         return True
 

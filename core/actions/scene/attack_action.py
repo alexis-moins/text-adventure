@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
+from core.entities.npc import NPC
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -47,21 +48,22 @@ class AttackAction(BaseAction):
         Returns:
         A boolean
         """
-        enemy = controller.dungeon.factory.selection_controller(
-            'Who will be the target of your attack :').select(controller.dungeon.room.npc.get_entities())
+        npcs = controller.dungeon.room.npc.get_entities()
 
-        if not enemy:
+        target: NPC | None = controller.dungeon.factory.selection_controller(
+            'Who will be the target of your attack :').select(npcs)  # type: ignore
+
+        if not target:
             return False
 
         damage = self.fighter.get_damage()
-        enemy.receive_damage(damage)
+        target.receive_damage(damage)
 
-        damage = enemy.mitigate_damage(damage)
-
-        message = f'You deal YELLOW{damage} damageWHITE to the {enemy.name}.'
+        damage = target.mitigate_damage(damage)
+        message = f'You deal YELLOW{damage} damageWHITE to the {target.name}.'
 
         if not damage:
-            message = f'You YELLOWmissWHITE the {enemy.name}'
+            message = f'You YELLOWmissWHITE the {target.name}'
 
         controller.dungeon.add_log(message)
         return True

@@ -2,12 +2,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from core.containers.slot import Slot
 
-from core.items.equipable import Equipable
 from core.containers.container import Container
 
 if TYPE_CHECKING:
     from core.entities.entity import Entity
-    from core.fight.equipments import Equipments
 
 
 class Inventory(Container):
