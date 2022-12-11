@@ -1,7 +1,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Iterator, Type, TypeVar
 
+from core.entities.npc import NPC
 from core.containers.slot import Slot
+
+from core.containers.npc_slot import NPCSlot
 from core.entities.describable import Describable
 
 if TYPE_CHECKING:
@@ -51,7 +54,8 @@ class Container(Describable):
             if slot.add(entity):
                 return True
 
-        self.slots.append(Slot.of(entity))
+        _class = NPCSlot if isinstance(entity, NPC) else Slot
+        self.slots.append(_class.of(entity))
         return True
 
     def add_slot(self, slot: Slot) -> None:
