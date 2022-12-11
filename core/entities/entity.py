@@ -1,5 +1,7 @@
 from abc import ABC
+from collections import defaultdict
 
+from core.utils.strings import parse_colors
 from core.entities.describable import Describable
 
 
@@ -20,6 +22,7 @@ class Entity(Describable, ABC):
     """
     Represents a generic entity, wether it be an item or a character.
     """
+    IDs = defaultdict(int)
 
     def __init__(self, name: str, description: str) -> None:
         """
@@ -31,8 +34,21 @@ class Entity(Describable, ABC):
         """
         super().__init__()
 
-        self.name = name
+        Entity.IDs[name] += 1
         self._description = description
+
+        self.name = name
+        self.name_and_id = name + \
+            parse_colors(f'MAGENTA #{Entity.IDs[name]}WHITE')
 
         self.stack_size = 20
         self.determiner = indefinite_determiner(self.name)
+
+    def slot_description(self) -> str:
+        """
+        Return the slot description of this element.
+
+        Returns:
+        A string
+        """
+        return self.short_description().replace(self.name_and_id, self.name)

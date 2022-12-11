@@ -43,7 +43,7 @@ class HealingPotion(Potion):
         Returns:
         A string
         """
-        return self.b.add(f'{self.name} GREEN(+{self.recovery} health)WHITE').build()
+        return self.b.add(f'{self.name_and_id} GREEN(+{self.recovery} health)WHITE').build()
 
     def long_description(self) -> str:
         """

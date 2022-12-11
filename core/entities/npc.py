@@ -10,6 +10,9 @@ if TYPE_CHECKING:
 
 
 class NPC(Fighter):
+    """
+    Class representing any non playable character.
+    """
 
     def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory, *, is_hostile: bool) -> None:
         """
@@ -45,9 +48,9 @@ class NPC(Fighter):
             damage = dungeon.player.mitigate_damage(damage)
 
             if not damage:
-                message = f'The {self.name} YELLOWmissesWHITE you!'
+                message = f'The {self.name_and_id} YELLOWmissesWHITE you!'
             else:
-                message = f'The {self.name} deals you YELLOW{damage} damageWHITE.'
+                message = f'The {self.name_and_id} deals you YELLOW{damage} damageWHITE.'
 
             dungeon.add_log(message)
 
@@ -57,14 +60,16 @@ class NPC(Fighter):
         """
 
         """
+        dungeon.add_log(f'The {self.name_and_id} is REDdead!WHITE')
         dungeon.room.npc.remove(self)
-        dungeon.add_log(f'The {self.name} is REDdead!WHITE')
+
+        NPC.IDs[self.name] -= 1
 
         for slot in self.inventory.slots:
             dungeon.room.items.add_slot(slot)
 
         dungeon.add_log(
-            '\nIt dropped something on the ground :')
+            '\nIt dropped something on the ground:')
 
         for slot in self.inventory:
             dungeon.logger.add(f'- {slot.short_description()}')
@@ -79,10 +84,10 @@ class NPC(Fighter):
         A string
         """
         percentage = int(self.health / self.max_health * 100)
-        sign = 'RED' if self.is_hostile else 'CYAN'
-        sign += f'({percentage}%)WHITE'
+        health_percentage = 'RED' if self.is_hostile else 'CYAN'
+        health_percentage += f'({percentage}%)WHITE'
 
-        return self.b.add(self.name + f' {sign}').build()
+        return self.b.add(f'{self.name_and_id} {health_percentage}').build()
 
     def long_description(self) -> str:
         """

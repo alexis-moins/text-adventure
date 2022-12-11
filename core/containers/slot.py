@@ -98,7 +98,7 @@ class Slot(Describable, Generic[T]):
         Returns:
         A string
         """
-        return self.b.add(f'BLUEx{len(self)}WHITE {self.first_entity.short_description()}').build()
+        return self.b.add(f'BLUEx{len(self)}WHITE {self.first_entity.slot_description()}').build()
 
     def long_description(self) -> str:
         """

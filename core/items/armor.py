@@ -22,7 +22,7 @@ class Armor(Equipable):
         Returns:
         A string
         """
-        return self.b.add(f'{self.name} MAGENTA({self.protection} protection)WHITE').build()
+        return self.b.add(f'{self.name_and_id} GREEN({self.protection} protection)WHITE').build()
 
     def long_description(self) -> str:
         """

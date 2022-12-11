@@ -22,7 +22,7 @@ class Weapon(Equipable):
         Returns:
         A string
         """
-        return self.b.add(f'{self.name} MAGENTA({self.damage} damage)WHITE').build()
+        return self.b.add(f'{self.name_and_id} GREEN(+{self.damage} damage)WHITE').build()
 
     def long_description(self) -> str:
         """

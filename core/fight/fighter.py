@@ -35,9 +35,8 @@ class Fighter(Character):
         self.inventory = inventory
         self.equipments: Equipments = {}
 
-        for item in self.inventory:
+        for item in self.inventory.get_entities():
             if isinstance(item, Equipable):
-                input(item.name)
                 self.equip(item)
 
     @property
