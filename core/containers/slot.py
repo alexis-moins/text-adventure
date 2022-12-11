@@ -1,15 +1,16 @@
 from __future__ import annotations
+from typing import Generic, Iterator, TypeVar
 
-from typing import TYPE_CHECKING, Iterator
+from core.entities.entity import Entity
 from core.entities.describable import Describable
 
-if TYPE_CHECKING:
-    from core.entities.entity import Entity
+
+T = TypeVar('T', bound=Entity)
 
 
-class Slot(Describable):
+class Slot(Describable, Generic[T]):
 
-    def __init__(self, entity: Entity, *, size: int = 20) -> None:
+    def __init__(self, entity: T, *, size: int = 20) -> None:
         """
         Constructor creating a new slot of the given size.
         """
@@ -20,7 +21,7 @@ class Slot(Describable):
         self.name = entity.name
 
     @staticmethod
-    def of(entity: Entity) -> Slot:
+    def of(entity: T) -> Slot:
         """
         Return a new slot of entity.
 
@@ -32,7 +33,7 @@ class Slot(Describable):
         """
         return Slot(entity, size=entity.stack_size)
 
-    def take(self, n: int) -> list[Entity]:
+    def take(self, n: int) -> list[T]:
         """
         Remove and return the n first entities of the slot.
 
@@ -72,7 +73,7 @@ class Slot(Describable):
         """
         return len(self.entities) == self.size
 
-    def add(self, entity: Entity) -> bool:
+    def add(self, entity: T) -> bool:
         """
 
         """
@@ -82,7 +83,7 @@ class Slot(Describable):
         self.entities.append(entity)
         return True
 
-    def remove(self, entity: Entity) -> bool:
+    def remove(self, entity: T) -> bool:
         """"""
         if entity not in self.entities:
             return False

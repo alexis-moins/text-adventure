@@ -3,7 +3,8 @@ from typing import TYPE_CHECKING, Iterator, Type, TypeVar
 
 from core.entities.npc import NPC
 from core.containers.slot import Slot
-from core.containers.ncp_slot import NPCSlot
+
+from core.containers.npc_slot import NPCSlot
 from core.entities.describable import Describable
 
 if TYPE_CHECKING:

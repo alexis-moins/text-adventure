@@ -1,22 +1,19 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterator
+from core.entities.npc import NPC
 from core.containers.slot import Slot
 
-if TYPE_CHECKING:
-    from core.entities.entity import Entity
 
+class NPCSlot(Slot[NPC]):
 
-class NPCSlot(Slot):
-
-    def __init__(self, entity: Entity, *, size: int = 20) -> None:
+    def __init__(self, entity: NPC, *, size: int = 20) -> None:
         """
         Constructor creating a new slot of the given size.
         """
-        super().__init__(entity)
+        super().__init__(entity, size=size)
 
     @staticmethod
-    def of(entity: Entity) -> Slot:
+    def of(entity: NPC) -> NPCSlot:
         """
         Return a new slot of entity.
 
