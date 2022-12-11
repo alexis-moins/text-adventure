@@ -57,8 +57,9 @@ class Inventory(SizedContainer):
         A string
         """
         for slot in self.slots:
-            sign = 'REDeWHITE' if isinstance(
+            sign = 'e' if isinstance(
                 slot.first_entity, Equipable) and slot.first_entity.is_equiped else ' '
-            self.b.add(f'- [{sign}] {slot.short_description()}')
+
+            self.b.add(f'- [RED{sign}WHITE] {slot.short_description()}')
 
         return self.b.build()

@@ -105,7 +105,7 @@ class StringBuilder:
         A string
         """
         if self._buffer[-1].endswith('\n'):
-            self._buffer[-1] = self._buffer[-1].removeprefix('\n')
+            self._buffer[-1] = self._buffer[-1][:-1]
 
         string = '\n'.join(self._buffer)
         self._buffer = []

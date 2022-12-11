@@ -65,7 +65,7 @@ class AttackAction(BaseAction):
         if not damage:
             message = f'You YELLOWmissWHITE the {target.name}'
 
-        controller.dungeon.add_log(message)
+        controller.dungeon.add_log(message + '\n')
         return True
 
     def short_description(self) -> str:
