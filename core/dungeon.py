@@ -41,7 +41,6 @@ class Dungeon:
 
         """
         if not self.logger.is_empty():
-            input(self.logger._buffer[-1])
             self.factory.message_controller(self.logger.build()).start()
 
     def next_turn(self) -> None:
