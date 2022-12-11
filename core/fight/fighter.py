@@ -35,6 +35,11 @@ class Fighter(Character):
         self.inventory = inventory
         self.equipments: Equipments = {}
 
+        for item in self.inventory:
+            if isinstance(item, Equipable):
+                input(item.name)
+                self.equip(item)
+
     @property
     def health(self) -> int:
         """

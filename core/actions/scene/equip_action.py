@@ -36,7 +36,8 @@ class EquipAction(BaseAction):
         Returns:
         a boolean
         """
-        return not all([e.is_equiped for e in self.inventory.filter(Equipable)])
+        return not all([equipment.is_equiped
+                        for equipment in self.inventory.filter(Equipable)])
 
     def execute(self, context: SceneController) -> bool:
         """

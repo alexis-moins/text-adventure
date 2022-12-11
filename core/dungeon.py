@@ -28,20 +28,21 @@ class Dungeon:
         self.room = start
 
         self.factory = ControllerFactory(self)
-        self.b = StringBuilder()
+        self.logger = StringBuilder()
 
     def add_log(self, log: str) -> None:
         """
 
         """
-        self.b.add(log)
+        self.logger.add(log)
 
     def show_logs(self) -> None:
         """
 
         """
-        if not self.b.is_empty():
-            self.factory.message_controller(self.b.build()).start()
+        if not self.logger.is_empty():
+            input(self.logger._buffer[-1])
+            self.factory.message_controller(self.logger.build()).start()
 
     def next_turn(self) -> None:
         """"""

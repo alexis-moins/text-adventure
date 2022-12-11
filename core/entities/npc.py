@@ -65,7 +65,11 @@ class NPC(Fighter):
 
         dungeon.add_log(
             '\nIt dropped something on the ground :')
-        dungeon.add_log(self.inventory.long_description())
+
+        for slot in self.inventory:
+            dungeon.logger.add(f'- {slot.short_description()}')
+
+        dungeon.logger.new_line()
 
     def short_description(self) -> str:
         """

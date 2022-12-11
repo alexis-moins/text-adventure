@@ -142,7 +142,7 @@ class Container(Describable):
 
         """
         for slot in self.slots:
-            if entity.name == slot.name:
+            if entity.name == slot.first_entity.name:
                 return slot
 
         return None

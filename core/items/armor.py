@@ -22,8 +22,7 @@ class Armor(Equipable):
         Returns:
         A string
         """
-        wore = 'RED[wore]WHITE' if self.is_equiped else ''
-        return self.b.add(f'{self.name} MAGENTA({self.protection} protection)WHITE {wore}').build()
+        return self.b.add(f'{self.name} MAGENTA({self.protection} protection)WHITE').build()
 
     def long_description(self) -> str:
         """

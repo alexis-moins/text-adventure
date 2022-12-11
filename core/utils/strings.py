@@ -48,7 +48,7 @@ class StringBuilder:
         Constructor creating a new StringBuilder, useful for creating
         formatted multi-line strings with ease.
         """
-        self._buffer = []
+        self._buffer: list[str] = []
         self._new_line = False
         self._wrapper = TextWrapper(width=width, break_long_words=False,
                                     replace_whitespace=False)
@@ -104,6 +104,9 @@ class StringBuilder:
         Returns:
         A string
         """
+        if self._buffer[-1].endswith('\n'):
+            self._buffer[-1] = self._buffer[-1].removeprefix('\n')
+
         string = '\n'.join(self._buffer)
         self._buffer = []
 

@@ -1,54 +1,53 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from core.containers.slot import Slot
+from core.containers.sized_container import SizedContainer
+from core.items.equipable import Equipable
 
-from core.containers.container import Container
+from core.utils.armory import Armory
 
 if TYPE_CHECKING:
     from core.entities.entity import Entity
 
 
-class Inventory(Container):
+class Inventory(SizedContainer):
+    """
+    Sized container representing a fighter's inventory.
+    """
+    armory = Armory()
 
-    def __init__(self, items: list[Entity] | None = None, *, size: int = 10) -> None:
+    def __init__(self, items: list[Entity] | None = None, *, size: int = 10, gold: int = 30) -> None:
         """
         Constructor creating a new inventory, a sized container for items
         of all kinds.
-        """
-        super().__init__()
-        self.size = size
 
-        for item in items or []:
-            self.add(item)
+        Argument:
+        items - list of items
 
-    def is_empty(self) -> bool:
+        Keyword Arguments:
+        size - the maximum capacity of the inventory
+        gold - the amount of gold in the inventory
         """
-        Return true if the inventory is empty, otherwise
-        return false.
+        super().__init__(items, size=size)
+        self.gold = gold
 
-        Returns:
-        A boolean
+    @staticmethod
+    def create(items: list[str], *, size: int = 10, gold: int = 30) -> Inventory:
         """
-        return len(self.slots) == 0
+        Create and return a new Inventory using the Armory.
 
-    def is_full(self) -> bool:
-        """
-        Return true if the inventory is full, otherwise
-        return false.
+        Argument:
+        items - list of item names
 
-        Returns:
-        A boolean
-        """
-        return len(self.slots) == self.size
+        Keyword Arguments:
+        size - the maximum capacity of the inventory
+        gold - the amount of gold in the inventory
 
-    def short_description(self) -> str:
+        Retuns:
+        An Inventory
         """
-        Return the short description of this element.
-
-        Returns:
-        A string
-        """
-        return self.b.add(f'YELLOW({len(self)}/{self.size})WHITE').build()
+        return Inventory(
+            [Inventory.armory.take(item) for item in items],
+            size=size, gold=gold)
 
     def long_description(self) -> str:
         """
@@ -58,36 +57,8 @@ class Inventory(Container):
         A string
         """
         for slot in self.slots:
-            self.b.add(f'- {slot.short_description()}')
+            sign = 'REDeWHITE' if isinstance(
+                slot.first_entity, Equipable) and slot.first_entity.is_equiped else ' '
+            self.b.add(f'- [{sign}] {slot.short_description()}')
 
         return self.b.build()
-
-    def add(self, entity: Entity) -> bool:
-        """
-        Add an entity to the container. Return false if
-        it is impossible to add items to the inventory.
-
-        Argument:
-        entity - the entity to be added
-
-        Returns:
-        A boolean
-        """
-        slot = self.get_slot_by_name(entity)
-
-        if slot is None:
-
-            if self.is_full():
-                return False
-
-            self.slots.append(Slot.of(entity))
-            return True
-
-        if slot.add(entity):
-            return True
-
-        if self.is_full():
-            return False
-
-        self.slots.append(Slot.of(entity))
-        return True

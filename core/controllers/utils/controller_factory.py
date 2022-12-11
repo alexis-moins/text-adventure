@@ -87,6 +87,9 @@ class ControllerFactory:
     def inventory_controller(self) -> SceneController:
         """
         Return a new controller over an inventory.
+
+        Returns:
+        A SceneController
         """
         actions = [
             EquipAction(self.dungeon.player.inventory),
