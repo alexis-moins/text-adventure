@@ -65,8 +65,9 @@ class NPC(Fighter):
 
         NPC.IDs[self.name] -= 1
 
-        for slot in self.inventory.slots:
-            dungeon.room.items.add_slot(slot)
+        for entity in self.inventory.get_entities():
+            self.inventory.remove(entity)
+            dungeon.room.items.add(entity)
 
         dungeon.add_log(
             '\nIt dropped something on the ground:')
@@ -76,6 +77,19 @@ class NPC(Fighter):
 
         dungeon.logger.new_line()
 
+    def receive_damage(self, damage: int) -> None:
+        """
+        Decrease the health of the fighter according to the
+        amount of damage received.
+
+        Argument:
+        damage - how many damage is received
+        """
+        if not self.is_hostile:
+            self.is_hostile = True
+
+        super().receive_damage(damage)
+
     def short_description(self) -> str:
         """
         Return the short description of the Npc.
@@ -84,6 +98,7 @@ class NPC(Fighter):
         A string
         """
         percentage = int(self.health / self.max_health * 100)
+
         health_percentage = 'RED' if self.is_hostile else 'CYAN'
         health_percentage += f'({percentage}%)WHITE'
 

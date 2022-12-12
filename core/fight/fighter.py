@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from core.items.equipable import Equipable
 from core.fight.statistics import Statistics
 from core.entities.character import Character
+from core.items.item import Item
 
 if TYPE_CHECKING:
     from core.fight.equipments import Equipments
@@ -152,3 +153,9 @@ class Fighter(Character):
         """
         del self.equipments[equipment.slot]
         equipment.is_equiped = False
+
+    def take(self, item: Item) -> None:
+        """
+
+        """
+        pass

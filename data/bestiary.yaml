@@ -4,6 +4,22 @@ grey wolf:
     description: Despite being the least aggressive, grey wolves tend to defend fiercely their territory
     is_hostile: true
 
+    type: npc
+
     statistics: {health: 10, magic: 2, strength: 3, defence: 3}
     inventory:
       - potion of healing
+
+trader:
+  name: trader
+  description: A wandering trader
+
+  type: trader
+  is_hostile: false
+
+  statistics: {health: 20, magic: 5, strength: 5, defence: 5}
+  inventory:
+    - potion of healing
+    - potion of healing
+    - iron sword
+    - leather armor

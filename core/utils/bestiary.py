@@ -3,6 +3,7 @@ from core.containers.inventory import Inventory
 
 from core.entities.npc import NPC
 from core.utils.armory import Armory
+from core.entities.trader import Trader
 
 
 class Bestiary:
@@ -31,7 +32,12 @@ class Bestiary:
         """
         data = self.book[creature].copy()
         inventory = Inventory.create(data.pop('inventory'))
-        return NPC(**data, inventory=inventory)
+        creature_type = data.pop('type')
+
+        return {
+            'npc': NPC,
+            'trader': Trader,
+        }[creature_type](**data, inventory=inventory)
 
     def load(self, path: str) -> None:
         """
