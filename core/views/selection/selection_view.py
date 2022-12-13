@@ -16,6 +16,7 @@ class MessageView(View):
         """
         super().__init__(dungeon)
         self.message = message
+        self.initial_message = message
 
     def on_show(self) -> None:
         """
@@ -27,4 +28,4 @@ class MessageView(View):
         """
 
         """
-        self.message
+        self.message = message

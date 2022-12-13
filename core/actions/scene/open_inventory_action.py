@@ -5,7 +5,7 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.containers.inventory import Inventory
+    from core.containers.inventory import Character
     from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
@@ -15,7 +15,7 @@ class OpenInventoryAction(BaseAction):
     Class representing the action of opening the inventory menu.
     """
 
-    def __init__(self, inventory: Inventory) -> None:
+    def __init__(self, inventory: Character) -> None:
         """
         Constructor creating a new action to open an inventory.
 

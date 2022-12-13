@@ -6,7 +6,7 @@ from core.items.equipable import Equipable
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.containers.inventory import Inventory
+    from core.containers.inventory import Character
     from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
@@ -16,7 +16,7 @@ class EquipAction(BaseAction):
     Class representing the action of wearing / holding a piece of equipment.
     """
 
-    def __init__(self, inventory: Inventory) -> None:
+    def __init__(self, inventory: Character) -> None:
         """
         Constructor creating a new action to equip something.
 
@@ -54,7 +54,7 @@ class EquipAction(BaseAction):
             Equipable) if not equipment.is_equiped]
 
         equipments: list[Equipable] = context.dungeon.factory.multi_selection_controller(
-            'Which equipment(s) do you want to wear :').select(items)  # type: ignore
+            'Which equipment(s) do you want to wear :').start(items)  # type: ignore
 
         if not equipments:
             return False

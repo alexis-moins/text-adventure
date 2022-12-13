@@ -21,7 +21,7 @@ from core.controllers.selection.selection_controller import SelectionController
 from core.views.sceneries.inventory_view import InventoryView
 
 from core.views.sceneries.room_scenery import RoomScenery
-from core.views.selection.selection_view import MessageView
+from core.views.message_view import MessageView
 
 if TYPE_CHECKING:
     from core.room import Room
@@ -45,6 +45,9 @@ class ControllerFactory:
 
         Argument:
         room - the room to be displayed
+
+        Returns:
+        A SceneController
         """
         actions = [
             WaitAction(),
@@ -61,7 +64,13 @@ class ControllerFactory:
 
     def selection_controller(self, prompt: str) -> SelectionController:
         """
+        Return a new controller to select exactly one element from a given list.
 
+        Argument:
+        prompt - the prompt to display
+
+        Returns:
+        A SelectionController
         """
         pinned: dict[str, BaseAction] = {
             'q': QuitAction('Cancel')
@@ -72,6 +81,9 @@ class ControllerFactory:
     def multi_selection_controller(self, prompt: str) -> MultiSelectionController:
         """
         Return a new controller to select multiple items from a given list.
+
+        Argument:
+        prompt - the prompt to display
 
         Returns:
         A MultiSelectionController
@@ -84,6 +96,21 @@ class ControllerFactory:
         }
 
         return MultiSelectionController(self.dungeon, MessageView(self.dungeon, prompt), pinned)
+
+    def quantity_selection_controller(self, prompt: str) -> MultiSelectionController:
+        """
+        Return a controller to select an arbitrary quantity.
+
+        Argument:
+        prompt - the prompt to display
+
+        Returns:
+        A MultiSelectionController
+        """
+        controller = self.multi_selection_controller(prompt)
+        controller.pinned['s'] = QuitAction('test')
+
+        return controller
 
     def inventory_controller(self) -> SceneController:
         """
@@ -114,16 +141,3 @@ class ControllerFactory:
         """
         return SceneController(self.dungeon, MessageView(self.dungeon, message),
                                [], {'c': QuitAction('Continue')})
-
-    def quantity_selection_controller(self, prompt: str) -> QuantityController:
-        """
-        Return a controller to select an arbitrary quantity.
-
-        Argument:
-        prompt - the prompt to display
-
-        Returns:
-        A QuantityController
-        """
-        return QuantityController(self.dungeon, MessageView(self.dungeon, prompt),
-                                  {'q': QuitAction('Cancel')})

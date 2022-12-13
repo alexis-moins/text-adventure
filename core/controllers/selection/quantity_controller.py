@@ -5,14 +5,14 @@ from core.controllers.scene_controller import SceneController
 from core.actions.menu.quantity_select import QuantitySelectAction
 
 if TYPE_CHECKING:
-    from core.views.view import View
     from core.dungeon import Dungeon
+    from core.views.message_view import MessageView
     from core.actions.base_action import BaseAction
 
 
 class QuantityController(SceneController):
 
-    def __init__(self, dungeon: Dungeon, view: View,  pinned: dict[str, BaseAction]) -> None:
+    def __init__(self, dungeon: Dungeon, view: MessageView,  pinned: dict[str, BaseAction]) -> None:
         """
         Constructor creating a new scene controller
 
@@ -51,15 +51,21 @@ class QuantityController(SceneController):
 
         return QuantitySelectAction(user_input)
 
-    def select(self, maximum: int) -> int:
+    def start(self, maximum: int) -> int:
         """
         Start the controller and ask the user to select exactly one
         item from a list of items.
 
         Argument:
         items - a list of items to choose from
+
+        Returns:
+        An integer
         """
         self.maximum = maximum
+
+        if self.maximum == 1:
+            return maximum
 
         while self.is_running:
             self.execute_turn()

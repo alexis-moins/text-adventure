@@ -20,12 +20,15 @@ class Player(Character):
     @staticmethod
     def barbarian() -> Player:
         """
+        Return a barbarian player.
 
+        Returns:
+        A Player
         """
         statistics = {'health': 20, 'magic': 10, 'strength': 5, 'defence': 2}
         inventory = Inventory.create(['leather armor', 'iron sword'])
 
-        return Player('Barbarian', statistics, inventory)
+        return Player('Barbarian', Statistics(**statistics), inventory)
 
     def short_description(self) -> str:
         """

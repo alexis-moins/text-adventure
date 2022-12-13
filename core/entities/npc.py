@@ -6,7 +6,7 @@ from core.entities.character import Character
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.fight.statistics import Statistics
-    from core.containers.inventory import Inventory
+    from core.containers.inventory import Character
 
 
 class NPC(Character):
@@ -14,7 +14,7 @@ class NPC(Character):
     Class representing any non playable character.
     """
 
-    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory, *, is_hostile: bool) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Character, *, is_hostile: bool) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
