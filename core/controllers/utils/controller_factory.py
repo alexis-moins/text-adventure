@@ -16,6 +16,7 @@ from core.actions.scene.wait_action import WaitAction
 
 from core.controllers.scene_controller import SceneController
 from core.controllers.selection.multi_selection_controller import MultiSelectionController
+from core.controllers.selection.quantity_controller import QuantityController
 from core.controllers.selection.selection_controller import SelectionController
 from core.views.sceneries.inventory_view import InventoryView
 
@@ -93,7 +94,7 @@ class ControllerFactory:
         """
         actions = [
             EquipAction(self.dungeon.player.inventory),
-            DropItemAction(self.dungeon.player.inventory),
+            DropItemAction(self.dungeon.player),
             DrinkPotionAction(self.dungeon.player)
         ]
 
@@ -113,3 +114,16 @@ class ControllerFactory:
         """
         return SceneController(self.dungeon, MessageView(self.dungeon, message),
                                [], {'c': QuitAction('Continue')})
+
+    def quantity_selection_controller(self, prompt: str) -> QuantityController:
+        """
+        Return a controller to select an arbitrary quantity.
+
+        Argument:
+        prompt - the prompt to display
+
+        Returns:
+        A QuantityController
+        """
+        return QuantityController(self.dungeon, MessageView(self.dungeon, prompt),
+                                  {'q': QuitAction('Cancel')})

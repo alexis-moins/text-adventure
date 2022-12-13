@@ -4,16 +4,16 @@ from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
+    from core.items.item import Item
     from core.dungeon import Dungeon
     from core.containers.slot import Slot
-    from core.containers.inventory import Inventory
-    from core.controllers.controller import Controller
+    from core.entities.character import Character
     from core.controllers.scene_controller import SceneController
 
 
 class DropItemAction(BaseAction):
 
-    def __init__(self, inventory: Inventory) -> None:
+    def __init__(self, character: Character) -> None:
         """
         Constructor creating a new action of dropping one (or more)
         items in the room.
@@ -22,9 +22,9 @@ class DropItemAction(BaseAction):
         inventory - the inventory to drop from
         """
         super().__init__()
-        self.inventory = inventory
+        self.character = character
 
-    def can_be_performed(self, _: Dungeon, controller: Controller) -> bool:
+    def can_be_performed(self, *_: tuple[Dungeon, SceneController]) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
@@ -34,7 +34,7 @@ class DropItemAction(BaseAction):
         Returns:
         a boolean
         """
-        return bool(self.inventory)
+        return bool(self.character)
 
     def execute(self, context: SceneController) -> bool:
         """
@@ -47,17 +47,21 @@ class DropItemAction(BaseAction):
         Returns:
         A boolean
         """
-        slots = self.inventory.slots
+        slots = self.character.inventory.slots
 
-        slots: list[Slot] = context.dungeon.factory.multi_selection_controller(
+        slots: list[Slot[Item]] = context.dungeon.factory.multi_selection_controller(
             'Which item(s) do you want to drop :').select(slots)  # type: ignore
 
         if not slots:
             return False
 
         for slot in slots:
-            context.dungeon.room.items.add_slot(slot)
-            self.inventory.remove_slot(slot)
+            quantity = context.dungeon.factory.quantity_selection_controller(
+                'How many item(s) to you want to drop :').select(len(slot))
+
+            for item in slot.take(quantity):
+                self.character.drop(item)
+                context.dungeon.room.items.add(item)
 
         return True
 

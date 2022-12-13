@@ -22,3 +22,9 @@ class MessageView(View):
         Show the menu on screen.
         """
         self.b.new_line().add(self.message)
+
+    def update_message(self, message: str) -> None:
+        """
+
+        """
+        self.message
