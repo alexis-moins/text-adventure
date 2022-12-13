@@ -6,6 +6,7 @@ from core.entities.describable import Describable
 
 
 T = TypeVar('T', bound=Entity)
+V = TypeVar('V', bound=Entity)
 
 
 class Slot(Describable, Generic[T]):
@@ -21,7 +22,7 @@ class Slot(Describable, Generic[T]):
         self.first_entity = entity
 
     @staticmethod
-    def of(entity: T) -> Slot:
+    def of(entity: V) -> Slot[V]:
         """
         Return a new slot of entity.
 
@@ -35,7 +36,8 @@ class Slot(Describable, Generic[T]):
 
     def take(self, n: int) -> list[T]:
         """
-        Remove and return the n first entities of the slot.
+        Return the n first entities of the slot without
+        removing them.
 
         Argument:
         n - the number of entities to take
@@ -46,12 +48,7 @@ class Slot(Describable, Generic[T]):
         if len(self.entities) < n:
             return []
 
-        entities = self.entities[:n]
-
-        for entity in self.entities:
-            self.entities.remove(entity)
-
-        return entities
+        return self.entities[:n]
 
     def is_empty(self) -> bool:
         """

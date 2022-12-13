@@ -38,8 +38,8 @@ class Entity(Describable, ABC):
         self._description = description
 
         self.name = name
-        self.name_and_id = name + \
-            parse_colors(f'MAGENTA #{Entity.IDs[name]}WHITE')
+        self.name_and_id = parse_colors(
+            f'{name} MAGENTA#{Entity.IDs[name]}WHITE')
 
         self.stack_size = 20
         self.determiner = indefinite_determiner(self.name)

@@ -1,16 +1,19 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from abc import ABC
 
-from abc import ABC, abstractmethod
-from core.entities.entity import Entity
+from core.fight.fighter import Fighter
+from core.items.equipable import Equipable
 
 if TYPE_CHECKING:
-    from core.dungeon import Dungeon
+    from core.items.item import Item
+    from core.fight.statistics import Statistics
+    from core.containers.inventory import Inventory
 
 
-class Character(Entity, ABC):
+class Character(Fighter, ABC):
 
-    def __init__(self, name: str, description: str) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory) -> None:
         """
         Constructor creating a new abstract character.
 
@@ -18,17 +21,54 @@ class Character(Entity, ABC):
         name - the name of the character
         description - the description of the character
         """
-        super().__init__(name, description)
+        super().__init__(name, description, statistics, inventory)
 
-    @abstractmethod
-    def take_turn(self, dungeon: Dungeon) -> bool:
+        for item in self.inventory.get_entities():
+            self.equip(item)
+
+    def equip(self, item: Item) -> None:
         """
-        Make the character take its turn.
+        Handle or wear the given equipment.
+        """
+        if not isinstance(item, Equipable):
+            return
+
+        if item.slot in self.equipments:
+            self.take_off(self.equipments[item.slot])
+
+        self.equipments[item.slot] = item
+        item.is_equiped = True
+
+    def take_off(self, item: Item) -> None:
+        """
+        Take the given equipment off.
 
         Argument:
-        dungeon - the current dungeon
-
-        Returns:
-        true if the actor has executed an action, false otherwise
+        item - the equipment to take off
         """
-        pass
+        if not isinstance(item, Equipable):
+            return
+
+        del self.equipments[item.slot]
+        item.is_equiped = False
+
+    def take(self, item: Item) -> None:
+        """
+        Add the given item to the inventory.
+
+        Argument:
+        item - the item to take
+        """
+        self.inventory.add(item)
+
+    def drop(self, item: Item) -> None:
+        """
+        Drop the given item. If the item is equiped, it will be taken off.
+
+        Argument:
+        item - the item to drop
+        """
+        if isinstance(item, Equipable) and item.is_equiped:
+            self.take_off(item)
+
+        self.inventory.remove(item)

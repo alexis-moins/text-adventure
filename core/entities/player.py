@@ -1,15 +1,15 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from core.entities.character import Character
 
-from core.fight.fighter import Fighter
-from core.containers.inventory import Inventory
 from core.fight.statistics import Statistics
+from core.containers.inventory import Inventory
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
 
 
-class Player(Fighter):
+class Player(Character):
 
     def __init__(self, archetype: str, statistics: Statistics, inventory: Inventory) -> None:
         """
@@ -20,12 +20,15 @@ class Player(Fighter):
     @staticmethod
     def barbarian() -> Player:
         """
+        Return a barbarian player.
 
+        Returns:
+        A Player
         """
         statistics = {'health': 20, 'magic': 10, 'strength': 5, 'defence': 2}
         inventory = Inventory.create(['leather armor', 'iron sword'])
 
-        return Player('Barbarian', statistics, inventory)
+        return Player('Barbarian', Statistics(**statistics), inventory)
 
     def short_description(self) -> str:
         """

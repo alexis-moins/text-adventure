@@ -2,11 +2,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
-from core.controllers.selection.quantity_controller import QuantityController
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.controllers.scene_controller import SceneController
+    from core.controllers.selection.quantity_controller import QuantityController
 
 
 class QuantitySelectAction(BaseAction):

@@ -1,20 +1,20 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.fight.fighter import Fighter
+from core.entities.character import Character
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.fight.statistics import Statistics
-    from core.containers.inventory import Inventory
+    from core.containers.inventory import Character
 
 
-class NPC(Fighter):
+class NPC(Character):
     """
     Class representing any non playable character.
     """
 
-    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory, *, is_hostile: bool) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Character, *, is_hostile: bool) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
@@ -65,16 +65,30 @@ class NPC(Fighter):
 
         NPC.IDs[self.name] -= 1
 
-        for slot in self.inventory.slots:
-            dungeon.room.items.add_slot(slot)
-
         dungeon.add_log(
             '\nIt dropped something on the ground:')
 
         for slot in self.inventory:
             dungeon.logger.add(f'- {slot.short_description()}')
 
+        for entity in self.inventory.get_entities():
+            self.drop(entity)
+            dungeon.room.items.add(entity)
+
         dungeon.logger.new_line()
+
+    def receive_damage(self, damage: int) -> None:
+        """
+        Decrease the health of the fighter according to the
+        amount of damage received.
+
+        Argument:
+        damage - how many damage is received
+        """
+        if not self.is_hostile:
+            self.is_hostile = True
+
+        super().receive_damage(damage)
 
     def short_description(self) -> str:
         """
@@ -84,6 +98,7 @@ class NPC(Fighter):
         A string
         """
         percentage = int(self.health / self.max_health * 100)
+
         health_percentage = 'RED' if self.is_hostile else 'CYAN'
         health_percentage += f'({percentage}%)WHITE'
 

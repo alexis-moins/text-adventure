@@ -24,7 +24,7 @@ class MultiSelectionController(SceneController):
         super().__init__(dungeon, view, [], pinned)
         self.selection: list[Describable] = []
 
-    def select(self, models: list[Describable]) -> list[Describable]:
+    def start(self, models: list[Describable]) -> list[Describable]:
         """
         Start the controller and ask the user to select any number
         of item from a list of items.

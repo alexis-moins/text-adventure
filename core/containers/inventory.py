@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from core.containers.sized_container import SizedContainer
-from core.items.equipable import Equipable
 
 from core.utils.armory import Armory
+from core.items.equipable import Equipable
+from core.containers.sized_container import SizedContainer
 
 if TYPE_CHECKING:
     from core.entities.entity import Entity

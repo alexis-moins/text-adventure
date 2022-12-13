@@ -6,14 +6,14 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.containers.inventory import Inventory
+    from core.containers.inventory import Character
     from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
 
 class TakeItemAction(BaseAction):
 
-    def __init__(self, inventory: Inventory) -> None:
+    def __init__(self, inventory: Character) -> None:
         """
         Constructor creating a new action of dropping one (or more)
         items in the room.
@@ -50,7 +50,7 @@ class TakeItemAction(BaseAction):
         items = context.dungeon.room.items.slots
 
         slots: list[Slot] = context.dungeon.factory.multi_selection_controller(
-            'Which item(s) do you want to take :').select(items)  # type: ignore
+            'Which item(s) do you want to take :').start(items)  # type: ignore
 
         if not slots:
             return False

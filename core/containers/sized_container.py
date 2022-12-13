@@ -1,8 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from core.items.equipable import Equipable
 
-from core.utils.armory import Armory
 from core.containers.slot import Slot
 from core.containers.container import Container
 
