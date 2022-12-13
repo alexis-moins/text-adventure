@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "text-adventure"
+version = "0.1.0"
+description = ""
+authors = ["alexis-moins <moinsalexis@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+# packages = [{include = "text_adventure"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyyaml = "^6.0"
+colorama = "^0.4.6"
+
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.0"
+debugpy = "^1.6.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

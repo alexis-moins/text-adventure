@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 
 from core.actions.base_action import BaseAction
 from core.controllers.controller import Controller
-from core.entities.npc import NPC
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon

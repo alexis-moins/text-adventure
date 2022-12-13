@@ -5,7 +5,6 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.items.item import Item
     from core.containers.slot import Slot
     from core.containers.inventory import Inventory
     from core.controllers.controller import Controller

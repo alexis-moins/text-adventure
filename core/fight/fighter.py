@@ -1,19 +1,17 @@
 from __future__ import annotations
-
-import random
+from abc import ABC
 from typing import TYPE_CHECKING
 
-from core.items.equipable import Equipable
+import random
+from core.entities.entity import Entity
 from core.fight.statistics import Statistics
-from core.entities.character import Character
-from core.items.item import Item
 
 if TYPE_CHECKING:
     from core.fight.equipments import Equipments
     from core.containers.inventory import Inventory
 
 
-class Fighter(Character):
+class Fighter(Entity, ABC):
 
     def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory) -> None:
         """
@@ -35,10 +33,6 @@ class Fighter(Character):
 
         self.inventory = inventory
         self.equipments: Equipments = {}
-
-        for item in self.inventory.get_entities():
-            if isinstance(item, Equipable):
-                self.equip(item)
 
     @property
     def health(self) -> int:
@@ -127,6 +121,9 @@ class Fighter(Character):
     def get_resistance(self) -> int:
         """
         Return the resistance of the fighter
+
+        Returns:
+        An integer
         """
         armor = self.equipments.get('armor')
         return armor.protection if armor else 0
@@ -136,26 +133,3 @@ class Fighter(Character):
 
         """
         return max(damage - self.get_resistance(), 0)
-
-    def equip(self, equipment: Equipable) -> None:
-        """
-        Handle or wear the given equipment.
-        """
-        if equipment.slot in self.equipments:
-            self.take_off(self.equipments[equipment.slot])
-
-        self.equipments[equipment.slot] = equipment
-        equipment.is_equiped = True
-
-    def take_off(self, equipment: Equipable) -> None:
-        """
-
-        """
-        del self.equipments[equipment.slot]
-        equipment.is_equiped = False
-
-    def take(self, item: Item) -> None:
-        """
-
-        """
-        pass

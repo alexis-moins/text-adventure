@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.fight.fighter import Fighter
+from core.entities.character import Character
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from core.containers.inventory import Inventory
 
 
-class NPC(Fighter):
+class NPC(Character):
     """
     Class representing any non playable character.
     """
@@ -65,15 +65,15 @@ class NPC(Fighter):
 
         NPC.IDs[self.name] -= 1
 
-        for entity in self.inventory.get_entities():
-            self.inventory.remove(entity)
-            dungeon.room.items.add(entity)
-
         dungeon.add_log(
             '\nIt dropped something on the ground:')
 
         for slot in self.inventory:
             dungeon.logger.add(f'- {slot.short_description()}')
+
+        for entity in self.inventory.get_entities():
+            self.drop(entity)
+            dungeon.room.items.add(entity)
 
         dungeon.logger.new_line()
 

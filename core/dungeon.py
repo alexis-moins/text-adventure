@@ -1,12 +1,12 @@
 from __future__ import annotations
-
 from typing import TYPE_CHECKING
-from core.controllers.utils.controller_factory import ControllerFactory
-from core.entities.npc import NPC
+
 from core.utils.strings import StringBuilder
+from core.controllers.utils.controller_factory import ControllerFactory
 
 if TYPE_CHECKING:
     from core.room import Room
+    from core.entities.npc import NPC
     from core.entities.player import Player
 
 

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
-from core.entities.npc import NPC
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
+    from core.entities.npc import NPC
     from core.fight.fighter import Fighter
     from core.controllers.scene_controller import SceneController
 

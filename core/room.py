@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.containers.container import Container
-from core.entities import Describable
+from core.entities.describable import Describable
 
 if TYPE_CHECKING:
     from core.entities.npc import NPC

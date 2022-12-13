@@ -1,15 +1,15 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from core.entities.character import Character
 
-from core.fight.fighter import Fighter
-from core.containers.inventory import Inventory
 from core.fight.statistics import Statistics
+from core.containers.inventory import Inventory
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
 
 
-class Player(Fighter):
+class Player(Character):
 
     def __init__(self, archetype: str, statistics: Statistics, inventory: Inventory) -> None:
         """
