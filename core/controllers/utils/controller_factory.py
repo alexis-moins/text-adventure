@@ -7,16 +7,17 @@ from core.actions.menu.select_all_action import SelectAllAction
 from core.actions.menu.unselect_all_action import UnselectAllAction
 from core.actions.menu.validate_action import ValidateAction
 from core.actions.scene.attack_action import AttackAction
-from core.actions.scene.drop_item_action import DropItemAction
-from core.actions.scene.equip_action import EquipAction
+
+from core.actions.scene.inventory.equip_action import EquipAction
+from core.actions.scene.inventory.drop_action import DropItemAction
 from core.actions.scene.inventory.drink_potion import DrinkPotionAction
-from core.actions.scene.open_inventory_action import OpenInventoryAction
-from core.actions.scene.take_item_action import TakeItemAction
+
 from core.actions.scene.wait_action import WaitAction
+from core.actions.scene.take_action import TakeItemAction
+from core.actions.scene.inventory_action import OpenInventoryAction
 
 from core.controllers.scene_controller import SceneController
 from core.controllers.selection.multi_selection_controller import MultiSelectionController
-from core.controllers.selection.quantity_controller import QuantityController
 from core.controllers.selection.selection_controller import SelectionController
 from core.views.sceneries.inventory_view import InventoryView
 
