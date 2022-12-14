@@ -7,13 +7,13 @@ from core.controllers.scene_controller import SceneController
 if TYPE_CHECKING:
     from core.views.view import View
     from core.dungeon import Dungeon
-    from core.actions.base_action import BaseAction
+    from core.actions.action_group import ActionGroup
     from core.entities.describable import Describable
 
 
 class SelectionController(SceneController):
 
-    def __init__(self, dungeon: Dungeon, view: View,  pinned: dict[str, BaseAction]) -> None:
+    def __init__(self, dungeon: Dungeon, view: View,  pinned: list[ActionGroup]) -> None:
         """
         Constructor creating a new scene controller
 

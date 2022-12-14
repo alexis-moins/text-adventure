@@ -48,3 +48,6 @@ class BaseAction(Describable, ABC):
         A string
         """
         return 'NOT IMPLEMENTED'
+
+
+PinnedActions = list[dict[str, BaseAction]]

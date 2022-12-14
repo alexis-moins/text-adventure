@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
+from core.entities.trader import Trader
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -10,7 +11,7 @@ if TYPE_CHECKING:
     from core.controllers.scene_controller import SceneController
 
 
-class InventoryAction(BaseAction):
+class TradeAction(BaseAction):
     """
     Class representing the action of opening the inventory menu.
     """
@@ -35,7 +36,7 @@ class InventoryAction(BaseAction):
         Returns:
         a boolean
         """
-        return True
+        return any([isinstance(npc, Trader) for npc in context.room.npc.get_entities()])
 
     def execute(self, context: SceneController) -> bool:
         """
@@ -48,12 +49,6 @@ class InventoryAction(BaseAction):
         Returns:
         A boolean
         """
-        if self.inventory.is_empty():
-            context.dungeon.factory.message_controller(
-                'Your inventory is YELLOWempty!WHITE').start()
-            return False
-
-        context.dungeon.factory.inventory_controller().start()
         return False
 
     def short_description(self) -> str:
@@ -63,4 +58,4 @@ class InventoryAction(BaseAction):
         Returns:
         A string
         """
-        return self.b.add(f'Inventory {self.inventory.short_description()}').build()
+        return self.b.add(f'Trade').build()

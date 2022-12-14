@@ -10,6 +10,7 @@ from core.utils.strings import StringBuilder
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.actions.base_action import BaseAction
+    from core.actions.action_group import ActionGroup
 
 
 class View(ABC):
@@ -65,7 +66,7 @@ class View(ABC):
         """
         os.system('clear')
 
-    def show_pinned_actions(self, pinned: dict[str, BaseAction]) -> None:
+    def show_action_group(self, group: ActionGroup) -> None:
         """
         Show the pinned actions on screen.
 
@@ -73,11 +74,11 @@ class View(ABC):
         pinned - the pinned actions to display
         """
         self.b.new_line()
-        for key, action in pinned.items():
+        for key, action in group.actions.items():
             self.b.add(
-                f'[GREEN{key}WHITE] {action.short_description()}', wrap=False)
+                f'[{group.color}{key}WHITE] {action.short_description()}', wrap=False)
 
-    def show_actions(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
+    def show_actions(self, actions: list[BaseAction], pinned: list[ActionGroup]) -> None:
         """
         Show the available actions on screen.
 
@@ -88,8 +89,8 @@ class View(ABC):
         Keyword Argument:
         pinned_first - whether the pinned should be rendered first
         """
-        if self.pinned_first:
-            self.show_pinned_actions(pinned)
+        for group in pinned:
+            self.show_action_group(group)
 
         if actions:
             self.b.new_line()
@@ -98,10 +99,7 @@ class View(ABC):
             self.b.add(
                 f'[CYAN{index}WHITE] {action.short_description()}', wrap=False)
 
-        if not self.pinned_first:
-            self.show_pinned_actions(pinned)
-
-    def show(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
+    def show(self, actions: list[BaseAction], pinned: list[ActionGroup]) -> None:
         """
         Display the view on screen.
 

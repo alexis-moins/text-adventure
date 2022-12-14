@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from core.actions.base_action import BaseAction
+    from core.actions.action_group import ActionGroup
 
 
 class Parser:
@@ -10,7 +11,7 @@ class Parser:
     Class offering ways to parse the user input.
     """
 
-    def get_action(self, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> BaseAction | None:
+    def get_action(self, actions: list[BaseAction], pinned: list[ActionGroup]) -> BaseAction | None:
         """
         Format and parse the user input and return the corresponding action
         or None if the input was invalid.
@@ -24,8 +25,9 @@ class Parser:
         """
         user_input = self.get_input()
 
-        if user_input in pinned:
-            return pinned[user_input]
+        for group in pinned:
+            if user_input in group.actions:
+                return group.actions[user_input]
 
         if not user_input.isnumeric():
             return None
