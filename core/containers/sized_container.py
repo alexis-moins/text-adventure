@@ -1,19 +1,20 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import Generic, TypeVar
 
+from core.entities.entity import Entity
 from core.containers.slot import Slot
 from core.containers.container import Container
 
-if TYPE_CHECKING:
-    from core.entities.entity import Entity
+
+T = TypeVar('T', bound=Entity)
 
 
-class SizedContainer(Container):
+class SizedContainer(Container[T], Generic[T]):
     """
     Sized container representing a fighter's inventory.
     """
 
-    def __init__(self, items: list[Entity] | None = None, *, size: int = 10) -> None:
+    def __init__(self, items: list[T] | None = None, *, size: int = 10) -> None:
         """
         Constructor creating a new sized container for entities.
 
@@ -70,7 +71,7 @@ class SizedContainer(Container):
 
         return self.b.build()
 
-    def add(self, entity: Entity) -> bool:
+    def add(self, entity: T) -> bool:
         """
         Add an entity to the container. Return false if
         it is impossible to add items to the inventory.
