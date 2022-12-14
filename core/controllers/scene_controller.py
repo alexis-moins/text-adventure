@@ -7,11 +7,12 @@ from core.controllers.controller import Controller
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.views.view import View
+    from core.actions.action_group import ActionGroup
 
 
 class SceneController(Controller):
 
-    def __init__(self, dungeon: Dungeon, view: View, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
+    def __init__(self, dungeon: Dungeon, view: View, actions: list[BaseAction] | None = None, pinned: list[ActionGroup] | None = None) -> None:
         """
         Constructor creating a new scene controller
 
@@ -19,7 +20,7 @@ class SceneController(Controller):
         dungeon - the current dungeon
         view - the view used to render the scene
         """
-        super().__init__(dungeon, view, actions, pinned)
+        super().__init__(dungeon, view, actions or [], pinned or [])
 
     def on_next_turn(self) -> None:
         """

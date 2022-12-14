@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.actions.base_action import BaseAction
+    from core.actions.action_group import ActionGroup
 
 
 class ActionHandler:
@@ -13,7 +14,7 @@ class ActionHandler:
     Class providing ways for controllers to manage actions.
     """
 
-    def __init__(self, dungeon: Dungeon, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
+    def __init__(self, dungeon: Dungeon, actions: list[BaseAction], pinned: list[ActionGroup]) -> None:
         """
         Constructor creating a new manager of controller actions.
 
@@ -21,11 +22,10 @@ class ActionHandler:
         dungeon - the current dungeon
         """
         self.dungeon = dungeon
-
         self.actions = actions
         self.pinned = pinned
 
-    def filter_actions(self, controller) -> tuple[list[BaseAction], dict[str, BaseAction]]:
+    def filter_actions(self, controller) -> tuple[list[BaseAction], list[ActionGroup]]:
         """
         Filter the actions available in the current context from the
         list of all possible actions in the handler.
@@ -38,7 +38,12 @@ class ActionHandler:
         actions = [action for action in self.actions
                    if action.can_be_performed(self.dungeon, controller)]
 
-        pinned = {key: action for key, action in self.pinned.items()
-                  if action.can_be_performed(self.dungeon, controller)}
+        pinned = []
+
+        for group in self.pinned:
+            filtered_group = group.filter(self.dungeon, controller)
+
+            if filtered_group.actions:
+                pinned.append(filtered_group)
 
         return actions, pinned

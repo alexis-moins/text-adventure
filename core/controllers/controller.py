@@ -8,11 +8,12 @@ if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.views.view import View
     from core.actions.base_action import BaseAction
+    from core.actions.action_group import ActionGroup
 
 
 class Controller(ActionHandler, Parser):
 
-    def __init__(self, dungeon: Dungeon, view: View, actions: list[BaseAction], pinned: dict[str, BaseAction]) -> None:
+    def __init__(self, dungeon: Dungeon, view: View, actions: list[BaseAction], pinned: list[ActionGroup]) -> None:
         """
         Constructor creating a new bare controller.
 

@@ -52,14 +52,14 @@ class Character(Fighter, ABC):
         del self.equipments[item.slot]
         item.is_equiped = False
 
-    def take(self, item: Item) -> None:
+    def take(self, item: Item) -> bool:
         """
         Add the given item to the inventory.
 
         Argument:
         item - the item to take
         """
-        self.inventory.add(item)
+        return self.inventory.add(item)
 
     def drop(self, item: Item) -> None:
         """
@@ -72,3 +72,10 @@ class Character(Fighter, ABC):
             self.take_off(item)
 
         self.inventory.remove(item)
+
+    def attack(self, target: Fighter) -> int:
+        """"""
+        damage = self.get_damage()
+        target.receive_damage(damage)
+
+        return target.mitigate_damage(damage)
