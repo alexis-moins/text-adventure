@@ -1,19 +1,20 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from core.containers.slot import Slot
 from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
+    from core.items.item import Item
     from core.dungeon import Dungeon
-    from core.containers.inventory import Character
+    from core.containers.slot import Slot
+    from core.entities.character import Character
     from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
 
 class TakeItemAction(BaseAction):
 
-    def __init__(self, inventory: Character) -> None:
+    def __init__(self, character: Character) -> None:
         """
         Constructor creating a new action of dropping one (or more)
         items in the room.
@@ -22,7 +23,7 @@ class TakeItemAction(BaseAction):
         inventory - the inventory to drop from
         """
         super().__init__()
-        self.inventory = inventory
+        self.character = character
 
     def can_be_performed(self, context: Dungeon, controller: Controller) -> bool:
         """
@@ -47,17 +48,21 @@ class TakeItemAction(BaseAction):
         Returns:
         A boolean
         """
-        items = context.dungeon.room.items.slots
+        slots = context.dungeon.room.items.slots
 
-        slots: list[Slot] = context.dungeon.factory.multi_selection_controller(
-            'Which item(s) do you want to take :').start(items)  # type: ignore
+        slots = context.dungeon.factory.multi_selection_controller(
+            'Which item(s) do you want to take :').start(slots)
 
         if not slots:
             return False
 
         for slot in slots:
-            context.dungeon.player.inventory.add_slot(slot)
-            context.dungeon.room.items.remove_slot(slot)
+            items = context.dungeon.factory.quantity_selection_controller(
+                f'How many YELLOW{slot.first_entity.name}WHITE to you want to take :').start(slot.entities)
+
+            for item in items:
+                self.character.take(item)
+                context.dungeon.room.items.remove(item)
 
         return True
 

@@ -5,6 +5,7 @@ from core.containers.container import Container
 from core.entities.describable import Describable
 
 if TYPE_CHECKING:
+    from core.items.item import Item
     from core.entities.npc import NPC
 
 
@@ -20,8 +21,8 @@ class Room(Describable):
         self.name = name
         self.description = description
 
-        self.npc = Container.of(npc or [])  # type: ignore
-        self.items = Container()
+        self.npc: Container[NPC] = Container.of(npc or [])
+        self.items: Container[Item] = Container()
         self.is_boss_room: bool = False
 
     def short_description(self) -> str:

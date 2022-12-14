@@ -57,7 +57,7 @@ class DropItemAction(BaseAction):
 
         for slot in slots:
             items: list[Item] = context.dungeon.factory.quantity_selection_controller(
-                f'How many item(s) to you want to drop :').start(slot.entities)  # type: ignore
+                f'How many items to you want to drop :').start(slot.entities)  # type: ignore
 
             for item in items:
                 self.character.drop(item)

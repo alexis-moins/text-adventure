@@ -38,7 +38,12 @@ class ActionHandler:
         actions = [action for action in self.actions
                    if action.can_be_performed(self.dungeon, controller)]
 
-        pinned = [group.filter(self.dungeon, controller)
-                  for group in self.pinned]
+        pinned = []
+
+        for group in self.pinned:
+            filtered_group = group.filter(self.dungeon, controller)
+
+            if filtered_group.actions:
+                pinned.append(filtered_group)
 
         return actions, pinned

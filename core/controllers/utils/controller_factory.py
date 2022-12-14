@@ -52,20 +52,23 @@ class ControllerFactory:
         Returns:
         A SceneController
         """
-        actions = [
-            WaitAction(),
-            AttackAction(self.dungeon.player),
-            TakeItemAction(self.dungeon.player.inventory),
-            TradeAction(self.dungeon.player.inventory)
-        ]
-
-        pinned = {
+        main = {
             'i': InventoryAction(self.dungeon.player.inventory),
             'q': QuitAction()
         }
 
+        secondary = {
+            'w': WaitAction(),
+            'a': AttackAction(self.dungeon.player),
+            't': TakeItemAction(self.dungeon.player),
+            'T': TradeAction(self.dungeon.player)
+        }
+
         return SceneController(self.dungeon, RoomScenery(self.dungeon, room),
-                               actions, [ActionGroup(pinned)])
+                               pinned=[
+                                   ActionGroup(main),
+                                   ActionGroup(secondary, 'cyan')
+        ])
 
     def selection_controller(self, prompt: str) -> SelectionController:
         """
@@ -97,11 +100,13 @@ class ControllerFactory:
         pinned = {
             'q': QuitAction('Cancel'),
             'a': SelectAllAction(),
-            'u': UnselectAllAction(),
-            'v': ValidateAction()
+            'u': UnselectAllAction()
         }
 
-        return MultiSelectionController(self.dungeon, MessageView(self.dungeon, prompt), pinned)
+        secondary_group = ActionGroup({'v': ValidateAction()}, color='MAGENTA')
+
+        return MultiSelectionController(self.dungeon, MessageView(self.dungeon, prompt),
+                                        [ActionGroup(pinned), secondary_group])
 
     def quantity_selection_controller(self, prompt: str) -> MultiSelectionController:
         """
@@ -114,9 +119,7 @@ class ControllerFactory:
         A MultiSelectionController
         """
         controller = self.multi_selection_controller(prompt)
-
-        group = ActionGroup({'s': QuitAction('test')}, color='MEGENTA')
-        controller.pinned.append(group)
+        controller.pinned[1].actions['s'] = QuitAction('test')
 
         return controller
 

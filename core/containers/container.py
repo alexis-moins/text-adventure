@@ -1,30 +1,29 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Iterator, Type, TypeVar
+from typing import Generic, Iterator, Type, TypeVar
 
 from core.entities.npc import NPC
 from core.containers.slot import Slot
 
+from core.entities.entity import Entity
 from core.containers.npc_slot import NPCSlot
 from core.entities.describable import Describable
 
-if TYPE_CHECKING:
-    from core.entities.entity import Entity
+
+T = TypeVar('T', bound=Entity)
+V = TypeVar('V', bound=Entity)
 
 
-T = TypeVar('T')
-
-
-class Container(Describable):
+class Container(Describable, Generic[T]):
 
     def __init__(self) -> None:
         """
         Constructor creating a new container.
         """
         super().__init__()
-        self.slots: list[Slot] = []
+        self.slots: list[Slot[T]] = []
 
     @staticmethod
-    def of(entities: list[Entity]) -> Container:
+    def of(entities: list[T]) -> Container:
         """
         Return a container with the given entities inside.
 
@@ -41,7 +40,7 @@ class Container(Describable):
 
         return container
 
-    def add(self, entity: Entity) -> bool:
+    def add(self, entity: T) -> bool:
         """
         Add an entity to the container.
 
@@ -58,7 +57,7 @@ class Container(Describable):
         self.slots.append(_class.of(entity))
         return True
 
-    def add_slot(self, slot: Slot) -> None:
+    def add_slot(self, slot: Slot[T]) -> None:
         """
 
         """
@@ -74,7 +73,7 @@ class Container(Describable):
         """
         self.slots.remove(slot)
 
-    def remove(self, entity: Entity) -> None:
+    def remove(self, entity: T) -> None:
         """"""
         slot = self.get_slot(entity)
 
@@ -84,11 +83,11 @@ class Container(Describable):
             if slot.is_empty():
                 self.slots.remove(slot)
 
-    def filter(self, _type: Type[T]) -> list[T]:
+    def filter(self, entity_type: Type[V]) -> list[V]:
         """
 
         """
-        return list(filter(lambda x: isinstance(x, _type), self.get_entities()))  # type: ignore
+        return list(filter(lambda x: isinstance(x, entity_type), self.get_entities()))  # type: ignore
 
     def short_description(self) -> str:
         """
@@ -111,7 +110,7 @@ class Container(Describable):
 
         return self.b.build()
 
-    def get_entities(self) -> list[Entity]:
+    def get_entities(self) -> list[T]:
         """
         Return the list of the entities in the container.
 

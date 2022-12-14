@@ -49,7 +49,7 @@ class Parser:
     def format_input(self, user_input: str) -> str:
         """
         Format and return the given input. Currently, the function strips the
-        input then turns all letters to lower case.
+        input.
 
 
         Argument:
@@ -58,7 +58,7 @@ class Parser:
         Returns:
         A string
         """
-        return user_input.strip().lower()
+        return user_input.strip()
 
     def get_input(self) -> str:
         """

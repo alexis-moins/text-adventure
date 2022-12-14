@@ -6,7 +6,7 @@ from core.actions.base_action import BaseAction
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.entities.npc import NPC
-    from core.fight.fighter import Fighter
+    from core.entities.character import Character
     from core.controllers.scene_controller import SceneController
 
 
@@ -15,15 +15,15 @@ class AttackAction(BaseAction):
     Class representing the action of attacking an entity in the room.
     """
 
-    def __init__(self, fighter: Fighter) -> None:
+    def __init__(self, character: Character) -> None:
         """
         Constructor creating a new attack action.
 
         Argument:
-        fighter - the actor making the action
+        character - the actor making the action
         """
         super().__init__()
-        self.fighter = fighter
+        self.character = character
 
     def can_be_performed(self, context: Dungeon, _: SceneController) -> bool:
         """
@@ -50,19 +50,16 @@ class AttackAction(BaseAction):
         """
         npcs = controller.dungeon.room.npc.get_entities()
 
-        target: NPC | None = controller.dungeon.factory.selection_controller(
-            'Who will be the target of your attack :').select(npcs)  # type: ignore
+        target = controller.dungeon.factory.selection_controller(
+            'Who will be the target of your attack :').select(npcs)
 
         if not target:
             return False
 
-        damage = self.fighter.get_damage()
-        target.receive_damage(damage)
+        effective_damage = self.character.attack(target)
+        message = f'You deal YELLOW{effective_damage} damageWHITE to the {target.name}.'
 
-        damage = target.mitigate_damage(damage)
-        message = f'You deal YELLOW{damage} damageWHITE to the {target.name}.'
-
-        if not damage:
+        if not effective_damage:
             message = f'You YELLOWmissWHITE the {target.name}'
 
         controller.dungeon.add_log(message + '\n')
@@ -75,7 +72,7 @@ class AttackAction(BaseAction):
         Returns:
         A string
         """
-        weapon = self.fighter.equipments.get('weapon')
+        weapon = self.character.equipments.get('weapon')
         weapon_name = 'bare hands' if not weapon else weapon.name
 
         return self.b.add(f'Attack YELLOW(with your {weapon_name})WHITE').build()

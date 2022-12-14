@@ -9,17 +9,28 @@ if TYPE_CHECKING:
 
 class ActionGroup:
 
-    def __init__(self, actions: dict[str, BaseAction], *, color: str = 'GREEN') -> None:
+    def __init__(self, actions: dict[str, BaseAction], color: str = 'green') -> None:
         """
+        Create new action group composed of the given pinned actions.
 
+        Arguments:
+        actions - the (pinned) actions in the group
+        color - the color used to dispay the group's actions
         """
         self.actions = actions
-        self.color = color
+        self.color = color.upper()
 
     def filter(self, dungeon: Dungeon, controller: SceneController) -> ActionGroup:
         """
-        Return a new ActionGroup
+        Return a new ActionGroup containing the actions that can be achieved in the given
+        context.
 
+        Arguments:
+        dungeon - the current dungeon
+        controller - the controller of the current scene
+
+        Returns:
+        An ActionGroup
         """
         filtered_actions = {key: action for key, action in self.actions.items()
                             if action.can_be_performed(dungeon, controller)}
