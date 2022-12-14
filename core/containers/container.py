@@ -123,7 +123,7 @@ class Container(Describable, Generic[T]):
 
         return entities
 
-    def get_slot(self, entity: Entity) -> Slot | None:
+    def get_slot(self, entity: T) -> Slot[T] | None:
         """
         Return an iterator over the slots of the container.
 
@@ -136,7 +136,7 @@ class Container(Describable, Generic[T]):
 
         return None
 
-    def get_slot_by_name(self, entity: Entity) -> Slot | None:
+    def get_slot_by_name(self, entity: T) -> Slot[T] | None:
         """
 
         """
@@ -168,7 +168,7 @@ class Container(Describable, Generic[T]):
         """
         return entity in self.get_entities()
 
-    def __iter__(self) -> Iterator[Slot]:
+    def __iter__(self) -> Iterator[Slot[T]]:
         """"""
         return iter(self.slots)
 

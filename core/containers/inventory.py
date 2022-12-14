@@ -1,21 +1,19 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
 
+from core.items.item import Item
 from core.utils.armory import Armory
+
 from core.items.equipable import Equipable
 from core.containers.sized_container import SizedContainer
 
-if TYPE_CHECKING:
-    from core.entities.entity import Entity
 
-
-class Inventory(SizedContainer):
+class Inventory(SizedContainer[Item]):
     """
     Sized container representing a fighter's inventory.
     """
     armory = Armory()
 
-    def __init__(self, items: list[Entity] | None = None, *, size: int = 10, gold: int = 30) -> None:
+    def __init__(self, items: list[Item] | None = None, *, size: int = 10, gold: int = 30) -> None:
         """
         Constructor creating a new inventory, a sized container for items
         of all kinds.
