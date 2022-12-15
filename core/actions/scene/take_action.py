@@ -5,37 +5,36 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.entities.character import Character
     from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
 
 class TakeItemAction(BaseAction):
 
-    def __init__(self, character: Character) -> None:
+    def __init__(self, dungeon: Dungeon) -> None:
         """
         Constructor creating a new action of dropping one (or more)
         items in the room.
 
         Argument:
-        inventory - the inventory to drop from
+        dungeon - the current dungeon
         """
-        super().__init__()
-        self.character = character
+        super().__init__(dungeon)
+        self.character = dungeon.player
 
-    def can_be_performed(self, context: Dungeon, _: Controller) -> bool:
+    def can_be_performed(self, _: Controller) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the current dungeon
+        controller - the current controller
 
         Returns:
         a boolean
         """
-        return bool(context.room.items)
+        return bool(self.dungeon.current_room.items)
 
-    def execute(self, context: SceneController) -> bool:
+    def execute(self, _: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
@@ -46,21 +45,21 @@ class TakeItemAction(BaseAction):
         Returns:
         A boolean
         """
-        slots = context.dungeon.room.items.slots
+        slots = self.dungeon.current_room.items.slots
 
-        slots = context.dungeon.factory.multi_selection_controller(
+        slots = self.dungeon.architect.multi_selection(
             'Which item(s) do you want to take :').start(slots)
 
         if not slots:
             return False
 
         for slot in slots:
-            items = context.dungeon.factory.quantity_selection_controller(
+            items = self.dungeon.architect.quantity_selection_controller(
                 f'How many YELLOW{slot.first_entity.name}WHITE to you want to take :').start(slot.entities)
 
             for item in items:
                 self.character.take(item)
-                context.dungeon.room.items.remove(item)
+                self.dungeon.current_room.items.remove(item)
 
         return True
 

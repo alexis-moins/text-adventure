@@ -20,19 +20,18 @@ class ActionGroup:
         self.actions = actions
         self.color = color.upper()
 
-    def filter(self, dungeon: Dungeon, controller: SceneController) -> ActionGroup:
+    def filter(self, controller: SceneController) -> ActionGroup:
         """
         Return a new ActionGroup containing the actions that can be achieved in the given
         context.
 
         Arguments:
-        dungeon - the current dungeon
-        controller - the controller of the current scene
+        controller - the current controller
 
         Returns:
         An ActionGroup
         """
         filtered_actions = {key: action for key, action in self.actions.items()
-                            if action.can_be_performed(dungeon, controller)}
+                            if action.can_be_performed(controller)}
 
         return ActionGroup(filtered_actions, color=self.color)

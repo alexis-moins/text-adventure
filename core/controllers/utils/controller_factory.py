@@ -42,7 +42,7 @@ class ControllerFactory:
         """
         self.dungeon = dungeon
 
-    def room_controller(self, room: Room) -> SceneController:
+    def room_scene(self, room: Room) -> SceneController:
         """
         Return a new room controller.
 
@@ -52,25 +52,22 @@ class ControllerFactory:
         Returns:
         A SceneController
         """
-        main = {
-            'i': InventoryAction(self.dungeon.player.inventory),
-            'q': QuitAction()
+        pinned = {
+            'i': InventoryAction(self.dungeon),
+            'q': QuitAction(self.dungeon)
         }
+        actions = [
 
-        secondary = {
-            'w': WaitAction(),
-            'a': AttackAction(self.dungeon.player),
-            't': TakeItemAction(self.dungeon.player),
-            'T': TradeAction(self.dungeon.player)
-        }
+            WaitAction(self.dungeon),
+            AttackAction(self.dungeon),
+            TakeItemAction(self.dungeon),
+            TradeAction(self.dungeon)
+        ]
 
         return SceneController(self.dungeon, RoomScenery(self.dungeon, room),
-                               pinned=[
-                                   ActionGroup(main),
-                                   ActionGroup(secondary, 'cyan')
-        ])
+                               actions, [ActionGroup(pinned)])
 
-    def selection_controller(self, prompt: str) -> SelectionController:
+    def selection(self, prompt: str) -> SelectionController:
         """
         Return a new controller to select exactly one element from a given list.
 
@@ -81,13 +78,13 @@ class ControllerFactory:
         A SelectionController
         """
         pinned: dict[str, BaseAction] = {
-            'q': QuitAction('Cancel')
+            'q': QuitAction(self.dungeon, 'Cancel')
         }
 
         return SelectionController(self.dungeon, MessageView(self.dungeon, prompt),
                                    [ActionGroup(pinned)])
 
-    def multi_selection_controller(self, prompt: str) -> MultiSelectionController:
+    def multi_selection(self, prompt: str) -> MultiSelectionController:
         """
         Return a new controller to select multiple items from a given list.
 
@@ -98,12 +95,13 @@ class ControllerFactory:
         A MultiSelectionController
         """
         pinned = {
-            'q': QuitAction('Cancel'),
-            'a': SelectAllAction(),
-            'u': UnselectAllAction()
+            'q': QuitAction(self.dungeon, 'Cancel'),
+            'a': SelectAllAction(self.dungeon),
+            'u': UnselectAllAction(self.dungeon)
         }
 
-        secondary_group = ActionGroup({'v': ValidateAction()}, color='MAGENTA')
+        secondary_group = ActionGroup(
+            {'v': ValidateAction(self.dungeon)}, color='MAGENTA')
 
         return MultiSelectionController(self.dungeon, MessageView(self.dungeon, prompt),
                                         [ActionGroup(pinned), secondary_group])
@@ -118,8 +116,8 @@ class ControllerFactory:
         Returns:
         A MultiSelectionController
         """
-        controller = self.multi_selection_controller(prompt)
-        controller.pinned[1].actions['s'] = QuitAction('test')
+        controller = self.multi_selection(prompt)
+        controller.pinned[1].actions['s'] = QuitAction(self.dungeon, 'test')
 
         return controller
 
@@ -131,13 +129,13 @@ class ControllerFactory:
         A SceneController
         """
         actions = [
-            EquipAction(self.dungeon.player.inventory),
-            DropItemAction(self.dungeon.player),
-            DrinkPotionAction(self.dungeon.player)
+            EquipAction(self.dungeon),
+            DropItemAction(self.dungeon),
+            DrinkPotionAction(self.dungeon)
         ]
 
         return SceneController(self.dungeon, InventoryView(self.dungeon, self.dungeon.player),
-                               actions, [ActionGroup({'q': QuitAction('Close')})])
+                               actions, [ActionGroup({'q': QuitAction(self.dungeon, 'Close')})])
 
     def message_controller(self, message: str) -> SceneController:
         """
@@ -151,4 +149,4 @@ class ControllerFactory:
         A SceneController
         """
         return SceneController(self.dungeon, MessageView(self.dungeon, message),
-                               [], [ActionGroup({'c': QuitAction('Continue')})])
+                               [], [ActionGroup({'c': QuitAction(self.dungeon, 'Continue')})])

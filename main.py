@@ -19,5 +19,5 @@ room.items.add(armory.take('potion of healing'))
 player = Player.barbarian()
 dungeon = Dungeon(player, room)
 
-controller = dungeon.factory.room_controller(room)
+controller = dungeon.architect.room_scene(room)
 controller.start()

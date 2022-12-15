@@ -21,7 +21,7 @@ class ActionHandler:
         Argument:
         dungeon - the current dungeon
         """
-        self.dungeon = dungeon
+        self._dungeon = dungeon
         self.actions = actions
         self.pinned = pinned
 
@@ -36,12 +36,12 @@ class ActionHandler:
         • a dictionary of pinned actions and their keys
         """
         actions = [action for action in self.actions
-                   if action.can_be_performed(self.dungeon, controller)]
+                   if action.can_be_performed(controller)]
 
         pinned = []
 
         for group in self.pinned:
-            filtered_group = group.filter(self.dungeon, controller)
+            filtered_group = group.filter(controller)
 
             if filtered_group.actions:
                 pinned.append(filtered_group)

@@ -26,19 +26,22 @@ class MultiSelectionController(SceneController):
         super().__init__(dungeon, view, [], pinned)
         self.selection = []
 
-    def start(self, models: list[T]) -> list[T]:
+    def start(self, models: list[T], *, auto_select: bool = False) -> list[T]:
         """
         Start the controller and ask the user to select any number
         of item from a list of items.
 
         Argument:
         items - a list of items to choose from
+
+        Returns:
+        A list of T
         """
-        if len(models) == 1:
+        if auto_select and len(models) == 1:
             return models
 
-        self.actions: list[MultiSelectAction] = [
-            MultiSelectAction(model) for model in models]
+        self.actions = [MultiSelectAction(
+            self._dungeon, model) for model in models]
 
         while self.is_running:
             self.execute_turn()

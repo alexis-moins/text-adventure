@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from core.entities.describable import Describable
 from core.actions.menu.select_action import SelectAction
@@ -24,21 +24,24 @@ class SelectionController(SceneController):
         view - the view used to render the scene
         """
         super().__init__(dungeon, view, [], pinned)
-        self.selection = None
+        self.selection: Any = None
 
-    def start(self, models: list[T]) -> T | None:
+    def start(self, models: list[T], *, auto_select: bool = False) -> T | None:
         """
         Start the controller and ask the user to select exactly one
         item from a list of items.
 
         Argument:
         items - a list of items to choose from
+
+        Returns:
+        A T or None
         """
-        if len(models) == 1:
+        if auto_select and len(models) == 1:
             return models[0]
 
-        self.actions: list[SelectAction] = [
-            SelectAction(model) for model in models]
+        self.actions = [SelectAction(self._dungeon, model)
+                        for model in models]
 
         while self.is_running:
             self.execute_turn()

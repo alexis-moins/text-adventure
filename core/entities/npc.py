@@ -61,7 +61,7 @@ class NPC(Character):
 
         """
         dungeon.add_log(f'The {self.name_and_id} is REDdead!WHITE')
-        dungeon.room.npc.remove(self)
+        dungeon.current_room.npc.remove(self)
 
         dungeon.add_log(
             '\nIt dropped something on the ground:')
@@ -71,7 +71,7 @@ class NPC(Character):
 
         for entity in self.inventory.get_entities():
             self.drop(entity)
-            dungeon.room.items.add(entity)
+            dungeon.current_room.items.add(entity)
 
         dungeon.logger.new_line()
 

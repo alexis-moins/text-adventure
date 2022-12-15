@@ -4,18 +4,17 @@ from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
-    from core.dungeon import Dungeon
     from core.controllers.selection.multi_selection_controller import MultiSelectionController
 
 
 class SelectAllAction(BaseAction):
 
-    def can_be_performed(self, _: Dungeon, controller: MultiSelectionController) -> bool:
+    def can_be_performed(self, controller: MultiSelectionController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the currently opened dungeon
+        dungeon - the current dungeon
 
         Returns:
         a boolean

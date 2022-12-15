@@ -14,23 +14,24 @@ class QuitAction(BaseAction):
     Class representing the action of leaving the current controller.
     """
 
-    def __init__(self, text: str = 'Quit') -> None:
+    def __init__(self, dungeon: Dungeon, text: str = 'Quit') -> None:
         """
         Constructor creating a new action of quitting the current
         controller.
 
         Argument:
+        dungeon - the current dungeon
         text - the text displayed
         """
-        super().__init__()
+        super().__init__(dungeon)
         self.text = text
 
-    def can_be_performed(self, dungeon: Dungeon, controller: SceneController) -> bool:
+    def can_be_performed(self, _: SceneController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the current dungeon
+        controller - the current controller
 
         Returns:
         a boolean
@@ -43,7 +44,7 @@ class QuitAction(BaseAction):
         round.
 
         Argument:
-        controller - the controller of the current scene
+        controller - the current controller
 
         Returns:
         A boolean

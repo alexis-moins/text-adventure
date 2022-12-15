@@ -25,9 +25,9 @@ class Dungeon:
         start - the starting room
         """
         self.player = player
-        self.room = start
+        self.current_room = start
 
-        self.factory = ControllerFactory(self)
+        self.architect = ControllerFactory(self)
         self.logger = StringBuilder()
 
     def add_log(self, log: str) -> None:
@@ -41,11 +41,11 @@ class Dungeon:
 
         """
         if not self.logger.is_empty():
-            self.factory.message_controller(self.logger.build()).start()
+            self.architect.message_controller(self.logger.build()).start()
 
     def next_turn(self) -> None:
         """"""
-        npcs: list[NPC] = self.room.npc.get_entities()  # type: ignore
+        npcs: list[NPC] = self.current_room.npc.get_entities()  # type: ignore
 
         for npc in npcs:
 

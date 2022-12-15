@@ -5,8 +5,6 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.entities.npc import NPC
-    from core.entities.character import Character
     from core.controllers.scene_controller import SceneController
 
 
@@ -15,43 +13,43 @@ class AttackAction(BaseAction):
     Class representing the action of attacking an entity in the room.
     """
 
-    def __init__(self, character: Character) -> None:
+    def __init__(self, dungeon: Dungeon) -> None:
         """
         Constructor creating a new attack action.
 
         Argument:
-        character - the actor making the action
+        dungeon - the current dungeon
         """
-        super().__init__()
-        self.character = character
+        super().__init__(dungeon)
+        self.character = dungeon.player
 
-    def can_be_performed(self, context: Dungeon, _: SceneController) -> bool:
+    def can_be_performed(self, _: SceneController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the current dungeon
+        controller - the current controller
 
         Returns:
         a boolean
         """
-        return len(context.room.npc) > 0
+        return len(self.dungeon.current_room.npc) > 0
 
-    def execute(self, controller: SceneController) -> bool:
+    def execute(self, _: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
 
         Argument:
-        controller - the controller of the current scene
+        controller - the current controller
 
         Returns:
         A boolean
         """
-        npcs = controller.dungeon.room.npc.get_entities()
+        npcs = self.dungeon.current_room.npc.get_entities()
 
-        target = controller.dungeon.factory.selection_controller(
-            'Who will be the target of your attack :').select(npcs)
+        target = self.dungeon.architect.selection(
+            'Who will be the target of your attack :').start(npcs)
 
         if not target:
             return False
@@ -62,7 +60,7 @@ class AttackAction(BaseAction):
         if not effective_damage:
             message = f'You YELLOWmissWHITE the {target.name}'
 
-        controller.dungeon.add_log(message + '\n')
+        self.dungeon.add_log(message + '\n')
         return True
 
     def short_description(self) -> str:

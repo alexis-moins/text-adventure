@@ -27,7 +27,7 @@ class SceneController(Controller):
         Method called whenever the end of turn is reached.
         Does nothing by default.
         """
-        self.dungeon.next_turn()
+        self._dungeon.next_turn()
 
     def on_quit(self) -> None:
         """
@@ -60,5 +60,5 @@ class SceneController(Controller):
         """
         Start the controller.
         """
-        while self.is_running and self.dungeon.player.is_alive():
+        while self.is_running and self._dungeon.player.is_alive():
             self.execute_turn()
