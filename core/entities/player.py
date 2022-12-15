@@ -15,7 +15,8 @@ class Player(Character):
         """
         Constructor creating a new player.
         """
-        super().__init__(archetype, 'The hero wandering through the dungeon!', statistics, inventory)
+        super().__init__(archetype, 'The hero wandering through the dungeon!',
+                         statistics, inventory, gold=30)
 
     @staticmethod
     def barbarian() -> Player:

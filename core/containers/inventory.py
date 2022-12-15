@@ -13,7 +13,7 @@ class Inventory(SizedContainer[Item]):
     """
     armory = Armory()
 
-    def __init__(self, items: list[Item] | None = None, *, size: int = 10, gold: int = 30) -> None:
+    def __init__(self, items: list[Item] | None = None, *, size: int = 10) -> None:
         """
         Constructor creating a new inventory, a sized container for items
         of all kinds.
@@ -23,13 +23,11 @@ class Inventory(SizedContainer[Item]):
 
         Keyword Arguments:
         size - the maximum capacity of the inventory
-        gold - the amount of gold in the inventory
         """
         super().__init__(items, size=size)
-        self.gold = gold
 
     @staticmethod
-    def create(items: list[str], *, size: int = 10, gold: int = 30) -> Inventory:
+    def create(items: list[str], *, size: int = 10) -> Inventory:
         """
         Create and return a new Inventory using the Armory.
 
@@ -38,14 +36,12 @@ class Inventory(SizedContainer[Item]):
 
         Keyword Arguments:
         size - the maximum capacity of the inventory
-        gold - the amount of gold in the inventory
 
         Retuns:
         An Inventory
         """
-        return Inventory(
-            [Inventory.armory.take(item) for item in items],
-            size=size, gold=gold)
+        return Inventory([Inventory.armory.take(item)
+                          for item in items], size=size)
 
     def long_description(self) -> str:
         """
