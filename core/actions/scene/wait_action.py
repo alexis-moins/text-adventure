@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
-    from core.dungeon import Dungeon
     from core.controllers.controller import Controller
     from core.controllers.scene_controller import SceneController
 
@@ -14,12 +13,12 @@ class WaitAction(BaseAction):
     Class representing the action of doing nothing.
     """
 
-    def can_be_performed(self, _: Dungeon, controller: Controller) -> bool:
+    def can_be_performed(self, _: Controller) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the current dungeon
+        controller - the current controller
 
         Returns:
         a boolean
@@ -32,7 +31,7 @@ class WaitAction(BaseAction):
         round.
 
         Argument:
-        controller - the controller of the current scene
+        controller - the current controller
 
         Returns:
         A boolean

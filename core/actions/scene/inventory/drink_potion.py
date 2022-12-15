@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from core.actions.base_action import BaseAction
-from core.fight.fighter import Fighter
+
 from core.items.potion import Potion
+from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
@@ -13,52 +13,52 @@ if TYPE_CHECKING:
 
 class DrinkPotionAction(BaseAction):
 
-    def __init__(self, fighter: Fighter) -> None:
+    def __init__(self, dungeon: Dungeon) -> None:
         """
         Constructor creating a new action of dropping one (or more)
         items in the room.
 
         Argument:
-        inventory - the inventory to drop from
+        dungeon - the current dungeon
         """
-        super().__init__()
-        self.fighter = fighter
+        super().__init__(dungeon)
+        self.fighter = dungeon.player
 
-    def can_be_performed(self, _: Dungeon, controller: Controller) -> bool:
+    def can_be_performed(self, _: Controller) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the current dungeon
+        controller - the current controller
 
         Returns:
         a boolean
         """
         return bool(self.fighter.inventory.filter(Potion))
 
-    def execute(self, context: SceneController) -> bool:
+    def execute(self, _: SceneController) -> bool:
         """
         Execute this action. Return true if the action should trigger the next
         round.
 
         Argument:
-        controller - the controller of the current scene
+        controller - the current controller
 
         Returns:
         A boolean
         """
         items = self.fighter.inventory.filter(Potion)
 
-        potion: Potion | None = context.dungeon.factory.selection_controller(
-            'Which potion do you want to drink :').select(items)  # type: ignore
+        potion = self.dungeon.architect.selection(
+            'Which potion do you want to drink :').start(items)
 
         if not potion:
             return False
 
         potion.drink(self.fighter)
 
-        context.dungeon.add_log(f'You drink your YELLOW{potion.name}WHITE.')
-        context.dungeon.add_log(potion.drink_sentence())
+        self.dungeon.add_log(f'You drink your YELLOW{potion.name}WHITE.')
+        self.dungeon.add_log(potion.drink_sentence())
         return True
 
     def short_description(self) -> str:

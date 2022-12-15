@@ -8,18 +8,27 @@ from core.entities.describable import Describable
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
     from core.controllers.controller import Controller
-    from core.controllers.scene_controller import SceneController
 
 
 class BaseAction(Describable, ABC):
 
+    def __init__(self, dungeon: Dungeon) -> None:
+        """
+        Constructor creating a new base action.
+
+        Argument:
+        dungeon - the current dungeon
+        """
+        super().__init__()
+        self.dungeon = dungeon
+
     @abstractmethod
-    def can_be_performed(self, context: Dungeon, controller: SceneController) -> bool:
+    def can_be_performed(self, controller: Controller) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the currently opened dungeon
+        controller - the current controller
 
         Returns:
         a boolean
@@ -33,7 +42,7 @@ class BaseAction(Describable, ABC):
         round.
 
         Argument:
-        controller - the controller of the current scene
+        controller - the current controller
 
         Returns:
         A boolean
@@ -48,6 +57,3 @@ class BaseAction(Describable, ABC):
         A string
         """
         return 'NOT IMPLEMENTED'
-
-
-PinnedActions = list[dict[str, BaseAction]]

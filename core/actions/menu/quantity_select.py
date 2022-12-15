@@ -11,22 +11,23 @@ if TYPE_CHECKING:
 
 class QuantitySelectAction(BaseAction):
 
-    def __init__(self, quantity: int) -> None:
+    def __init__(self, dungeon: Dungeon, quantity: int) -> None:
         """
         Constructor creating an abstract action with its actor.
 
         Argument:
+        dungeon - the current dungeon
         quantity - the selected quantity
         """
-        super().__init__()
+        super().__init__(dungeon)
         self.quantity = quantity
 
-    def can_be_performed(self, _: Dungeon, controller: SceneController) -> bool:
+    def can_be_performed(self, _: SceneController) -> bool:
         """
         Return true whether this action can be performed in the given context.
 
         Argument:
-        context - the currently opened dungeon
+        controller - the current controller
 
         Returns:
         a boolean
@@ -39,7 +40,7 @@ class QuantitySelectAction(BaseAction):
         round.
 
         Argument:
-        controller - the controller of the current scene
+        controller - the current controller
 
         Returns:
         A boolean
