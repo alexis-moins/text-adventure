@@ -74,7 +74,16 @@ class Character(Fighter, ABC):
         self.inventory.remove(item)
 
     def attack(self, target: Fighter) -> int:
-        """"""
+        """
+        Attack the a target and return the effective damage that was
+        dealt.
+
+        Argument:
+        target - the target of the attack
+
+        Returns:
+        An integer
+        """
         damage = self.get_damage()
         target.receive_damage(damage)
 

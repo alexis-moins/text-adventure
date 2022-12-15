@@ -52,7 +52,7 @@ class TradeAction(BaseAction):
         npcs = context.dungeon.room.npc.filter(Trader)
 
         trader = context.dungeon.factory.selection_controller(
-            'With which merchant do you want to trade :').start(npcs)
+            'With which merchant do you want to trade :').start(npcs, auto_select=True)
 
         if not trader:
             return False

@@ -26,15 +26,18 @@ class SelectionController(SceneController):
         super().__init__(dungeon, view, [], pinned)
         self.selection = None
 
-    def start(self, models: list[T]) -> T | None:
+    def start(self, models: list[T], *, auto_select: bool = False) -> T | None:
         """
         Start the controller and ask the user to select exactly one
         item from a list of items.
 
         Argument:
         items - a list of items to choose from
+
+        Returns:
+        A T or None
         """
-        if len(models) == 1:
+        if auto_select and len(models) == 1:
             return models[0]
 
         self.actions: list[SelectAction] = [

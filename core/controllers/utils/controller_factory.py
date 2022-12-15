@@ -52,23 +52,20 @@ class ControllerFactory:
         Returns:
         A SceneController
         """
-        main = {
+        pinned = {
             'i': InventoryAction(self.dungeon.player.inventory),
             'q': QuitAction()
         }
 
-        secondary = {
-            'w': WaitAction(),
-            'a': AttackAction(self.dungeon.player),
-            't': TakeItemAction(self.dungeon.player),
-            'T': TradeAction(self.dungeon.player)
-        }
+        actions = [
+            WaitAction(),
+            AttackAction(self.dungeon.player),
+            TakeItemAction(self.dungeon.player),
+            TradeAction(self.dungeon.player)
+        ]
 
         return SceneController(self.dungeon, RoomScenery(self.dungeon, room),
-                               pinned=[
-                                   ActionGroup(main),
-                                   ActionGroup(secondary, 'cyan')
-        ])
+                               actions, [ActionGroup(pinned)])
 
     def selection_controller(self, prompt: str) -> SelectionController:
         """

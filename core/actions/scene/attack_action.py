@@ -5,7 +5,6 @@ from core.actions.base_action import BaseAction
 
 if TYPE_CHECKING:
     from core.dungeon import Dungeon
-    from core.entities.npc import NPC
     from core.entities.character import Character
     from core.controllers.scene_controller import SceneController
 
@@ -51,7 +50,7 @@ class AttackAction(BaseAction):
         npcs = controller.dungeon.room.npc.get_entities()
 
         target = controller.dungeon.factory.selection_controller(
-            'Who will be the target of your attack :').select(npcs)
+            'Who will be the target of your attack :').start(npcs, auto_select=True)
 
         if not target:
             return False
