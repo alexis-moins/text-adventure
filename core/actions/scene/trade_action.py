@@ -56,6 +56,9 @@ class TradeAction(BaseAction):
         if not trader:
             return False
 
+        self.dungeon.architect.multi_selection(
+            'Which items do you want to buy :').start(trader.stock.slots)
+
         return True
 
     def short_description(self) -> str:

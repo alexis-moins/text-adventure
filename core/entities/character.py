@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class Character(Fighter, ABC):
 
-    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory, gold: int) -> None:
         """
         Constructor creating a new abstract character.
 
@@ -22,6 +22,7 @@ class Character(Fighter, ABC):
         description - the description of the character
         """
         super().__init__(name, description, statistics, inventory)
+        self.gold = gold
 
         for item in self.inventory.get_entities():
             self.equip(item)

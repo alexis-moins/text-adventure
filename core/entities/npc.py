@@ -14,7 +14,7 @@ class NPC(Character):
     Class representing any non playable character.
     """
 
-    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory, *, is_hostile: bool) -> None:
+    def __init__(self, name: str, description: str, statistics: Statistics, inventory: Inventory, *, gold: int = 0, is_hostile: bool) -> None:
         """
         Constructor creating a new NPC, whether it is hostile or not.
 
@@ -28,7 +28,7 @@ class NPC(Character):
         Keyword Arguments:
         is_hostile - whether the NPC is hostile to the player or not
         """
-        super().__init__(name, description, statistics, inventory)
+        super().__init__(name, description, statistics, inventory, gold)
         self.is_hostile = is_hostile
 
     def take_turn(self, dungeon: Dungeon) -> bool:

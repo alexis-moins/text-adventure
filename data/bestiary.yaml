@@ -15,7 +15,7 @@ trader:
   description: A wandering trader
 
   type: trader
-  is_hostile: false
+  gold: 30
 
   statistics: {health: 20, magic: 5, strength: 5, defence: 5}
   inventory:
@@ -23,3 +23,7 @@ trader:
     - potion of healing
     - iron sword
     - leather armor
+
+  stock:
+    - potion of healing
+    - potion of healing
