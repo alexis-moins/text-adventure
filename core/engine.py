@@ -1,19 +1,20 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from core.parser.action import ActionManager
 from core.parser.parser import Parser
 
 if TYPE_CHECKING:
-    from typing import Callable
     from core.world import World
+    from core.shortcuts import ActionConfig
 
 class Engine:
 
-    def __init__(self, world: World, actions: dict[str, Callable]) -> None:
+    def __init__(self, world: World, actions: dict[str, ActionConfig]) -> None:
         """"""
         self.is_running = True
         self.parser = Parser()
+
+        self.actions = self.parser.parse_actions(actions)
 
         self.world = world
 

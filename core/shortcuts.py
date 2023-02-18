@@ -3,12 +3,16 @@ Helper module providing an easy way of kickstarting the creation of
 a new world.
 """
 from core.parser.action import Action
+from core.validation import Validator
 
 from core.world import World
 from core.engine import Engine
 
 
-def start(scenario: str, actions: dict[str, Action]) -> None:
+ActionConfig = Action | tuple[Action, Validator | tuple[Validator]]
+
+
+def start(scenario: str, actions: dict[str, ActionConfig]) -> None:
     """
     Create a new world using the given scenarios and actions, then
     start the engine.

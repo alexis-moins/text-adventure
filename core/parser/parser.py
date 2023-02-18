@@ -1,5 +1,8 @@
-from dataclasses import dataclass
+from __future__ import annotations
+from dataclasses import dataclass, field
 from enum import Enum
+
+from core.shortcuts import ActionConfig
 
 
 class Role(Enum):
@@ -69,3 +72,19 @@ class Parser:
                 sentence.append(Token(word, Role.OBJECT))
 
         return Pattern(sentence)
+
+    def parse_actions(self, actionsss: dict[str, ActionConfig]) -> dict[Pattern, Action]:
+
+        actionsss = dict()
+
+        for pattern, action in actions.items():
+
+            pattern = self.parse_pattern(pattern)
+
+            if type(action) is Action:
+                actionsss[pattern] = action
+                continue
+
+            if type(action) is tuple:
+                if type(action[0]) is Action and type(action[1]) is Validator:
+                    actionsss 

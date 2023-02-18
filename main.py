@@ -25,9 +25,15 @@
 from core import actions
 from core.shortcuts import start
 
+from core.validation import ItemInRoom, ItemExists
+
 start('scenario.yaml', {
     'say THING': actions.say,
-    # 'take ITEM': (ItemInRoom('ITEM'), actions.take)
+
+    'take ITEM': (actions.take, ItemInRoom('ITEM')),
+    # 'get ITEM': synonym('take ITEM'),
+
+    'drink BEVERAGE': (actions.drink, ItemExists('BEVERAGE')),
 })
 
 # Validators:
